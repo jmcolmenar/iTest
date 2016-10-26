@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,17 +33,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
+
+/**
+ * Redirects to index page when login is successful
+ */
+@Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-
-        // Redirect depending of user roles
+        // Redirect depending on user's roles
         httpServletResponse.sendRedirect(this.getRouteToRedirect(authentication));
     }
 
     /**
-     *  Get the route to redirect depending of user's roles
+     *  Get the route to redirect depending on user's roles
      * @param authentication Authentication object
      * @return The route to redirect
      */
@@ -52,19 +57,19 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         // Get the roles of authenticated user
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
-        // Redirect depending of user's roles
+        // Redirects depending of user's roles
         if (roles.contains("ROLE_LEARNER")) {
-            // Redirect to learner menu
-            route = "learner_index.html";
+            // Redirects to learner menu
+            route = "learner/learner_index.html";
         }else if(roles.contains("ROLE_TUTOR")){
-            // Redirect to tutor menu
-            route = "tutor_index.html";
+            // Redirects to tutor menu
+            route = "tutor/tutor_index.html";
         }else if(roles.contains("ROLE_ADMIN")){
-            // Redirect to admin menu
-            route = "admin_index.html";
+            // Redirects to admin menu
+            route = "admin/admin_index.html";
         }else{
-            // Redirect to index
-            route = "index.html";
+            // Redirects to invalid user page
+            route = "invalidUser";
         }
 
         // Return the route to redirect

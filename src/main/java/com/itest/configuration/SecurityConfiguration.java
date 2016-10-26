@@ -23,16 +23,32 @@ package com.itest.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.session.SessionAuthenticationException;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    CustomAccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    CustomAuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
@@ -43,21 +59,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/angularjs/**", "/css/**", "/img/**", "/fonts/**", "/index.html");
-    }
-
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/learner_index.html", "/api/learner/**", "/learner/**").access("hasRole('ROLE_LEARNER')");
-        http.authorizeRequests().antMatchers("/tutor_index.html", "/api/tutor/**", "/tutor/**").access("hasRole('ROLE_TUTOR')");
-        http.authorizeRequests().antMatchers("/admin_index.html", "/api/admin/**", "/admin/**").access("hasRole('ROLE_ADMIN')");
-        http.formLogin().successHandler(new CustomAuthenticationSuccessHandler()).failureUrl("/index.html");
-        http.logout().logoutSuccessUrl("/");
+        // Authorizes the requests to resources depending of user's roles
+        http.authorizeRequests().antMatchers("/api/learner/**", "/learner/**").access("hasRole('ROLE_LEARNER')");
+        http.authorizeRequests().antMatchers("/api/tutor/**", "/tutor/**").access("hasRole('ROLE_TUTOR')");
+        http.authorizeRequests().antMatchers("/api/admin/**", "/admin/**").access("hasRole('ROLE_ADMIN')");
 
-        // TODO: Implement and use the remaining "handler" classes. For example (When it accesses to denied content)
+        // Specifies the AuthenticationEntryPoint and AccessDeniedHandler to be used
+        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
-        // Disable crsf token (Temporally)
+        // Specifies the AuthenticationSuccessHandler to be used when login is successfull
+        http.formLogin().successHandler(authenticationSuccessHandler);
+
+        // TODO: URL to send users if authentication fails
+        http.formLogin().failureUrl("/login_error.html");
+
+        // The URL to redirect to after logout has occurred. Redirects to index action of login controller and delete the session cookie
+        http.logout().logoutSuccessUrl("/").permitAll().clearAuthentication(false).invalidateHttpSession(false).permitAll();
+
+        // Disable CSRF Token (Temporally)
         http.csrf().disable();
     }
 }
