@@ -21,6 +21,8 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itest.jsonModel.ErrorMessage;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -38,7 +40,16 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
-        // Send error 401 (Unauthorized) with exception message
-        httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+        // Return error 401 (Unauthorized) with exception message
+        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+        // Set content type of response to JSON
+        httpServletResponse.setContentType("application/json");
+
+        // Return the error message in JSON
+        ObjectMapper mapper = new ObjectMapper();
+        ErrorMessage errorMessage = new ErrorMessage(e.getMessage());
+        String errorMessageJson = mapper.writeValueAsString(errorMessage);
+        httpServletResponse.getWriter().write(errorMessageJson);
     }
 }

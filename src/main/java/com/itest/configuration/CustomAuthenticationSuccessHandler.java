@@ -21,7 +21,8 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.configuration;
 
-import org.springframework.context.annotation.Bean;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itest.jsonModel.LoggedUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -35,15 +36,28 @@ import java.util.Set;
 
 
 /**
- * Redirects to index page when login is successful
+ * Return the current logged user
  */
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    // Roles of users
+    private static final String ROLE_LEARNER = "ROLE_LEARNER";
+    private static final String ROLE_TUTOR = "ROLE_TUTOR";
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        // Redirect depending on user's roles
-        httpServletResponse.sendRedirect(this.getRouteToRedirect(authentication));
+        // Return 200 code (Ok)
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+
+        // Set content type of response to JSON
+        httpServletResponse.setContentType("application/json");
+
+        // Return the logged user in JSON format
+        ObjectMapper mapper = new ObjectMapper();
+        LoggedUser loggedUser = new LoggedUser(this.isAuthenticatedUser(authentication), authentication.getName());
+        String loggedUserJson = mapper.writeValueAsString(loggedUser);
+        httpServletResponse.getWriter().print(loggedUserJson);
     }
 
     /**
@@ -52,27 +66,43 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
      * @return The route to redirect
      */
     public String getRouteToRedirect(Authentication authentication) {
-        String route = null;
+        String route = "/";
 
         // Get the roles of authenticated user
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
         // Redirects depending of user's roles
-        if (roles.contains("ROLE_LEARNER")) {
-            // Redirects to learner menu
+        if (roles.contains(ROLE_LEARNER)) {
+            // Redirects to learner index
             route = "learner/learner_index.html";
-        }else if(roles.contains("ROLE_TUTOR")){
-            // Redirects to tutor menu
+        }else if(roles.contains(ROLE_TUTOR)){
+            // Redirects to tutor index
             route = "tutor/tutor_index.html";
-        }else if(roles.contains("ROLE_ADMIN")){
-            // Redirects to admin menu
+        }else if(roles.contains(ROLE_ADMIN)){
+            // Redirects to admin index
             route = "admin/admin_index.html";
-        }else{
-            // Redirects to invalid user page
-            route = "invalidUser";
         }
 
         // Return the route to redirect
         return route;
+    }
+
+    /**
+     * Check if the current authenticated user is valid
+     * @param auth The current authentication
+     * @return If the current user is a valid user
+     */
+    public boolean isAuthenticatedUser(Authentication auth) {
+        boolean authenticated = false;
+
+        // Get the roles of authenticated user
+        Set<String> roles = AuthorityUtils.authorityListToSet(auth.getAuthorities());
+
+        // Check if there is an authenticated user with the Admin, Tutor or Learner role
+        if(roles != null && !roles.isEmpty()){
+            authenticated = roles.contains(ROLE_LEARNER) || roles.contains(ROLE_TUTOR) || roles.contains(ROLE_ADMIN);
+        }
+
+        return authenticated;
     }
 }
