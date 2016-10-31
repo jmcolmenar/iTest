@@ -22,10 +22,11 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.configuration;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -41,10 +42,21 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public InternalResourceViewResolver getInternalResourceViewResolver() {
+        // Set the preffix and suffix of views to static html page
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/");
         resolver.setSuffix(".html");
         return resolver;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // Set the cache control ("no-cstore") to static html pages. This is to avoid access to unauthorized web pages from cache
+        registry.addResourceHandler("/admin/*").addResourceLocations("/admin/").setCacheControl(CacheControl.noStore());
+        registry.addResourceHandler("/tutor/*").addResourceLocations("/tutor/").setCacheControl(CacheControl.noStore());
+        registry.addResourceHandler("/learner/*").addResourceLocations("/learner/").setCacheControl(CacheControl.noStore());
+
+        super.addResourceHandlers(registry);
     }
 
 }
