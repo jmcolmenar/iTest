@@ -23,19 +23,10 @@ package com.itest.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.session.SessionAuthenticationException;
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -51,34 +42,48 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Autowired
+    CustomAuthenticationFailureHandler authenticationFailureHandler;
+
+    //@Autowired
+    //CustomCsrfTokenRepository tokenRepository;
+
+    @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         // TODO: Delete this testing user. Will be added from database
         auth.inMemoryAuthentication().withUser("learner").password("password").roles("LEARNER");
         auth.inMemoryAuthentication().withUser("tutor").password("password").roles("TUTOR");
         auth.inMemoryAuthentication().withUser("admin").password("password").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser("other").password("password").roles("OTHER");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Authorizes the requests to resources depending of user's roles
-        http.authorizeRequests().antMatchers("/api/learner/**", "/learner/**").access("hasRole('ROLE_LEARNER')");
-        http.authorizeRequests().antMatchers("/api/tutor/**", "/tutor/**").access("hasRole('ROLE_TUTOR')");
-        http.authorizeRequests().antMatchers("/api/admin/**", "/admin/**").access("hasRole('ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/api/learner/*", "/learner/*").access("hasRole('ROLE_LEARNER')");
+        http.authorizeRequests().antMatchers("/api/tutor/*", "/tutor/*").access("hasRole('ROLE_TUTOR')");
+        http.authorizeRequests().antMatchers("/api/admin/*", "/admin/*").access("hasRole('ROLE_ADMIN')");
 
         // Specifies the AuthenticationEntryPoint and AccessDeniedHandler to be used
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
-        // Specifies the AuthenticationSuccessHandler to be used when login is successfull
+        // Specifies the AuthenticationSuccessHandler and AuthenticationFailureHandler to be used
         http.formLogin().successHandler(authenticationSuccessHandler);
-
-        // TODO: URL to send users if authentication fails
-        http.formLogin().failureUrl("/login_error.html");
+        http.formLogin().failureHandler(authenticationFailureHandler);
 
         // The URL to redirect to after logout has occurred. Redirects to index action of login controller and delete the session cookie
-        http.logout().logoutSuccessUrl("/").permitAll().clearAuthentication(false).invalidateHttpSession(false).permitAll();
+        http.logout().logoutSuccessUrl("/");
 
         // Disable CSRF Token (Temporally)
         http.csrf().disable();
+
+        // TODO: Set the token repository by CookieCsrfTokenRepository setting the Cookie name
+        //CookieCsrfTokenRepository csrfRepository = new CookieCsrfTokenRepository();
+        //csrfRepository.setCookieName("XSRF-TOKEN");
+        //csrfRepository.setCookieHttpOnly(false);
+        //http.csrf().csrfTokenRepository(csrfRepository);
+
+        // TODO: Or set the token repository by custom
+        //http.csrf().csrfTokenRepository(tokenRepository);
     }
 }
