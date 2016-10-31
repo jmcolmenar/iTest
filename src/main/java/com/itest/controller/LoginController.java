@@ -22,16 +22,15 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.controller;
 
 import com.itest.configuration.CustomAuthenticationSuccessHandler;
+import com.itest.jsonModel.LoggedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Set;
 
 
 /**
@@ -54,8 +53,8 @@ public class LoginController {
     }
 
     /**
-     * Return the index page as a view
-     * @return The index page
+     * Redirect to corresponding index page of logged user
+     * @return The index page of logged user
      */
     @RequestMapping(value = "/redirect", method = RequestMethod.GET)
     public String redirectTo(){
@@ -67,67 +66,18 @@ public class LoginController {
     }
 
     /**
-     * Return the view to invalid user
-     * @return The page to invalid user
-     */
-    @RequestMapping(value = "/invalidUser", method = RequestMethod.GET)
-    public String invalidUser(){
-        // Return invalid user page
-        return "invalid_user";
-    }
-
-
-    /**
      * Check the current authenticated user
-     * @return If there is an authenticated and valid user
+     * @return The logged user (If there is an authenticated user)
      */
-    @RequestMapping(value = "/checkAuthentication", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/checkCurrentUser", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public boolean checkAuthentication(){
+    public LoggedUser checkAuthentication(){
         // Get current authentication
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        // Checks if there is an authenticated user
-        return this.isAuthenticatedUser(auth);
-    }
-
-    /**
-     * Get the username of authenticated user
-     * @return The username (null: If there is not an authenticated user)
-     */
-    @RequestMapping(value = "/getUsername", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public String getUsername(){
-        String name = null;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        // Get the username if there is an authenticated user
-        if(auth.isAuthenticated()){
-            name = auth.getName();
-        }
-
-        return name;
-    }
-
-
-
-    /**
-     * Check if the current authenticated user is valid
-     * @param auth The current authentication
-     * @return If the current user is a valid user
-     */
-    private boolean isAuthenticatedUser(Authentication auth) {
-        boolean authenticated = false;
-
-        // Get the roles of authenticated user
-        Set<String> roles = AuthorityUtils.authorityListToSet(auth.getAuthorities());
-
-        // Check if there is an authenticated user with the Admin, Tutor or Learner role
-        if(roles != null && !roles.isEmpty()){
-            authenticated = roles.contains("ROLE_LEARNER") || roles.contains("ROLE_TUTOR") || roles.contains("ROLE_ADMIN");
-        }
-
-        return authenticated;
+        // Return the logged user
+        LoggedUser loggedUser = new LoggedUser(authenticationSuccessHandler.isAuthenticatedUser(auth), auth.getName());
+        return loggedUser;
     }
 
 }
