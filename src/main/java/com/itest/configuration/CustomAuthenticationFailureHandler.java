@@ -32,12 +32,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
+/**
+ * Return 401 error code when login is not successful and an error message in JSON format
+ */
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        // Return 401 code (Unauthorized)
+        // Return 401 error code (Unauthorized)
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         // Set content type of response to JSON

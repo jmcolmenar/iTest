@@ -33,14 +33,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Returns 401 error (Unauthorized). For default Spring-Security redirect to login page
+ * Returns 401 error (Unauthorized) and an error message in JSON format. For default Spring-Security redirect to login page
  */
-@Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
-        // Return error 401 (Unauthorized) with exception message
+        // Return 401 error code (Unauthorized) with exception message
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         // Set content type of response to JSON

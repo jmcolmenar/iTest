@@ -33,14 +33,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Returns 403 error (Forbidden)
+ * Returns 403 error (Forbidden) and an error message in JSON format
  */
-@Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        // Return 403 code (Forbidden)
+        // Return 403 error code (Forbidden)
         httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
         // Set content type of response to JSON
