@@ -56,13 +56,6 @@
         <!-- CONTAINER -->
         <div class="container">
 
-            <br>
-            <p>Testing Users:</p>
-            - tutor/password <br>
-            - admin/password <br>
-            - learner/password
-
-
             <!-- Button to access to Login Form or User Index -->
             <div class="row" ng-show="!showFormLogin">
 
@@ -87,7 +80,7 @@
 
                     <hr>
 
-                    <p class="alert alert-danger" role="alert" ng-show="showLoginError">Incorrect identificaction. Please, try again</p>
+                    <h5 class="alert alert-danger" role="alert" ng-show="showLoginError">{{loginErrorMessage}}</h5>
 
                     <form class="form-horizontal" role="form" ng-submit="login()">
 
@@ -106,7 +99,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-default">Enter</button>
+                            <button type="submit" class="btn btn-default"> Enter &nbsp<i class="glyphicon glyphicon-log-in"></i></button>
                         </div>
 
                     </form>

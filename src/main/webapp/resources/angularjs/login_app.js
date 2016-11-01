@@ -23,23 +23,26 @@ app.controller('loginCtrl', function($scope, $http, $window){
         });
     };
 
+    // Function to perform login
     $scope.login = function() {
         $http.post('login', $.param($scope.credentials), {
             headers : {
                 "content-type" : "application/x-www-form-urlencoded"
             }
         }).success(function(data) {
-            // Check if the logged iser is a valid user (With the needed Roles)
+            // Check if the logged user is a valid user (With the needed Roles)
             if(data.validUser){
                 // Call Action "redirect" to login controller
                 $window.location.href = '/redirect'
             }else{
                 // Show error message
                 $scope.showLoginError = true;
+                $scope.loginErrorMessage = data.errorMessage;
             }
         }).error(function(data) {
             // Show error message
             $scope.showLoginError = true;
+            $scope.loginErrorMessage = data.errorMessage;
         })
     };
 });
