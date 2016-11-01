@@ -41,9 +41,9 @@ import java.util.Set;
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     // Roles of users
-    private static final String ROLE_LEARNER = "ROLE_LEARNER";
-    private static final String ROLE_TUTOR = "ROLE_TUTOR";
-    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_LEARNER = "LEARNER";
+    public static final String ROLE_TUTOR = "TUTOR";
+    public static final String ROLE_ADMIN = "ADMIN";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
