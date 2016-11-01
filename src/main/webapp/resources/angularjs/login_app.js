@@ -6,7 +6,7 @@ app.controller('loginCtrl', function($scope, $http, $window){
     // Set the variables to inital value
     $scope.showFormLogin = false;
     $scope.showLoginError = false;
-    $scope.credentials = {}
+    $scope.credentials = {};
 
     // Function to check if there is an authenticated user
     $scope.checkUser = function(){
@@ -37,7 +37,7 @@ app.controller('loginCtrl', function($scope, $http, $window){
             }else{
                 // Show error message
                 $scope.showLoginError = true;
-                $scope.loginErrorMessage = data.errorMessage;
+                $scope.loginErrorMessage = 'The user has not the necessary permissions'
             }
         }).error(function(data) {
             // Show error message
