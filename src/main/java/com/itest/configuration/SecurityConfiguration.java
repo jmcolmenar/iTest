@@ -25,8 +25,6 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,7 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Autowired
-    Environment environment;
+    DataSource dataSource;
 
     //@Autowired
     //CustomCsrfTokenRepository tokenRepository;
@@ -50,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         // Configure the authentication through database. Use MD5 algorithm to encode the password
         auth.jdbcAuthentication()
-                .dataSource(this.getDataSource())
+                .dataSource(dataSource)
                 .passwordEncoder(new Md5PasswordEncoder())
                 .usersByUsernameQuery("select usuario as username, passw as password, (1=1) as enabled from usuarios where usuario = ?")
                 .authoritiesByUsernameQuery("select usuario as username, permiso as authority from permisos where usuario = ?");
@@ -85,14 +83,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // TODO: Or set the token repository by custom
         //http.csrf().csrfTokenRepository(tokenRepository);
-    }
-
-    private DataSource getDataSource(){
-        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-        driverManagerDataSource.setDriverClassName(environment.getProperty("spring.datasource.driver-class-name"));
-        driverManagerDataSource.setUrl(environment.getProperty("spring.datasource.url"));
-        driverManagerDataSource.setUsername(environment.getProperty("spring.datasource.username"));
-        driverManagerDataSource.setPassword(environment.getProperty("spring.datasource.password"));
-        return driverManagerDataSource;
     }
 }

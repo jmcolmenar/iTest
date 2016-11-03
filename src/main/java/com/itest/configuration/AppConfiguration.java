@@ -21,19 +21,41 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.sql.DataSource;
 
 @EnableWebMvc
 @Configuration
-public class MvcConfiguration extends WebMvcConfigurerAdapter {
+public class AppConfiguration extends WebMvcConfigurerAdapter {
+
+    @Value("${spring.datasource.driver-class-name}")
+    private String dbDriver;
+
+    @Value("${spring.datasource.url}")
+    private String jdbcURl;
+
+    @Value("${spring.datasource.username}")
+    private String dbUsername;
+
+    @Value("${spring.datasource.password}")
+    private String dbPassword;
+
+    @Bean(name = "dataSource")
+    public DataSource dataSource(){
+        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+        driverManagerDataSource.setDriverClassName(dbDriver);
+        driverManagerDataSource.setUrl(jdbcURl);
+        driverManagerDataSource.setUsername(dbUsername);
+        driverManagerDataSource.setPassword(dbPassword);
+        return driverManagerDataSource;
+    }
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -56,7 +78,8 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/tutor/*").addResourceLocations("/tutor/").setCacheControl(CacheControl.noStore());
         registry.addResourceHandler("/learner/*").addResourceLocations("/learner/").setCacheControl(CacheControl.noStore());
 
+        // TODO: Set the cache control to other resources
+
         super.addResourceHandlers(registry);
     }
-
 }
