@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -47,7 +48,10 @@ public class LoginController {
      * @return The index page
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(){
+    public String index(HttpServletResponse response){
+        // Set cache to "no-store" in the response to avoid caching the index page
+        response.setHeader("Cache-Control", "no-store");
+
         // Return index page
         return "index";
     }
@@ -75,8 +79,17 @@ public class LoginController {
         // Get current authentication
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        // Check if the user is a valid user
+        boolean isValidUser = authenticationSuccessHandler.isAuthenticatedUser(auth);
+
+        // Set the error message
+        String message = "";
+        if(!isValidUser){
+            message = "The user has not the necessary permissions";
+        }
+
         // Return the logged user
-        LoggedUser loggedUser = new LoggedUser(authenticationSuccessHandler.isAuthenticatedUser(auth), auth.getName());
+        LoggedUser loggedUser = new LoggedUser(isValidUser, auth.getName(), message);
         return loggedUser;
     }
 
