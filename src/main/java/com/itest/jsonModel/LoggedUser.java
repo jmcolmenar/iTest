@@ -31,14 +31,18 @@ public class LoggedUser {
 
     private String username;
 
+    private String message;
+
     /**
      * Create new JSON model to logged username
      * @param validUser If the logged user is a valid user (With the needed roles)
      * @param username The username of logged user
+     * @param message The error message when the user is not valid
      */
-    public LoggedUser(boolean validUser, String username) {
+    public LoggedUser(boolean validUser, String username, String message) {
         this.validUser = validUser;
         this.username = username;
+        this.message = message;
     }
 
     public boolean isValidUser() {
@@ -47,5 +51,9 @@ public class LoggedUser {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

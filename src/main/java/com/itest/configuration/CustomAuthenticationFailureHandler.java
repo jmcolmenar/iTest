@@ -47,7 +47,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
         // Return the error message in JSON
         ObjectMapper mapper = new ObjectMapper();
-        ErrorMessage errorMessage = new ErrorMessage("Username or password is incorrect ");
+        ErrorMessage errorMessage = new ErrorMessage("Username or password is incorrect");
         String errorMessageJson = mapper.writeValueAsString(errorMessage);
         httpServletResponse.getWriter().write(errorMessageJson);
     }

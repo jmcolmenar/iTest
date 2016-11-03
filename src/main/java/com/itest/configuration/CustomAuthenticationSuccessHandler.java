@@ -53,9 +53,18 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         // Set content type of response to JSON
         httpServletResponse.setContentType("application/json");
 
+        // Check if the user is a valid user
+        boolean isValidUser = this.isAuthenticatedUser(authentication);
+
+        // Set the error message
+        String message = "";
+        if(!isValidUser){
+            message = "The user has not the necessary permissions";
+        }
+
         // Return the logged user in JSON format
         ObjectMapper mapper = new ObjectMapper();
-        LoggedUser loggedUser = new LoggedUser(this.isAuthenticatedUser(authentication), authentication.getName());
+        LoggedUser loggedUser = new LoggedUser(isValidUser, authentication.getName(),message);
         String loggedUserJson = mapper.writeValueAsString(loggedUser);
         httpServletResponse.getWriter().print(loggedUserJson);
     }

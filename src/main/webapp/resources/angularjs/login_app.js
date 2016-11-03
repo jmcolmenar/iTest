@@ -37,7 +37,7 @@ app.controller('loginCtrl', function($scope, $http, $window){
             }else{
                 // Show error message
                 $scope.showLoginError = true;
-                $scope.loginErrorMessage = 'The user has not the necessary permissions'
+                $scope.loginErrorMessage = data.message;
             }
         }).error(function(data) {
             // Show error message
