@@ -56,14 +56,30 @@ hr{
     color: black;
 }
 
-#info-box-col1, #info-box-col2{
-    border-top: 2px solid rgba(255, 0, 0, 0.8);
+#uni-logo-box{
+    padding-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
-#uni-logo-box{
-    margin-bottom: 15px;
-    border-top: 2px solid rgba(255, 0, 0, 0.8);
-    text-align: center;
+@media(min-width: 768px) {
+    #info-box-col1, #info-box-col2{
+        border-top: 2px solid rgba(255, 0, 0, 0.8);
+    }
+
+    #uni-logo-box{
+        border-top: 2px solid rgba(255, 0, 0, 0.8);
+    }
+}
+
+@media(max-width: 767px) {
+    #info-box-col1, #info-box-col2{
+        background: rgb(234, 234, 234);
+    }
+
+    #info-box-col2{
+        padding-bottom: 20px;
+    }
 }
 
 #footer {
