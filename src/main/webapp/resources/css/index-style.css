@@ -9,6 +9,14 @@
     padding-bottom: 20px;
 }
 
+/* For small devices (phones) the Itest logo is reduced */
+@media(max-width: 767px){
+    #logo-img{
+        width: 113px;
+        height: 42px;
+    }
+}
+
 #app-title{
     text-align:center;
     background: rgba(255, 0, 0, 0.8);
@@ -68,6 +76,7 @@
     text-align: center;
 }
 
+/* For all devices (Except phones) */
 @media(min-width: 768px) {
     #info-column-1, #info-column-2{
         border-top: 2px solid rgba(255, 0, 0, 0.8);
@@ -78,6 +87,7 @@
     }
 }
 
+/* For small devices (phones)*/
 @media(max-width: 767px) {
     #info-column-1, #info-column-2{
         background: rgb(234, 234, 234);
