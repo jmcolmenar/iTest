@@ -38,11 +38,17 @@ app.controller('loginCtrl', function($scope, $http, $window){
                 // Show error message
                 $scope.showLoginError = true;
                 $scope.loginErrorMessage = data.message;
+
+                // Clear the typed credentials
+                $scope.credentials = {};
             }
         }).error(function(data) {
             // Show error message
             $scope.showLoginError = true;
             $scope.loginErrorMessage = data.errorMessage;
+
+            // Clear the typed credentials
+            $scope.credentials = {};
         })
     };
 });
