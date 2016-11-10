@@ -23,108 +23,140 @@
     </head>
     <body ng-controller="loginCtrl">
 
-        <!-- Container with iTest logo and Title-->
-        <div class="container-fluid">
+        <!-- HEADER -->
+        <header>
+            <!-- Container with iTest logo and Title-->
+            <div class="container-fluid">
 
-            <div class="row" id="web-icon-box">
-                <div class="col-md-12">
-                    <a href="/"><img src="../resources/img/logoitest.png"></a>
-                </div>
-            </div>
-
-            <div class="row" id="title-box">
-                <div class="col-md-12">
-                    <h2> Bienvenido a iTest </h2><br>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Container with Enter button and Login Form-->
-        <div class="container" id="center-box">
-
-            <!-- Button to access to Login Form or User Index -->
-            <div class="row" ng-show="!showFormLogin" id="enter-button-box">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <h2>Haga click en el botón para entrar en el sistema</h2>
-                    <br>
-                    <button class="btn btn-primary btn-lg" ng-click="checkUser();">Entrar</button>
-                </div>
-            </div>
-
-            <!-- Form login-->
-            <div class="ng-cloak" ng-show="showFormLogin">
-
-                <div class="row ng-cloak">
-                    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3" id="form-box">
-                        <h3>Por favor, identifíquese</h3>
-                        <hr>
-                        <h5 class="alert alert-danger" role="alert" ng-show="showLoginError">{{loginErrorMessage}}</h5>
-                        <form class="form-horizontal" role="form" ng-submit="login()">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                    <input type="text" class="form-control" name="username" value="" placeholder="Usuario" ng-model="credentials.username">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                    <input type="password" class="form-control" name="password" value="" placeholder="Contraseña" ng-model="credentials.password">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-default"> Entrar &nbsp<i class="glyphicon glyphicon-log-in"></i></button>
-                            </div>
-                        </form>
+                <div class="row" id="logo">
+                    <div class="col-md-12">
+                        <a href="/"><img src="../resources/img/logoitest.png"></a>
                     </div>
-                </div>
+                </div><!-- #logo-->
 
-                <div class="row" id="learner-button">
+                <div class="row" id="app-title">
+                    <div class="col-md-12">
+                        <h2> Bienvenido a iTest </h2><br>
+                    </div>
+                </div><!-- #app-title-->
+
+            </div><!-- .container-fluid -->
+        </header>
+        <!-- END HEADER -->
+
+
+        <!-- ENTER BUTTON & FORM LOGIN -->
+        <section>
+            <!-- Container with Enter button and Login Form-->
+            <div class="container" id="main-container">
+
+                <!-- Button to access to Login Form or User index page -->
+                <div class="row" ng-show="!showFormLogin" id="enter-to-app">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <button class="btn btn-info btn-lg">Demostración de alumno</button>
+                        <h2>Haga click en el botón para entrar en el sistema</h2>
+                        <br>
+                        <button class="btn btn-primary btn-lg" ng-click="checkUser();">Entrar</button>
+                    </div><!-- .col -->
+                </div><!-- .row #enter-to-app -->
+
+                <!-- Form login and button to access to student demo -->
+                <div class="ng-cloak" ng-show="showFormLogin">
+
+                    <!-- Form login -->
+                    <div class="row ng-cloak">
+
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3" id="form-login">
+                            <h3>Por favor, identifíquese</h3>
+                            <hr>
+                            <h5 class="alert alert-danger" role="alert" ng-show="showLoginError">{{loginErrorMessage}}</h5>
+                            <form class="form-horizontal" role="form" ng-submit="login()">
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <input type="text" class="form-control" name="username" value="" placeholder="Usuario" ng-model="credentials.username">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input type="password" class="form-control" name="password" value="" placeholder="Contraseña" ng-model="credentials.password">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-default"> Entrar &nbsp<i class="glyphicon glyphicon-log-in"></i></button>
+                                </div>
+
+                            </form><!-- .form -->
+                        </div><!-- .col #form-login -->
+
+                    </div><!-- .row -->
+
+                    <!-- Student demo -->
+                    <div class="row" id="learner-button">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <button class="btn btn-info btn-lg">Demostración de alumno</button>
+                        </div><!-- .col -->
+
+                    </div><!-- .row #learner-button -->
+                </div>
+
+            </div><!-- .container #main-container -->
+        </section>
+        <!-- END ENTER BUTTON & FORM LOGIN -->
+
+
+        <!-- INFORMATION & UNIVERSITY LOGO -->
+        <section>
+            <!-- Container with ASCIIMathML and Geogebra information -->
+            <div class="container" id="info">
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-offset-2 col-md-offset-2 col-sm-offset-2" id="info-column-1">
+                        <h3>ASCIIMathML</h3>
+                        <p>MathML formulas displayed using ASCIIMathML.js.</p>
+                        <a href="http://www1.chapman.edu/~jipsen/mathml/asciimath.html">http://www1.chapman.edu/~jipsen/mathml/asciimath.html</a>
+                    </div><!-- .col #info-column-1 -->
+
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" id="info-column-2">
+                        <h3>Geogebra</h3>
+                        <p>Math support using Geogebra.</p>
+                        <a href="http://www.geogebra.org/">http://www.geogebra.org/</a>
+                    </div><!-- .col #info-column-2 -->
+
+                </div><!-- .row -->
+            </div><!-- .container #info -->
+
+            <!-- Container with university logo -->
+            <div class="container" id="uni-logo">
+                <a href="https://www.urjc.es/"><img src="../resources/img/logo-urjc.png"></a>
+                <h3>Universidad Rey Juan Carlos</h3>
+            </div><!-- .container #id-logo-->
+        </section>
+        <!-- END INFORMATION & UNIVERSITY LOGO -->
+
+
+        <!-- FOOTER -->
+        <footer>
+            <!-- Container with footer-->
+            <div class="container-fluid"  id="footer">
+
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4" >
+                        <a href="#"><h4>Contactar</h4></a>
+                    </div><!-- .col -->
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-4"></div><!-- .col -->
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4" >
+                        <a href="#"><h4>Creditos</h4></a><!-- .col -->
                     </div>
-                </div>
+                </div><!-- .row -->
 
-            </div>
-
-        </div>
-
-        <!-- Container with ASCIIMathML and Geogebra information -->
-        <div class="container" id="info-box">
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-offset-2 col-md-offset-2 col-sm-offset-2" id="info-box-col1">
-                    <h3>ASCIIMathML</h3>
-                    <p>MathML formulas displayed using ASCIIMathML.js.</p>
-                    <a href="http://www1.chapman.edu/~jipsen/mathml/asciimath.html">http://www1.chapman.edu/~jipsen/mathml/asciimath.html</a>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" id="info-box-col2">
-                    <h3>Geogebra</h3>
-                    <p>Math support using Geogebra.</p>
-                    <a href="http://www.geogebra.org/">http://www.geogebra.org/</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="container" id="uni-logo-box">
-            <a href="https://www.urjc.es/"><img src="../resources/img/logo-urjc.png"></a>
-            <h3>Universidad Rey Juan Carlos</h3>
-        </div>
-
-        <!-- Container with footer-->
-        <div class="container-fluid"  id="footer">
-
-            <div class="row">
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4" >
-                    <a href="#"><h4>Contactar</h4></a>
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-4"></div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4" >
-                    <a href="#"><h4>Creditos</h4></a>
-                </div>
-            </div>
-
-        </div>
+            </div><!-- .container-fluid #footer -->
+        </footer>
+        <!-- END FOOTER -->
 
         <!-- Include jQuery and javascript Boostrap library (necessary for Bootstrap) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
