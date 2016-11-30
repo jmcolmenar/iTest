@@ -21,19 +21,15 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itest.jsonModel.ErrorMessage;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.stereotype.Component;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Returns 401 error (Unauthorized) and an error message in JSON format. For default Spring-Security redirect to login page
+ * Returns 401 error (Unauthorized). For default Spring-Security redirect to login page
  */
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
@@ -41,14 +37,5 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
         // Return 401 error code (Unauthorized) with exception message
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-        // Set content type of response to JSON
-        httpServletResponse.setContentType("application/json");
-
-        // Return the error message in JSON
-        ObjectMapper mapper = new ObjectMapper();
-        ErrorMessage errorMessage = new ErrorMessage(e.getMessage());
-        String errorMessageJson = mapper.writeValueAsString(errorMessage);
-        httpServletResponse.getWriter().write(errorMessageJson);
     }
 }

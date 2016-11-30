@@ -22,7 +22,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.controller;
 
 import com.itest.configuration.CustomAuthenticationSuccessHandler;
-import com.itest.jsonModel.LoggedUser;
+import com.itest.jsonModel.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -71,26 +71,19 @@ public class LoginController {
 
     /**
      * Check the current authenticated user
-     * @return The logged user (If there is an authenticated user)
+     * @return The current user
      */
     @RequestMapping(value = "/checkCurrentUser", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public LoggedUser checkAuthentication(){
+    public CurrentUser checkAuthentication(){
         // Get current authentication
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         // Check if the user is a valid user
         boolean isValidUser = authenticationSuccessHandler.isAuthenticatedUser(auth);
 
-        // Set the error message
-        String message = "";
-        if(!isValidUser){
-            message = "The user has not the necessary permissions";
-        }
-
         // Return the logged user
-        LoggedUser loggedUser = new LoggedUser(isValidUser, auth.getName(), message);
-        return loggedUser;
+        return new CurrentUser(isValidUser, auth.getName());
     }
 
 }

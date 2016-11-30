@@ -6,6 +6,7 @@ app.controller('loginCtrl', function($scope, $http, $window){
     // Set the variables to inital value
     $scope.showFormLogin = false;
     $scope.showLoginError = false;
+    $scope.showInvalidUserError = false;
     $scope.credentials = {};
 
     // Function to check if there is an authenticated user
@@ -35,17 +36,17 @@ app.controller('loginCtrl', function($scope, $http, $window){
                 // Call Action "redirect" to login controller
                 $window.location.href = '/redirect'
             }else{
-                // Show error message
-                $scope.showLoginError = true;
-                $scope.loginErrorMessage = data.message;
+                // Show invalid user error message
+                $scope.showInvalidUserError = true;
+                $scope.showLoginError = false;
 
                 // Clear the typed credentials
                 $scope.credentials = {};
             }
         }).error(function(data) {
-            // Show error message
+            // Show login error message
             $scope.showLoginError = true;
-            $scope.loginErrorMessage = data.errorMessage;
+            $scope.showInvalidUserError = false;
 
             // Clear the typed credentials
             $scope.credentials = {};

@@ -23,26 +23,22 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.jsonModel;
 
 /**
- * JSON model of logged user
+ * JSON model of current user
  */
-public class LoggedUser {
+public class CurrentUser {
 
     private boolean validUser;
 
     private String username;
 
-    private String message;
-
     /**
      * Create new JSON model to logged username
      * @param validUser If the logged user is a valid user (With the needed roles)
      * @param username The username of logged user
-     * @param message The error message when the user is not valid
      */
-    public LoggedUser(boolean validUser, String username, String message) {
+    public CurrentUser(boolean validUser, String username) {
         this.validUser = validUser;
         this.username = username;
-        this.message = message;
     }
 
     public boolean isValidUser() {
@@ -53,7 +49,4 @@ public class LoggedUser {
         return username;
     }
 
-    public String getMessage() {
-        return message;
-    }
 }

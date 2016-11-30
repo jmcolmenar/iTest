@@ -22,7 +22,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itest.jsonModel.LoggedUser;
+import com.itest.jsonModel.CurrentUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -56,16 +56,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         // Check if the user is a valid user
         boolean isValidUser = this.isAuthenticatedUser(authentication);
 
-        // Set the error message
-        String message = "";
-        if(!isValidUser){
-            message = "The user has not the necessary permissions";
-        }
-
-        // Return the logged user in JSON format
+        // Return the current user in JSON format
         ObjectMapper mapper = new ObjectMapper();
-        LoggedUser loggedUser = new LoggedUser(isValidUser, authentication.getName(),message);
-        String loggedUserJson = mapper.writeValueAsString(loggedUser);
+        CurrentUser currentUser = new CurrentUser(isValidUser, authentication.getName());
+        String loggedUserJson = mapper.writeValueAsString(currentUser);
         httpServletResponse.getWriter().print(loggedUserJson);
     }
 
