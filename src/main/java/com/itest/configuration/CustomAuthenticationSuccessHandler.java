@@ -42,6 +42,7 @@ import java.util.Set;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     // Roles of users
     public static final String ROLE_LEARNER = "LEARNER";
+    public static final String ROLE_KID = "KID";
     public static final String ROLE_TUTOR = "TUTOR";
     public static final String ROLE_ADMIN = "ADMIN";
 
@@ -75,7 +76,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
         // Redirects depending of user's roles
-        if (roles.contains(ROLE_LEARNER)) {
+        if (roles.contains(ROLE_LEARNER) || roles.contains(ROLE_KID)) {
             // Redirects to learner index
             route = "learner/learner_index.html";
         }else if(roles.contains(ROLE_TUTOR)){
@@ -103,7 +104,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         // Check if there is an authenticated user with the Admin, Tutor or Learner role
         if(roles != null && !roles.isEmpty()){
-            authenticated = roles.contains(ROLE_LEARNER) || roles.contains(ROLE_TUTOR) || roles.contains(ROLE_ADMIN);
+            authenticated = roles.contains(ROLE_LEARNER) || roles.contains(ROLE_KID) || roles.contains(ROLE_TUTOR) || roles.contains(ROLE_ADMIN);
         }
 
         return authenticated;

@@ -57,7 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Authorizes the requests to resources depending of user's roles
-        http.authorizeRequests().antMatchers("/api/learner/*", "/learner/*").access("hasAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_LEARNER +"')");
+        http.authorizeRequests().antMatchers("/api/learner/*", "/learner/*").access("hasAnyAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_LEARNER +"','"+ CustomAuthenticationSuccessHandler.ROLE_KID +"')");
         http.authorizeRequests().antMatchers("/api/tutor/*", "/tutor/*").access("hasAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_TUTOR +"')");
         http.authorizeRequests().antMatchers("/api/admin/*", "/admin/*").access("hasAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_ADMIN +"')");
 
