@@ -21,6 +21,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.configuration;
 
+import com.itest.controller.CustomErrorController;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import javax.servlet.ServletException;
@@ -37,5 +38,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         // Return 403 error code (Forbidden)
         httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
+        // Redirect to error controller
+        httpServletResponse.sendError(CustomErrorController.UNAUTHORIZED_ERROR_CODE, "Unauthorized");
+
     }
 }

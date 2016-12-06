@@ -21,6 +21,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.configuration;
 
+import com.itest.controller.CustomErrorController;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import javax.servlet.ServletException;
@@ -37,5 +38,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
         // Return 401 error code (Unauthorized) with exception message
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+        // Redirect to error controller
+        httpServletResponse.sendError(CustomErrorController.UNAUTHORIZED_ERROR_CODE, "Unauthorized");
     }
 }

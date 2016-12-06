@@ -40,10 +40,10 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
-import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import javax.sql.DataSource;
+import java.util.concurrent.TimeUnit;
 
 @EnableWebMvc
 @Configuration
@@ -65,6 +65,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private static final String THYMELEAF_PREFIX = "spring.thymeleaf.prefix";
     private static final String THYMELEAF_SUFFIX = "spring.thymeleaf.suffix";
     private static final String THYMELEAF_ENCODING = "spring.thymeleaf.encoding";
+    private static final String THYMELEAF_MODE = "spring.thymeleaf.mode";
 
     @Autowired
     private Environment environment;
@@ -104,7 +105,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/tutor/*").addResourceLocations("/tutor/").setCacheControl(CacheControl.noStore());
         registry.addResourceHandler("/learner/*").addResourceLocations("/learner/").setCacheControl(CacheControl.noStore());
 
-        // TODO: Set the cache control to other resources
+        // Store the resources in cache
+        registry.addResourceHandler("/resources/angularjs/*").addResourceLocations("/resources/angularjs/").setCacheControl(CacheControl.maxAge(Long.MAX_VALUE, TimeUnit.DAYS));
+        registry.addResourceHandler("/resources/angularjs/lib/*").addResourceLocations("/resources/angularjs/lib/").setCacheControl(CacheControl.maxAge(Long.MAX_VALUE, TimeUnit.DAYS));
+        registry.addResourceHandler("/resources/css/*").addResourceLocations("/resources/css/").setCacheControl(CacheControl.maxAge(Long.MAX_VALUE, TimeUnit.DAYS));
+        registry.addResourceHandler("/resources/fonts/*").addResourceLocations("/resources/fonts/").setCacheControl(CacheControl.maxAge(Long.MAX_VALUE, TimeUnit.DAYS));
+        registry.addResourceHandler("/resources/img/*").addResourceLocations("/resources/img/").setCacheControl(CacheControl.maxAge(Long.MAX_VALUE, TimeUnit.DAYS));
+        registry.addResourceHandler("/resources/js/*").addResourceLocations("/resources/js/").setCacheControl(CacheControl.maxAge(Long.MAX_VALUE, TimeUnit.DAYS));
 
         super.addResourceHandlers(registry);
     }
@@ -141,7 +148,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         resolver.setPrefix(this.environment.getRequiredProperty(THYMELEAF_PREFIX));
         resolver.setSuffix(this.environment.getRequiredProperty(THYMELEAF_SUFFIX));
         resolver.setCacheable(Boolean.parseBoolean(this.environment.getRequiredProperty(THYMELEAF_CACHE)));
-        resolver.setTemplateMode(TemplateMode.HTML);
+        resolver.setTemplateMode(this.environment.getRequiredProperty(THYMELEAF_MODE));
         return resolver;
     }
 }

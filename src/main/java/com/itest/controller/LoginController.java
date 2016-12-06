@@ -31,9 +31,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-
-
 /**
  * Controller for Login functionality
  */
@@ -48,10 +45,7 @@ public class LoginController {
      * @return The index page
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(HttpServletResponse response){
-        // Set cache to "no-store" in the response to avoid caching the index page
-        response.setHeader("Cache-Control", "no-store");
-
+    public String index(){
         // Return index page
         return "index";
     }
