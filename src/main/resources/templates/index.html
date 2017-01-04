@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html ng-app="login" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <meta charset="utf-8" content="text/html" http-equiv="content-Type">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8" content="text/html" http-equiv="content-Type"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
         <title>iTest</title>
 
         <!-- Add Fav Icon-->
-        <link rel="icon" href="../resources/img/favicon.ico">
+        <link rel="icon" href="/img/favicon.ico"/>
 
         <!-- Add Bootstrap -->
-        <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/bootstrap.min.css"/>
 
         <!-- Custom CSS -->
-        <link href="../resources/css/index-style.css" rel="stylesheet">
+        <link href="/css/index-style.css" rel="stylesheet"/>
 
         <!-- Add AngularJS and additionals libraries-->
-        <script src="../resources/angularjs/lib/angular.min.js"></script>
+        <script src="/angularjs/lib/angular.min.js"></script>
 
         <!-- Add AngularJS App -->
-        <script src="../resources/angularjs/login_app.js"></script>
+        <script src="/angularjs/login_app.js"></script>
     </head>
     <body ng-controller="loginCtrl">
 
@@ -30,13 +30,13 @@
 
                 <div class="row" id="logo">
                     <div class="col-md-12">
-                        <a href="/"><img src="../resources/img/logoitest.png" id="logo-img"></a>
+                        <a href="/"><img src="/img/logoitest.png" id="logo-img"/></a>
                     </div>
                 </div><!-- #logo-->
 
                 <div class="row" id="app-title">
                     <div class="col-md-12">
-                        <h2 th:text="#{wellcomeIndex}"></h2><br>
+                        <h2 th:text="#{wellcomeIndex}"></h2><br/>
                     </div>
                 </div><!-- #app-title-->
 
@@ -54,7 +54,7 @@
                 <div class="row" ng-show="!showFormLogin" id="enter-to-app">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <h2 th:text="#{enterSystemIndex}">Haga click en el botón para entrar en el sistema</h2>
-                        <br>
+                        <br/>
                         <button class="btn btn-primary btn-lg" ng-click="checkUser();" th:text="#{enterButton}"></button>
                     </div><!-- .col -->
                 </div><!-- .row #enter-to-app -->
@@ -67,7 +67,7 @@
 
                         <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3" id="form-login">
                             <h3 th:text="#{identificationIndex}">Por favor, identifíquese</h3>
-                            <hr>
+                            <hr/>
                             <h5 class="alert alert-danger" role="alert" ng-show="showLoginError" th:text="#{errorUserLogin}"></h5>
                             <h5 class="alert alert-danger" role="alert" ng-show="showInvalidUserError" th:text="#{invalidUserLogin}"></h5>
                             <form class="form-horizontal" role="form" ng-submit="login()">
@@ -75,14 +75,14 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input type="text" class="form-control" name="username" th:placeholder="#{user}" value="" ng-model="credentials.username">
+                                        <input type="text" class="form-control" name="username" th:placeholder="#{user}" value="" ng-model="credentials.username"/>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                        <input type="password" class="form-control" name="password" th:placeholder="#{password}" value="" ng-model="credentials.password">
+                                        <input type="password" class="form-control" name="password" th:placeholder="#{password}" value="" ng-model="credentials.password"/>
                                     </div>
                                 </div>
 
@@ -133,7 +133,7 @@
 
             <!-- Container with university logo -->
             <div class="container" id="uni-logo">
-                <a href="https://www.urjc.es/"><img src="../resources/img/logo-urjc.png"></a>
+                <a href="https://www.urjc.es/"><img src="/img/logo-urjc.png"/></a>
                 <h3 th:text="#{urjcUniversity}"></h3>
             </div><!-- .container #id-logo-->
         </section>
@@ -161,6 +161,6 @@
 
         <!-- Include jQuery and javascript Boostrap library (necessary for Bootstrap) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="../resources/js/bootstrap.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
     </body>
 </html>

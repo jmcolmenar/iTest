@@ -1,0 +1,19 @@
+# Spring properties
+spring:
+  # Thymeleaf properties
+  thymeleaf:
+    cache: false
+
+  # Messages properties
+  messages:
+    basename: bundles/messages
+    encoding: iso-8859-1
+
+  # Datasource properties
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_itest?autoReconnect=true&useSSL=false
+    username: root
+    data-username: root
+    password: root
+    data-password: root
+    driver-class-name: com.mysql.jdbc.Driver

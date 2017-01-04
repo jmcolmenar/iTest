@@ -64,35 +64,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         httpServletResponse.getWriter().print(loggedUserJson);
     }
 
-    /**
-     *  Get the route to redirect depending on user's roles
-     * @param authentication Authentication object
-     * @return The route to redirect
-     */
-    public String getRouteToRedirect(Authentication authentication) {
-        String route = "/";
-
-        // Get the roles of authenticated user
-        Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-
-        // Redirects depending of user's roles
-        if (roles.contains(ROLE_LEARNER) || roles.contains(ROLE_KID)) {
-            // Redirects to learner index
-            route = "learner/learner_index.html";
-        }else if(roles.contains(ROLE_TUTOR)){
-            // Redirects to tutor index
-            route = "tutor/tutor_index.html";
-        }else if(roles.contains(ROLE_ADMIN)){
-            // Redirects to admin index
-            route = "admin/admin_index.html";
-        }
-
-        // Return the route to redirect
-        return route;
-    }
-
-    /**
-     * Check if the current authenticated user is valid
+     /**
+     * Check if the current user in the Authentication context is valid
      * @param auth The current authentication
      * @return If the current user is a valid user
      */
