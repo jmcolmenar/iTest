@@ -24,6 +24,7 @@ package com.itest.configuration;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -36,10 +37,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+    @Qualifier("customAuthenticationSuccessHandler")
+    private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Autowired
-    DataSource dataSource;
+    private DataSource dataSource;
 
     //@Autowired
     //CustomCsrfTokenRepository tokenRepository;
@@ -48,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         // Configure the authentication through database. Use MD5 algorithm to encode the password
         auth.jdbcAuthentication()
-                .dataSource(dataSource)
+                .dataSource(this.dataSource)
                 .passwordEncoder(new Md5PasswordEncoder())
                 .usersByUsernameQuery("select usuario as username, passw as password, (1=1) as enabled from usuarios where usuario = ?")
                 .authoritiesByUsernameQuery("select usuario as username, permiso as authority from permisos where usuario = ?");
@@ -57,16 +59,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Authorizes the requests to resources depending of user's roles
-        http.authorizeRequests().antMatchers("/api/learner/*", "/learner*").access("hasAnyAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_LEARNER +"','"+ CustomAuthenticationSuccessHandler.ROLE_KID +"')");
-        http.authorizeRequests().antMatchers("/api/tutor/*", "/tutor*").access("hasAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_TUTOR +"')");
-        http.authorizeRequests().antMatchers("/api/admin/*", "/admin*").access("hasAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_ADMIN +"')");
+        http.authorizeRequests().antMatchers("/api/learner/**", "/learner/**").access("hasAnyAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_LEARNER +"','"+ CustomAuthenticationSuccessHandler.ROLE_KID +"')");
+        http.authorizeRequests().antMatchers("/api/tutor/**", "/tutor/**").access("hasAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_TUTOR +"')");
+        http.authorizeRequests().antMatchers("/api/admin/**", "/admin/**").access("hasAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_ADMIN +"')");
 
         // Specifies the AuthenticationEntryPoint and AccessDeniedHandler to be used
         http.exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
         http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler());
 
         // Specifies the AuthenticationSuccessHandler and AuthenticationFailureHandler to be used
-        http.formLogin().successHandler(authenticationSuccessHandler);
+        http.formLogin().successHandler(this.authenticationSuccessHandler);
         http.formLogin().failureHandler(new CustomAuthenticationFailureHandler());
 
         // The URL to redirect to after logout has occurred. Redirects to index action of login controller and delete the session cookie

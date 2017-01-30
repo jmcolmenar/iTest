@@ -38,7 +38,7 @@ import java.util.Set;
 /**
  * Return the current logged user
  */
-@Component
+@Component("customAuthenticationSuccessHandler")
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     // Roles of users
     public static final String ROLE_LEARNER = "LEARNER";

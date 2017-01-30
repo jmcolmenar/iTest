@@ -39,8 +39,8 @@ public class LearnerController {
     @Qualifier("courseManagementServiceImpl")
     private CourseManagementService courseManagementService;
 
-    @GetMapping("/getSubjects/")
-    public List<CourseModel> getSubjects(){
+    @GetMapping("/getCourses")
+    public List<CourseModel> getCourses(){
 
         // Get the course list of current user
         List<CourseModel> courseList = this.courseManagementService.getCourseOfUser();
