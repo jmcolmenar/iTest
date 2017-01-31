@@ -87,7 +87,7 @@ public class LoginController {
      * Redirect to learner index page
      * @return The learner index page view
      */
-    @RequestMapping(value = "/learner", method = RequestMethod.GET)
+    @RequestMapping(value = "/learner/", method = RequestMethod.GET)
     public String redirectToLearnerIndex(){
         return "/learner/index";
     }
@@ -96,7 +96,7 @@ public class LoginController {
      * Redirect to tutor index page
      * @return The tutor index page view
      */
-    @RequestMapping(value = "/tutor", method = RequestMethod.GET)
+    @RequestMapping(value = "/tutor/", method = RequestMethod.GET)
     public String redirectToTutorIndex(){
         return "/tutor/index";
     }
@@ -105,7 +105,7 @@ public class LoginController {
      * Redirect to admin index page
      * @return The admin index page view
      */
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/", method = RequestMethod.GET)
     public String redirectToAdminIndex(){
         return "/admin/index";
     }
@@ -124,13 +124,13 @@ public class LoginController {
         // Redirects depending of user's roles
         if (roles.contains(CustomAuthenticationSuccessHandler.ROLE_LEARNER) || roles.contains(CustomAuthenticationSuccessHandler.ROLE_KID)) {
             // Redirects to learner index
-            route = "/learner";
+            route = "/learner/";
         }else if(roles.contains(CustomAuthenticationSuccessHandler.ROLE_TUTOR)){
             // Redirects to tutor index
-            route = "/tutor";
+            route = "/tutor/";
         }else if(roles.contains(CustomAuthenticationSuccessHandler.ROLE_ADMIN)){
             // Redirects to admin index
-            route = "/admin";
+            route = "/admin/";
         }
 
         // Return the route to redirect
