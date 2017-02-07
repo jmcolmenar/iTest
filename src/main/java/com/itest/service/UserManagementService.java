@@ -21,9 +21,15 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service;
 
+import com.itest.model.ChangePasswordModel;
+
 public interface UserManagementService {
 
     public abstract String getUsernameOfCurrentUser();
 
     public abstract int getUserIdOfCurrentUser();
+
+    public abstract ChangePasswordModel changePasswordOfCurrentUser(String oldPass, String newPass, String repeatPass);
+
+    public abstract String getFullNameOfUser();
 }

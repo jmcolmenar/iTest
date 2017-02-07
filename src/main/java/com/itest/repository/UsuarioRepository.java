@@ -23,16 +23,28 @@ package com.itest.repository;
 
 import com.itest.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.io.Serializable;
 
 @Repository("usuarioRepository")
 public interface UsuarioRepository extends JpaRepository<Usuario, Serializable> {
 
+    public abstract Usuario findByIdusu(int idusu);
+
     @Query("select u.idusu from Usuario u where u.usuario = :username")
     public abstract int getUserIdByUsername(@Param("username") String username);
+
+    @Query("Select u.passw from Usuario u where u.idusu = :idUser")
+    public abstract String getPasswordByUserId(@Param("idUser") int idUser);
+
+    @Modifying
+    @Transactional
+    @Query("update Usuario set passw = :newPass where idusu = :idUser")
+    public abstract void updatePasswordByUserId(@Param("idUser") int idUser, @Param("newPass") String newPass);
 
 }

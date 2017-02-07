@@ -21,10 +21,13 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.impl;
 
+import com.itest.entity.Usuario;
+import com.itest.model.ChangePasswordModel;
 import com.itest.repository.UsuarioRepository;
 import com.itest.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -56,5 +59,86 @@ public class UserManagementServiceImpl implements UserManagementService {
 
         // Return the user identifier from username
         return this.usuarioRepository.getUserIdByUsername(username);
+    }
+
+    @Override
+    public ChangePasswordModel changePasswordOfCurrentUser(String oldPass, String newPass, String repeatPass){
+        // The change password model to return
+        ChangePasswordModel changePasswordModel = new ChangePasswordModel();
+
+        // The error message to fill when has an error
+        String errorMessage = null;
+
+        // The variable to indicate that the password has been changed successfully (False for default)
+        boolean isChangedSuccessfuly = false;
+
+        try{
+            // Check the new password and the repeated password is the same
+            if(newPass.equals(repeatPass)){
+                // Get the user Id of current user
+                int userId = this.getUserIdOfCurrentUser();
+
+                // Get the password of current user (In MD5 format)
+                String currentpasswordMd5 = this.usuarioRepository.getPasswordByUserId(userId);
+
+                // Initialize the encoder MD5 algorithmic
+                Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
+
+                // Get the old password encoded in MD5 format
+                String oldPassordMd5 = md5PasswordEncoder.encodePassword(oldPass, null);
+
+                // Check the old password is the same that the current password of user
+                if(currentpasswordMd5.equals(oldPassordMd5)){
+                    // Update the password of user
+                    String newPasswordMd5 = md5PasswordEncoder.encodePassword(newPass, null);
+                    this.usuarioRepository.updatePasswordByUserId(userId, newPasswordMd5);
+
+                    // The password has been changed successfully
+                    isChangedSuccessfuly = true;
+                }else{
+                    // Set the error message when the password of user is not correct
+                    errorMessage = "La contraseña del usuario no es correcta";
+                }
+            }else{
+                // Set the error message when the new and repeated password is not the same
+                errorMessage = "La nueva contraseña y la repetida no son las mismas";
+            }
+        }catch(Exception exc){
+            // TODO: Log the exception
+
+            // Set the error message when an exception is thrown
+            errorMessage = "Lo siento ha ocurrido un error cambiando la contraseña...";
+        }
+
+        // Return the Change Password model
+        changePasswordModel.setIsChanged(isChangedSuccessfuly);
+        changePasswordModel.setErrorMessage(errorMessage);
+        return changePasswordModel;
+    }
+
+    @Override
+    public String getFullNameOfUser() {
+        // The full name to return
+        String fullName;
+
+        try{
+            // Get the user id of current user
+            int userId = this.getUserIdOfCurrentUser();
+
+            // Get the user from database by user id
+            Usuario usuario = this.usuarioRepository.findByIdusu(userId);
+
+            // Set the full name
+            fullName =  usuario.getNombre() + " " + usuario.getApes();
+        }
+        catch (Exception exc){
+            // TODO: Log the exception
+
+            // Fill a generic full name when has an error
+            fullName = "Full Name";
+        }
+
+        // Return the full name
+        return fullName;
     }
 }

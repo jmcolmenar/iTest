@@ -5,3 +5,7 @@ body{
 .course-class {
     text-align: center;
 }
+
+.modal-header, .modal-footer{
+    text-align: center;
+}

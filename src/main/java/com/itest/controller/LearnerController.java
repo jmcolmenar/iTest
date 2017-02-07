@@ -21,15 +21,18 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.controller;
 
+import com.itest.model.ChangePasswordModel;
 import com.itest.model.CourseModel;
 import com.itest.service.CourseManagementService;
+import com.itest.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/learner/")
@@ -38,6 +41,24 @@ public class LearnerController {
     @Autowired
     @Qualifier("courseManagementServiceImpl")
     private CourseManagementService courseManagementService;
+
+    @Autowired
+    @Qualifier("userManagementServiceImpl")
+    private UserManagementService userManagementService;
+
+    @GetMapping("/getFullName")
+    public Map<String, String> getFullName(){
+
+        // Get the full name of current user
+        String fullname = this.userManagementService.getFullNameOfUser();
+
+        // Fill the map
+        Map<String, String> map = new HashMap<>();
+        map.put("fullName", fullname);
+
+        // Return the full name
+        return map;
+    }
 
     @GetMapping("/getCourses")
     public List<CourseModel> getCourses(){
@@ -49,5 +70,18 @@ public class LearnerController {
         return courseList;
 
     }
+
+    @PostMapping("/changePassword")
+    public ChangePasswordModel changePassword(@RequestParam(value = "oldPassword", required = false)String oldPassword,
+                               @RequestParam(value = "newPassword", required = false)String newPassword,
+                               @RequestParam(value = "repeatPassword", required = false)String repeatPassword){
+
+        // Call to the service to process the change password
+        ChangePasswordModel changePasswordModel = this.userManagementService.changePasswordOfCurrentUser(oldPassword, newPassword, repeatPassword);
+
+        // Return the model to change the password
+        return changePasswordModel;
+    }
+
 
 }

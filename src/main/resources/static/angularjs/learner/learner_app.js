@@ -12,11 +12,17 @@ app.controller('mainCtrl', ['$scope', '$http', function($scope, $http){
 
     // The function to executes when the page has been loaded
     $scope.init = function(){
-        // Get request to get the courses list of user
+        // Request to get the full name of user
+        $http.get('/api/learner/getFullName').success(function(response){
+            // Set the variable with the courses
+            $scope.fullName = response.fullName;
+        });
+
+        // Request to get the courses list of user
         $http.get('/api/learner/getCourses').success(function(response){
             // Set the variable with the courses
             $scope.courseList = response;
         });
-    }
+    };
 
 }]);
