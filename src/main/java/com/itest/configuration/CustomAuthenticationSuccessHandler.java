@@ -22,7 +22,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itest.jsonModel.CurrentUser;
+import com.itest.model.CurrentUserModel;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -59,8 +59,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         // Return the current user in JSON format
         ObjectMapper mapper = new ObjectMapper();
-        CurrentUser currentUser = new CurrentUser(isValidUser, authentication.getName());
-        String loggedUserJson = mapper.writeValueAsString(currentUser);
+        CurrentUserModel currentUserModel = new CurrentUserModel(isValidUser, authentication.getName());
+        String loggedUserJson = mapper.writeValueAsString(currentUserModel);
         httpServletResponse.getWriter().print(loggedUserJson);
     }
 

@@ -22,7 +22,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.controller;
 
 import com.itest.configuration.CustomAuthenticationSuccessHandler;
-import com.itest.jsonModel.CurrentUser;
+import com.itest.model.CurrentUserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -59,15 +59,15 @@ public class LoginController {
      */
     @RequestMapping(value = "/checkCurrentUser", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public CurrentUser checkAuthentication(){
+    public CurrentUserModel checkAuthentication(){
         // Get current authentication
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         // Check if the user is a valid user
         boolean isValidUser = this.authenticationSuccessHandler.isAuthenticatedUser(auth);
 
-        // Return the logged user
-        return new CurrentUser(isValidUser, auth.getName());
+        // Return the current user
+        return new CurrentUserModel(isValidUser, auth.getName());
     }
 
     /**

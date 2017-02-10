@@ -20,12 +20,12 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-package com.itest.jsonModel;
+package com.itest.model;
 
 /**
  * JSON model of current user
  */
-public class CurrentUser {
+public class CurrentUserModel {
 
     private boolean validUser;
 
@@ -36,7 +36,7 @@ public class CurrentUser {
      * @param validUser If the logged user is a valid user (With the needed roles)
      * @param username The username of logged user
      */
-    public CurrentUser(boolean validUser, String username) {
+    public CurrentUserModel(boolean validUser, String username) {
         this.validUser = validUser;
         this.username = username;
     }
