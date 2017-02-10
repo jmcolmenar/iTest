@@ -23,10 +23,13 @@ package com.itest.controller;
 
 import com.itest.model.ChangePasswordModel;
 import com.itest.model.CourseModel;
+import com.itest.model.UserProfileModel;
 import com.itest.service.CourseManagementService;
 import com.itest.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -83,5 +86,29 @@ public class LearnerController {
         return changePasswordModel;
     }
 
+    @GetMapping("/getUserProfile")
+    public UserProfileModel getUserProfile(){
+        // Call to the service to get the user profile model
+        UserProfileModel userProfileModel = this.userManagementService.getUserProfile();
+
+        // Return the user profile model
+        return userProfileModel;
+    }
+
+    @PostMapping("/updateUserProfile")
+    public ResponseEntity updateUerProfile(@RequestParam(value = "name", required = false) String name,
+                                           @RequestParam(value = "lastName", required = false) String lastName,
+                                           @RequestParam(value = "dni", required = false) String dni,
+                                           @RequestParam(value = "email", required = false) String email){
+        // Update the user profile in database
+        boolean isUpdated = this.userManagementService.updateUserProfile(name, lastName, dni, email);
+
+        // Check if the user is updated to return an Ok or Bad response
+        if(isUpdated){
+            return new ResponseEntity(HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

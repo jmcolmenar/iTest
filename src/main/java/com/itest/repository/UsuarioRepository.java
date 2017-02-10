@@ -47,4 +47,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Serializable> 
     @Query("update Usuario set passw = :newPass where idusu = :idUser")
     public abstract void updatePasswordByUserId(@Param("idUser") int idUser, @Param("newPass") String newPass);
 
+    @Modifying
+    @Transactional
+    @Query("update Usuario set nombre = :name, apes = :lastname, dni = :dni, email = :email  where idusu = :idUser")
+    public abstract void updateUserByUserId(@Param("idUser") int idUser, @Param("name") String name, @Param("lastname") String lastname, @Param("dni") String dni, @Param("email") String email);
+
 }

@@ -21,8 +21,10 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.impl;
 
+import com.itest.converter.UsuarioConverter;
 import com.itest.entity.Usuario;
 import com.itest.model.ChangePasswordModel;
+import com.itest.model.UserProfileModel;
 import com.itest.repository.UsuarioRepository;
 import com.itest.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,10 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Autowired
     @Qualifier("usuarioRepository")
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    @Qualifier("usuarioConverter")
+    private UsuarioConverter usuarioConverter;
 
     @Override
     public String getUsernameOfCurrentUser() {
@@ -130,8 +136,8 @@ public class UserManagementServiceImpl implements UserManagementService {
 
             // Set the full name
             fullName =  usuario.getNombre() + " " + usuario.getApes();
-        }
-        catch (Exception exc){
+
+        }catch (Exception exc){
             // TODO: Log the exception
 
             // Fill a generic full name when has an error
@@ -140,5 +146,56 @@ public class UserManagementServiceImpl implements UserManagementService {
 
         // Return the full name
         return fullName;
+    }
+
+    @Override
+    public UserProfileModel getUserProfile() {
+        // The model of user profile to return
+        UserProfileModel userProfileModel;
+
+        try{
+            // Get the user id of current user
+            int userId = this.getUserIdOfCurrentUser();
+
+            // Get the user from database by user id
+            Usuario usuario = this.usuarioRepository.findByIdusu(userId);
+
+            // Convert the "Usuario" entity from database to user profile model
+            userProfileModel = this.usuarioConverter.convertUsuarioToUserProfileModel(usuario);
+
+        }catch(Exception exc){
+            // TODO: Log the exception
+
+            // Initialize an empty user when has an exception
+            userProfileModel = new UserProfileModel();
+        }
+
+        // Return user profile model
+        return userProfileModel;
+    }
+
+    @Override
+    public boolean updateUserProfile(String name, String lastname, String dni, String email) {
+        // The variable to known if the user profile is updated
+        boolean isUpdated;
+
+        try{
+            // Get the user id of current user
+            int userId = this.getUserIdOfCurrentUser();
+
+            // Update user profile in database
+            this.usuarioRepository.updateUserByUserId(userId, name, lastname, dni, email);
+
+            // The user profile is updated successfully
+            isUpdated = true;
+        }catch(Exception exc){
+            // TODO: Log the exception
+
+            // The user is not updated
+            isUpdated = false;
+        }
+
+        // Return if the user profile is updated
+        return isUpdated;
     }
 }

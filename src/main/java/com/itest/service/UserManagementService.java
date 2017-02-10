@@ -22,6 +22,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.service;
 
 import com.itest.model.ChangePasswordModel;
+import com.itest.model.UserProfileModel;
 
 public interface UserManagementService {
 
@@ -32,4 +33,8 @@ public interface UserManagementService {
     public abstract ChangePasswordModel changePasswordOfCurrentUser(String oldPass, String newPass, String repeatPass);
 
     public abstract String getFullNameOfUser();
+
+    public abstract UserProfileModel getUserProfile();
+
+    public abstract boolean updateUserProfile(String name, String lastname, String dni, String email);
 }
