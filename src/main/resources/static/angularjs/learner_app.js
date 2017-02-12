@@ -129,6 +129,11 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
     $scope.profile.email = currentProfile.userProfileData.email;
     $scope.profile.dni = currentProfile.userProfileData.dni;
 
+    // Shows the confirmation modal
+    $scope.showConfirmationModal = function () {
+        $("#confirmationModal").modal("show");
+    };
+
     // Function to update the user profile
     $scope.updateUserProfile = function () {
 
@@ -139,16 +144,29 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
         userProfileModel.email = $scope.profile.email;
         userProfileModel.dni = $scope.profile.dni;
 
-        //
+        // Post request to update the user profile
         $http.post('/api/learner/updateUserProfile', $.param(userProfileModel), {
             headers : {
                 "content-type" : "application/x-www-form-urlencoded"
             }
         }).success(function(data) {
-            // When the user profile is updated, the learner is redirected to the home page
-            $window.location.href = '/learner/'
-        }).error(function(data) {
+            // Hide confirmation modal
+            $("#confirmationModal").modal("hide");
 
+            // Shows the static modal with successful message
+            $("#successfullyModal").modal({backdrop: "static"});
+        }).error(function(data) {
+            // Hide confirmation modal
+            $("#confirmationModal").modal("hide");
+
+            // Shows the error modal
+            $("#errorModal").modal("show");
         })
-    }
+    };
+
+    // Function to redirect to home page
+    $scope.goToIndexPage = function () {
+        // The learner is redirected to the home page
+        $window.location.href = '/learner/'
+    };
 }]);

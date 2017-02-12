@@ -3,8 +3,8 @@
         <h2>Administrar Perfil Usuario</h2>
     </div>
     <hr/>
-    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-        <form class="form-horizontal" role="form" ng-submit="updateUserProfile()">
+    <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+        <form class="form-horizontal" role="form" ng-submit="showConfirmationModal()">
             <div class="form-group">
                 <label for="user">Usuario:</label>
                 <input type="text" class="form-control" id="user" ng-model="profile.user" disabled="disabled"/>
@@ -32,7 +32,7 @@
 
             <div class="form-group">
                 <label for="language">Idioma:</label>
-                <select id="language" class="form-control" ng-model="profile.language">
+                <select class="form-control" id="language" ng-model="profile.language">
                     <option value="spanish">Español</option>
                     <option value="english">Inglés</option>
                 </select>
@@ -42,5 +42,60 @@
                 <button type="submit" class="btn btn-primary">Actualizar</button>
             </div>
         </form>
+    </div>
+
+    <!-- Modal with successfully message modal -->
+    <div class="modal fade" id="confirmationModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Confirmación</h2>
+                </div>
+                <div class="modal-body">
+                    <p>Se van a modificar sus datos personales. ¿Está seguro?</p>
+                </div>
+                <div class="modal-footer-custom">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-right: 20px;">Cancelar</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="updateUserProfile()">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal with error message modal -->
+    <div class="modal fade" id="errorModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Error</h2>
+                </div>
+                <div class="modal-body">
+                    <p>No se han podido modificar sus datos personales</p>
+                </div>
+                <div class="modal-footer-custom">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal with successfully message modal -->
+    <div class="modal fade" id="successfullyModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Información</h2>
+                </div>
+                <div class="modal-body">
+                    <p>Sus datos personales se han modificado correctamente.</p>
+                </div>
+                <div class="modal-footer-custom">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="goToIndexPage()">Ok</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
