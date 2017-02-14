@@ -33,15 +33,18 @@ public class UserProfileModel {
 
     private String dni;
 
+    private int languageId;
+
     public UserProfileModel() {
     }
 
-    public UserProfileModel(String username, String name, String lastName, String email, String dni) {
+    public UserProfileModel(String username, String name, String lastName, String email, String dni, int languageId) {
         this.username = username;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.dni = dni;
+        this.languageId = languageId;
     }
 
     public String getUsername() {
@@ -82,5 +85,13 @@ public class UserProfileModel {
 
     public void setDni(String dni) {
         this.dni = dni;
+    }
+
+    public int getLanguageId() {
+        return languageId;
+    }
+
+    public void setLanguageId(int languageId) {
+        this.languageId = languageId;
     }
 }

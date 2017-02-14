@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="learnerApp" ng-controller="mainCtrl" data-ng-init="init()">
+<html ng-app="learnerApp" ng-controller="mainCtrl" data-ng-init="init()" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8" content="text/html" http-equiv="content-Type"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -51,11 +51,11 @@
                             <li>
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{fullName}}&nbsp;&nbsp;<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li class="menu"><a href="#/"><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;Inicio</a></li>
-                                    <li class="menu"><a href="#/changepassword"><i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;Cambiar Contraseña</a></li>
-                                    <li class="menu"><a href="#/userprofile"><i class="glyphicon glyphicon-cog"></i>&nbsp;&nbsp;Editar Perfil</a></li>
+                                    <li class="menu"><a href="#/"><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;<span th:text="#{navbarHome}"></span></a></li>
+                                    <li class="menu"><a href="#/changepassword"><i class="glyphicon glyphicon-lock"></i>&nbsp;&nbsp;<span th:text="#{navbarChangePassword}"></span></a></li>
+                                    <li class="menu"><a href="#/userprofile"><i class="glyphicon glyphicon-cog"></i>&nbsp;&nbsp;<span th:text="#{navbarManageUserProfile}"></span></a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li class="menu"><a href="/logout"><i class="glyphicon glyphicon-log-out"></i>&nbsp;&nbsp;Salir</a></li>
+                                    <li class="menu"><a href="/logout"><i class="glyphicon glyphicon-log-out"></i>&nbsp;&nbsp;<span th:text="#{navbarExit}"></span></a></li>
                                 </ul>
                             </li>
                         </ul>

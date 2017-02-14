@@ -128,6 +128,7 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
     $scope.profile.lastname = currentProfile.userProfileData.lastName;
     $scope.profile.email = currentProfile.userProfileData.email;
     $scope.profile.dni = currentProfile.userProfileData.dni;
+    $scope.profile.languageId = currentProfile.userProfileData.languageId;
 
     // Shows the confirmation modal
     $scope.showConfirmationModal = function () {
@@ -143,6 +144,7 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
         userProfileModel.lastName = $scope.profile.lastname;
         userProfileModel.email = $scope.profile.email;
         userProfileModel.dni = $scope.profile.dni;
+        userProfileModel.languageId = $scope.profile.languageId;
 
         // Post request to update the user profile
         $http.post('/api/learner/updateUserProfile', $.param(userProfileModel), {

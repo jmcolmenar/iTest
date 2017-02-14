@@ -25,6 +25,7 @@ import com.itest.model.ChangePasswordModel;
 import com.itest.model.CourseModel;
 import com.itest.model.UserProfileModel;
 import com.itest.service.CourseManagementService;
+import com.itest.service.TranslationService;
 import com.itest.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,10 +33,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/learner/")
@@ -48,6 +48,10 @@ public class LearnerController {
     @Autowired
     @Qualifier("userManagementServiceImpl")
     private UserManagementService userManagementService;
+
+    @Autowired
+    @Qualifier("translationServiceImpl")
+    TranslationService translationService;
 
     @GetMapping("/getFullName")
     public Map<String, String> getFullName(){
@@ -91,6 +95,9 @@ public class LearnerController {
         // Call to the service to get the user profile model
         UserProfileModel userProfileModel = this.userManagementService.getUserProfile();
 
+        // Set the language identifier of user profile model
+        userProfileModel.setLanguageId(this.translationService.getCurrentLanguageId());
+
         // Return the user profile model
         return userProfileModel;
     }
@@ -99,9 +106,14 @@ public class LearnerController {
     public ResponseEntity updateUerProfile(@RequestParam(value = "name", required = false) String name,
                                            @RequestParam(value = "lastName", required = false) String lastName,
                                            @RequestParam(value = "dni", required = false) String dni,
-                                           @RequestParam(value = "email", required = false) String email){
+                                           @RequestParam(value = "email", required = false) String email,
+                                           @RequestParam(value = "languageId", required = false) int languageId,
+                                           HttpServletRequest request, HttpServletResponse response){
         // Update the user profile in database
         boolean isUpdated = this.userManagementService.updateUserProfile(name, lastName, dni, email);
+
+        // Set the language by the language identifier
+        this.translationService.setLocale(languageId, request, response);
 
         // Check if the user is updated to return an Ok or Bad response
         if(isUpdated){
@@ -110,5 +122,8 @@ public class LearnerController {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
 
 }

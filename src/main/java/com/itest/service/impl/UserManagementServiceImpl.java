@@ -26,6 +26,7 @@ import com.itest.entity.Usuario;
 import com.itest.model.ChangePasswordModel;
 import com.itest.model.UserProfileModel;
 import com.itest.repository.UsuarioRepository;
+import com.itest.service.TranslationService;
 import com.itest.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,6 +46,10 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Autowired
     @Qualifier("usuarioConverter")
     private UsuarioConverter usuarioConverter;
+
+    @Autowired
+    @Qualifier("translationServiceImpl")
+    TranslationService translationService;
 
     @Override
     public String getUsernameOfCurrentUser() {
@@ -103,17 +108,17 @@ public class UserManagementServiceImpl implements UserManagementService {
                     isChangedSuccessfuly = true;
                 }else{
                     // Set the error message when the password of user is not correct
-                    errorMessage = "La contraseña del usuario no es correcta";
+                    errorMessage = this.translationService.getMessage("changePassword.errorIncorrectPassword");
                 }
             }else{
                 // Set the error message when the new and repeated password is not the same
-                errorMessage = "La nueva contraseña y la repetida no son las mismas";
+                errorMessage = this.translationService.getMessage("changePassword.errorNewAndRepeatPassword");
             }
         }catch(Exception exc){
             // TODO: Log the exception
 
             // Set the error message when an exception is thrown
-            errorMessage = "Lo siento ha ocurrido un error cambiando la contraseña...";
+            errorMessage = this.translationService.getMessage("changePassword.errorChangingPassword");
         }
 
         // Return the Change Password model
