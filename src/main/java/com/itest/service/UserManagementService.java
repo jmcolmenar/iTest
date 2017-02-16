@@ -26,15 +26,13 @@ import com.itest.model.UserProfileModel;
 
 public interface UserManagementService {
 
-    public abstract String getUsernameOfCurrentUser();
+    int getUserIdOfCurrentUser();
 
-    public abstract int getUserIdOfCurrentUser();
+    ChangePasswordModel changeUserPassword(String oldPass, String newPass, String repeatPass);
 
-    public abstract ChangePasswordModel changePasswordOfCurrentUser(String oldPass, String newPass, String repeatPass);
+    String getUserFullName();
 
-    public abstract String getFullNameOfUser();
+    UserProfileModel getUserProfile();
 
-    public abstract UserProfileModel getUserProfile();
-
-    public abstract boolean updateUserProfile(String name, String lastname, String dni, String email);
+    boolean updateUserProfile(String name, String lastname, String dni, String email);
 }

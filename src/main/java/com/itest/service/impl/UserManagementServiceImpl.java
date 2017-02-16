@@ -33,7 +33,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 @Service("userManagementServiceImpl")
@@ -52,15 +51,6 @@ public class UserManagementServiceImpl implements UserManagementService {
     TranslationService translationService;
 
     @Override
-    public String getUsernameOfCurrentUser() {
-        // Get the current user from SecurityContextHolder
-        User u = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        // Return the username
-        return u.getUsername();
-    }
-
-    @Override
     public int getUserIdOfCurrentUser() {
         // Get the current user from SecurityContextHolder
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -73,7 +63,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     }
 
     @Override
-    public ChangePasswordModel changePasswordOfCurrentUser(String oldPass, String newPass, String repeatPass){
+    public ChangePasswordModel changeUserPassword(String oldPass, String newPass, String repeatPass){
         // The change password model to return
         ChangePasswordModel changePasswordModel = new ChangePasswordModel();
 
@@ -128,7 +118,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     }
 
     @Override
-    public String getFullNameOfUser() {
+    public String getUserFullName() {
         // The full name to return
         String fullName;
 

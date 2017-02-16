@@ -57,7 +57,7 @@ public class LearnerController {
     public Map<String, String> getFullName(){
 
         // Get the full name of current user
-        String fullname = this.userManagementService.getFullNameOfUser();
+        String fullname = this.userManagementService.getUserFullName();
 
         // Fill the map
         Map<String, String> map = new HashMap<>();
@@ -84,7 +84,7 @@ public class LearnerController {
                                @RequestParam(value = "repeatPassword", required = false)String repeatPassword){
 
         // Call to the service to process the change password
-        ChangePasswordModel changePasswordModel = this.userManagementService.changePasswordOfCurrentUser(oldPassword, newPassword, repeatPassword);
+        ChangePasswordModel changePasswordModel = this.userManagementService.changeUserPassword(oldPassword, newPassword, repeatPassword);
 
         // Return the model to change the password
         return changePasswordModel;

@@ -130,7 +130,7 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
     $scope.profile.dni = currentProfile.userProfileData.dni;
     $scope.profile.languageId = currentProfile.userProfileData.languageId;
 
-    // Shows the confirmation modal
+    // Function to shows the confirmation modal
     $scope.showConfirmationModal = function () {
         $("#confirmationModal").modal("show");
     };
