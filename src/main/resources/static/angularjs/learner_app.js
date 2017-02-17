@@ -121,19 +121,59 @@ app.controller("changePassCtrl", ['$scope', '$http', function($scope, $http){
 // User profile controller
 app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile', function($scope, $http, $window, currentProfile) {
 
-    // Set the user profile data
+    // The states of buttons for language
+    const BUTTON_SELECTED_STATE = 'btn-info active';
+    const BUTTON_NO_SELECTED_STATE = 'btn-default';
+
+    // The identifier of languages
+    const SPANISH_ID = 0;
+    const ENGLISH_ID = 1;
+
+    // The variables with the status of languages buttons
+    $scope.spanishButtonState = '';
+    $scope.englishButtonState = '';
+
+    // Function to set the language buttons state
+    $scope.setButtonState = function (langId) {
+        if(langId == SPANISH_ID){
+            $scope.spanishButtonState = BUTTON_SELECTED_STATE;
+            $scope.englishButtonState = BUTTON_NO_SELECTED_STATE;
+        }else if(langId == ENGLISH_ID){
+            $scope.spanishButtonState = BUTTON_NO_SELECTED_STATE;
+            $scope.englishButtonState = BUTTON_SELECTED_STATE;
+        }
+    };
+
+    // Executes the function to shows the selected language
+    $scope.setButtonState(currentProfile.userProfileData.languageId);
+
+    // Function to get the identifier of selected language button
+    var getLanguageIdFromButtons = function () {
+        if($scope.spanishButtonState == BUTTON_SELECTED_STATE){
+            return SPANISH_ID;
+        }else if($scope.englishButtonState == BUTTON_SELECTED_STATE){
+            return ENGLISH_ID;
+        }
+    };
+
+    // Function to shows the confirmation modal
+    $scope.showConfirmationModal = function () {
+        $("#confirmationModal").modal("show");
+    };
+
+    // Function to redirect to home page
+    $scope.goToIndexPage = function () {
+        // The learner is redirected to the home page
+        $window.location.href = '/learner/'
+    };
+
+    // Set the user profile data to shows in the form
     $scope.profile = {};
     $scope.profile.user = currentProfile.userProfileData.username;
     $scope.profile.name = currentProfile.userProfileData.name;
     $scope.profile.lastname = currentProfile.userProfileData.lastName;
     $scope.profile.email = currentProfile.userProfileData.email;
     $scope.profile.dni = currentProfile.userProfileData.dni;
-    $scope.profile.languageId = currentProfile.userProfileData.languageId;
-
-    // Function to shows the confirmation modal
-    $scope.showConfirmationModal = function () {
-        $("#confirmationModal").modal("show");
-    };
 
     // Function to update the user profile
     $scope.updateUserProfile = function () {
@@ -144,7 +184,7 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
         userProfileModel.lastName = $scope.profile.lastname;
         userProfileModel.email = $scope.profile.email;
         userProfileModel.dni = $scope.profile.dni;
-        userProfileModel.languageId = $scope.profile.languageId;
+        userProfileModel.languageId = getLanguageIdFromButtons();
 
         // Post request to update the user profile
         $http.post('/api/learner/updateUserProfile', $.param(userProfileModel), {
@@ -164,11 +204,5 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
             // Shows the error modal
             $("#errorModal").modal("show");
         })
-    };
-
-    // Function to redirect to home page
-    $scope.goToIndexPage = function () {
-        // The learner is redirected to the home page
-        $window.location.href = '/learner/'
     };
 }]);
