@@ -122,8 +122,8 @@ app.controller("changePassCtrl", ['$scope', '$http', function($scope, $http){
 app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile', function($scope, $http, $window, currentProfile) {
 
     // The states of buttons for language
-    const BUTTON_SELECTED_STATE = 'btn-info active';
-    const BUTTON_NO_SELECTED_STATE = 'btn-default';
+    const BUTTON_SELECTED_STATE = 'btn-language active';
+    const BUTTON_NO_SELECTED_STATE = 'btn-language';
 
     // The identifier of languages
     const SPANISH_ID = 0;

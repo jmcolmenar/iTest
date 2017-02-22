@@ -13,3 +13,33 @@ body{
 .modal-content{
     padding:10px;
 }
+
+.main-title-div{
+    color: dimgrey;
+    text-align:center;
+    border-bottom: 3px solid rgba(255, 0, 0, 0.8);
+}
+
+.form-horizontal{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* For the buttons to choose the language */
+
+.btn-language{
+    background-color: white;
+    border-color: grey;
+    color: black;
+}
+
+.btn-language.active{
+    background-color: darkgray;
+    border-color: grey;
+    color: black;
+}
+
+/*  For the subjects */
+.list-group-item{
+    box-shadow: rgba(255, 0, 0, 0.3) 2px 2px 2px 2px;
+}
