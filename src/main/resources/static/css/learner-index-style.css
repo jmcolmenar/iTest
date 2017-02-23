@@ -15,7 +15,7 @@ body{
 }
 
 .main-title-div{
-    color: dimgrey;
+    color: rgb(50, 50, 50);
     text-align:center;
     border-bottom: 3px solid rgba(255, 0, 0, 0.8);
 }
@@ -42,4 +42,20 @@ body{
 /*  For the subjects */
 .list-group-item{
     box-shadow: rgba(255, 0, 0, 0.3) 2px 2px 2px 2px;
+}
+
+.btn-course{
+    background-color: rgba(255, 0, 0, 0.8);;
+}
+
+/*  Navbar styles */
+.navbar-brand{
+    padding: 0px;
+    padding-top: 5px;
+    padding-left: 15px;
+ }
+
+.navbar-brand img{
+    max-width: 100%;
+    max-height: 100%;
 }

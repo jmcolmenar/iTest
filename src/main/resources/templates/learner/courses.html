@@ -5,7 +5,7 @@
         </div>
         <br/>
         <div ng-repeat="course in courseList" class="course-class">
-            <button type="button" class="btn btn-danger btn-lg" data-toggle="collapse" data-target="#{{course.year}}">{{course.year}}&nbsp;&nbsp;<span class="caret"></span></button>
+            <button type="button" class="btn btn-danger btn-lg btn-course" data-toggle="collapse" data-target="#{{course.year}}">{{course.year}}&nbsp;&nbsp;<span class="caret"></span></button>
             <div id="{{course.year}}" class="collapse">
                 <br/>
                 <div class="list-group" ng-repeat="subject in course.subjectList">
