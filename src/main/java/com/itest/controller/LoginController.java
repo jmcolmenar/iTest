@@ -89,7 +89,7 @@ public class LoginController {
      */
     @RequestMapping(value = "/learner/", method = RequestMethod.GET)
     public String redirectToLearnerIndex(){
-        return "/learner/index";
+        return "learner/index";
     }
 
     /**
@@ -98,7 +98,7 @@ public class LoginController {
      */
     @RequestMapping(value = "/tutor/", method = RequestMethod.GET)
     public String redirectToTutorIndex(){
-        return "/tutor/index";
+        return "tutor/index";
     }
 
     /**
@@ -107,7 +107,7 @@ public class LoginController {
      */
     @RequestMapping(value = "/admin/", method = RequestMethod.GET)
     public String redirectToAdminIndex(){
-        return "/admin/index";
+        return "admin/index";
     }
 
     /**
