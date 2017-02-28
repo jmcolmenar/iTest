@@ -1,22 +1,24 @@
-<div class="container" xmlns:th="http://www.thymeleaf.org">
-    <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-        <div class="main-title-div">
-            <h2 th:text="#{coursesList.title}"></h2>
-        </div>
-        <br/>
-        <div ng-repeat="course in courseList" class="course-class">
-            <button type="button" class="btn btn-danger btn-lg btn-course" data-toggle="collapse" data-target="#{{course.year}}">{{course.year}}&nbsp;&nbsp;<span class="caret"></span></button>
-            <div id="{{course.year}}" class="collapse">
-                <br/>
-                <div class="list-group" ng-repeat="subject in course.subjectList">
-                    <a href="#" class="list-group-item">
-                        <h3 class="list-group-item-heading">{{subject.subjectName}}</h3>
-                        <h5 class="list-group-item-text">{{subject.subjectDescription}}</h5>
-                    </a>
+<div id="main-courses-div" xmlns:th="http://www.thymeleaf.org">
+    <div class="main-title-div">
+        <h2 th:text="#{coursesList.title}"></h2>
+    </div>
+    <br/>
+    <div class="container">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+            <div ng-repeat="course in courseList" class="course-class">
+                <button type="button" class="btn btn-danger btn-lg btn-course" data-toggle="collapse" data-target="#{{course.year}}">{{course.year}}&nbsp;&nbsp;<span class="caret"></span></button>
+                <div id="{{course.year}}" class="collapse">
+                    <br/>
+                    <div class="list-group" ng-repeat="subject in course.subjectList">
+                        <a href="#" class="list-group-item">
+                            <h3 class="list-group-item-heading">{{subject.subjectName}}</h3>
+                            <h5 class="list-group-item-text">{{subject.subjectDescription}}</h5>
+                        </a>
+                    </div>
                 </div>
+                <br/>
+                <br/>
             </div>
-            <br/>
-            <br/>
         </div>
     </div>
 </div>

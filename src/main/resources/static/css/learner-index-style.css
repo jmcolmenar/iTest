@@ -15,9 +15,24 @@ body{
 }
 
 .main-title-div{
-    color: rgb(50, 50, 50);
+    padding-top: 15px;
+    color: rgb(0, 0, 0);
     text-align:center;
+    border-bottom: 2px solid rgba(255, 0, 0, 0.8);
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.main-title-div h2{
+    margin-top: 0px;
+}
+
+#main-courses-div, #main-pass-div, #main-profile-div{
+    border-top: 16px solid rgba(255, 0, 0, 0.8);
     border-bottom: 3px solid rgba(255, 0, 0, 0.8);
+    border-left: 3px solid rgba(255, 0, 0, 0.8);
+    border-right: 3px solid rgba(255, 0, 0, 0.8);
+    box-shadow: rgba(255, 0, 0, 0.3) 3px 3px 3px 3px;
+    margin-bottom: 15px;
 }
 
 .form-horizontal{
