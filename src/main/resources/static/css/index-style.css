@@ -19,7 +19,7 @@
 
 #app-title{
     text-align:center;
-    background: rgba(255, 0, 0, 0.8);
+    background: rgb(217, 32, 38);
     color: white;
     border-top: 4px solid rgba(0, 0, 0, 0.7);
     border-bottom: 4px solid rgba(0, 0, 0, 0.7);
@@ -38,7 +38,7 @@
 }
 
 #form-login {
-    border: 4px solid rgba(255, 0, 0, 0.8);
+    border: 4px solid rgb(217, 32, 38);
     box-shadow: rgba(255, 0, 0, 0.3) 3px 3px 3px 3px;
     background: white;
     border-radius: 8px;
@@ -79,11 +79,11 @@
 /* For all devices (Except phones) */
 @media(min-width: 768px) {
     #info-column-1, #info-column-2{
-        border-top: 2px solid rgba(255, 0, 0, 0.8);
+        border-top: 2px solid rgb(217, 32, 38);
     }
 
     #uni-logo{
-        border-top: 2px solid rgba(255, 0, 0, 0.8);
+        border-top: 2px solid rgb(217, 32, 38);
     }
 }
 
