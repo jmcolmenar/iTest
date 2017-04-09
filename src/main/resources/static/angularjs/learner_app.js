@@ -39,7 +39,7 @@ app.config(['$routeProvider', function ($routeProvider){
 }]);
 
 // Main controller
-app.controller("mainCtrl", ['$scope', '$http', function($scope, $http){
+app.controller("mainCtrl", ['$scope', '$http', '$window', function($scope, $http, $window){
     // The routes of the partial views
     $scope.changePasswordViewRoute = '/learner/partial/changePassword';
     $scope.userProfileViewRoute = '/learner/partial/userProfile';
@@ -57,6 +57,20 @@ app.controller("mainCtrl", ['$scope', '$http', function($scope, $http){
             // Set the variable with the courses
             $scope.courseList = response;
         });
+    };
+
+    // Call to "logout" get request to exit of application
+    $scope.exitApplication = function(){
+        // Hide confirmation modal
+        $("#exitConfirmationModal").modal("hide");
+
+        // Redirect to "Logout" url
+        $window.location.href = '/logout'
+    };
+
+    // Show the modal with the exit confirmation
+    $scope.showExitConfirmation = function(){
+        $("#exitConfirmationModal").modal("show");
     };
 
 }]);
