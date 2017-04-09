@@ -65,8 +65,8 @@ public class CourseManagementServiceImpl implements CourseManagementService {
             // Convert the Matricula objects list to Course model
             List<CourseModel> courseModelList = this.matriculaConverter.convertMatriculaListToCourseModelList(matriculaList);
 
-            // Order the list by year
-            Collections.sort(courseModelList, (o1, o2) -> o1.getYear().compareTo(o2.getYear()));
+            // Order the list by year (From highest to lowest)
+            Collections.sort(courseModelList, (o1, o2) -> o2.getYear().compareTo(o1.getYear()));
 
             // Return the course model list
             return courseModelList;
