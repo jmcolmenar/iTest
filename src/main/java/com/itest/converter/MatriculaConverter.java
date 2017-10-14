@@ -26,12 +26,19 @@ import com.itest.entity.Grupo;
 import com.itest.entity.Matricula;
 import com.itest.model.CourseModel;
 import com.itest.model.SubjectModel;
+import com.itest.service.TranslationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component("matriculaConverter")
 public class MatriculaConverter {
+
+    @Autowired
+    @Qualifier("translationServiceImpl")
+    TranslationService translationService;
 
     public List<CourseModel> convertMatriculaListToCourseModelList(List<Matricula> matriculaList){
         // Initialize the list with the Course model objects
@@ -92,7 +99,7 @@ public class MatriculaConverter {
 
         // fill the subject description
         Asignatura asignatura = group.getAsignaturas();
-        String subjectDescription = asignatura.getCurso() + "º " + asignatura.getEstudios() + " (" + group.getGrupo() + ")";
+        String subjectDescription = this.translationService.getMessage("coursesList.subjectGroup") + " " + group.getGrupo();
         subjectModel.setSubjectDescription(subjectDescription);
 
         // Return the subject model object
