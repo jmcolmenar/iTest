@@ -67,7 +67,7 @@ public class LoginController {
         boolean isValidUser = this.authenticationSuccessHandler.isAuthenticatedUser(auth);
 
         // Return the current user
-        return new CurrentUserModel(isValidUser, auth.getName());
+        return new CurrentUserModel(isValidUser, auth != null ? auth.getName() : null);
     }
 
     /**

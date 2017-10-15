@@ -47,6 +47,7 @@ public class ExamenConverter {
                 doneExam.setExamName(exam.getTitulo());
                 doneExam.setMaximumScore(FormatterHelper.formatNumberWithTwoDecimals(exam.getNotaMax()));
 
+                // TODO: Get the last "Clasificacion" object for the exam
                 List<Calificacion> calificacionList = exam.getCalifs();
                 calificacionList.sort((o1, o2) -> o2.getFechaFin().compareTo(o1.getFechaFin()));
                 Calificacion calificacion = calificacionList.get(0);

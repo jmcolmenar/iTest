@@ -22,9 +22,13 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.service.impl;
 
 import com.itest.converter.ExamenConverter;
+import com.itest.converter.MatriculaConverter;
 import com.itest.entity.Examen;
+import com.itest.entity.Matricula;
+import com.itest.model.CourseModel;
 import com.itest.model.DoneExamHeader;
 import com.itest.repository.ExamenRepository;
+import com.itest.repository.MatriculaRepository;
 import com.itest.service.LearnerManagementService;
 import com.itest.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +36,19 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service("learnerManagementServiceImpl")
 public class LearnerManagementServiceImpl implements LearnerManagementService {
+
+    @Autowired
+    @Qualifier("matriculaRepository")
+    private MatriculaRepository matriculaRepository;
+
+    @Autowired
+    @Qualifier("matriculaConverter")
+    private MatriculaConverter matriculaConverter;
 
     @Autowired
     @Qualifier("examenRepository")
@@ -49,12 +62,42 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
     @Qualifier("examenConverter")
     private ExamenConverter examenConverter;
 
-    public List<DoneExamHeader> GetDoneExamsHeader(int groupId){
-        // Get the done exams from database
-        List<Examen> doneExamList = this.examenRepository.findDoneExams(userManagementService.getUserIdOfCurrentUser(), groupId);
+    public List<CourseModel> getCourseList() {
 
-        // Convert the entity object list to model object list
-        return this.examenConverter.convertExamenListToDoneExamHeaderList(doneExamList);
+        try{
+            // Get the user identifier of current user
+            int userId = this.userManagementService.getUserIdOfCurrentUser();
+
+            // Get the Matricula table list of current user
+            List<Matricula> matriculaList = this.matriculaRepository.selectMatriculaListByUsernameOfUsuario(userId);
+
+            // Convert the Matricula objects list to Course model
+            List<CourseModel> courseModelList = this.matriculaConverter.convertMatriculaListToCourseModelList(matriculaList);
+
+            // Order the list by year (From highest to lowest)
+            Collections.sort(courseModelList, (o1, o2) -> o2.getYear().compareTo(o1.getYear()));
+
+            // Return the course model list
+            return courseModelList;
+
+        }catch(Exception exc){
+            // TODO: Log the exception
+            return new ArrayList<>();
+        }
+    }
+
+    public List<DoneExamHeader> getDoneExamsHeader(int groupId){
+        try{
+            // Get the done exams from database
+            List<Examen> doneExamList = this.examenRepository.findDoneExams(userManagementService.getUserIdOfCurrentUser(), groupId);
+
+            // Convert the entity object list to model object list
+            return this.examenConverter.convertExamenListToDoneExamHeaderList(doneExamList);
+
+        }catch(Exception exc){
+            // TODO: Log the exception
+            return new ArrayList<>();
+        }
     }
 
 }

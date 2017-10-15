@@ -29,16 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/learner/partial/")
 public class LearnerPartialViewController {
 
-    @GetMapping("/changePassword")
-    public String getChangePasswordPartialView(){
-        return "learner/change_password";
-    }
-
-    @GetMapping("/userProfile")
-    public String getUserProfilePartialView(){
-        return "learner/user_profile";
-    }
-
     @GetMapping("/courses")
     public String getCoursesPartialView(){
         return "learner/courses";

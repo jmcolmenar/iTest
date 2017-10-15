@@ -40,6 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Qualifier("customAuthenticationSuccessHandler")
     private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private DataSource dataSource;
 
@@ -59,6 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Authorizes the requests to resources depending of user's roles
+        http.authorizeRequests().antMatchers("/api/user/**", "/user/**").access("hasAnyAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_LEARNER +"','"+ CustomAuthenticationSuccessHandler.ROLE_KID +"','"+ CustomAuthenticationSuccessHandler.ROLE_TUTOR +"','"+ CustomAuthenticationSuccessHandler.ROLE_ADMIN +"')");
         http.authorizeRequests().antMatchers("/api/learner/**", "/learner/**").access("hasAnyAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_LEARNER +"','"+ CustomAuthenticationSuccessHandler.ROLE_KID +"')");
         http.authorizeRequests().antMatchers("/api/tutor/**", "/tutor/**").access("hasAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_TUTOR +"')");
         http.authorizeRequests().antMatchers("/api/admin/**", "/admin/**").access("hasAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_ADMIN +"')");

@@ -72,6 +72,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public boolean isAuthenticatedUser(Authentication auth) {
         boolean authenticated = false;
 
+        // Check the Authentication object
+        if(auth == null){
+            return false;
+        }
+
         // Get the roles of authenticated user
         Set<String> roles = AuthorityUtils.authorityListToSet(auth.getAuthorities());
 

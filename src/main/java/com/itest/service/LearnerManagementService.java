@@ -21,15 +21,18 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service;
 
+import com.itest.model.CourseModel;
 import com.itest.model.DoneExamHeader;
 
 import java.util.List;
 
 public interface LearnerManagementService {
 
-    //public abstract void GetPendingExams();
+    public abstract List<CourseModel> getCourseList();
 
-    public abstract List<DoneExamHeader> GetDoneExamsHeader(int groupId);
+    public abstract List<DoneExamHeader> getDoneExamsHeader(int groupId);
+
+    //public abstract void GetPendingExams();
 
     //public abstract void GetNewExams();
 

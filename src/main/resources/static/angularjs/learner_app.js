@@ -8,7 +8,7 @@ var app = angular.module("learnerApp",['ngRoute']);
 // Service to get the user profile
 app.factory("currentUserProfile",['$http', '$q', function($http, $q) {
     return function() {
-        var userProfileData = $http.get('/api/learner/getUserProfile');
+        var userProfileData = $http.get('/api/user/getUserProfile');
         return $q.all([userProfileData]).then(function(results){
             return {
                 userProfileData: results[0].data
@@ -24,11 +24,11 @@ app.config(['$routeProvider', function ($routeProvider){
             templateUrl: '/learner/partial/courses'
         })
         .when('/changepassword', {
-            templateUrl: '/learner/partial/changePassword',
+            templateUrl: '/user/partial/changePassword',
             controller: 'changePassCtrl'
         })
         .when('/userprofile',{
-            templateUrl: '/learner/partial/userProfile',
+            templateUrl: '/user/partial/userProfile',
             controller: 'userProfileCtrl',
             resolve: {
                 currentProfile : ['currentUserProfile', function (currentUserProfile) {
@@ -44,14 +44,11 @@ app.config(['$routeProvider', function ($routeProvider){
 
 // Main controller
 app.controller("mainCtrl", ['$scope', '$http', '$window', function($scope, $http, $window){
-    // The routes of the partial views
-    $scope.changePasswordViewRoute = '/learner/partial/changePassword';
-    $scope.userProfileViewRoute = '/learner/partial/userProfile';
 
     // The function to executes when the page has been loaded
     $scope.init = function(){
         // Request to get the full name of user
-        $http.get('/api/learner/getFullName').success(function(response){
+        $http.get('/api/user/getFullName').success(function(response){
             // Set the variable with the courses
             $scope.fullName = response.fullName;
         });
@@ -106,7 +103,7 @@ app.controller("changePassCtrl", ['$scope', '$http', function($scope, $http){
             // Show the modal with the error
             $("#errorModal").modal("show");
         }else{
-            $http.post('/api/learner/changePassword', $.param($scope.changePasswordData), {
+            $http.post('/api/user/changePassword', $.param($scope.changePasswordData), {
                 headers : {
                     "content-type" : "application/x-www-form-urlencoded"
                 }
@@ -211,7 +208,7 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
         userProfileModel.languageId = getLanguageIdFromButtons();
 
         // Post request to update the user profile
-        $http.post('/api/learner/updateUserProfile', $.param(userProfileModel), {
+        $http.post('/api/user/updateUserProfile', $.param(userProfileModel), {
             headers : {
                 "content-type" : "application/x-www-form-urlencoded"
             }
