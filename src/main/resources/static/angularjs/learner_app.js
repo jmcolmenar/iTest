@@ -35,6 +35,10 @@ app.config(['$routeProvider', function ($routeProvider){
                     return currentUserProfile();
                 }]
             }
+        })
+        .when('/subject',{
+            templateUrl: '/learner/partial/subject',
+            controller: 'subjectCtrl',
         });
 }]);
 
@@ -71,6 +75,12 @@ app.controller("mainCtrl", ['$scope', '$http', '$window', function($scope, $http
     // Show the modal with the exit confirmation
     $scope.showExitConfirmation = function(){
         $("#exitConfirmationModal").modal("show");
+    };
+
+    // Set the selected subject
+    $scope.setSelectedSubject = function(subject){
+        // Set the GroupId of selected subject to search the exams
+        $scope.selectedGroupId = subject.groupId;
     };
 
 }]);
@@ -219,4 +229,28 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
             $("#errorModal").modal("show");
         })
     };
+}]);
+
+// Subject management controller
+app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
+
+    // Prepare te request to get the exams by the Group Id of selected subject
+    var requestData = $.param({
+        groupId: $scope.selectedGroupId
+    });
+
+    // Get the done exams of selected subject
+    $http.post('/api/learner/getDoneExams', requestData, {
+        headers : {
+            "content-type" : "application/x-www-form-urlencoded"
+        }
+    }).success(function(data) {
+        // Set the list of done exams
+        $scope.doneExams = data;
+
+    }).error(function(data) {
+        // Error retrieving the exams of selected subject
+        $scope.showRequestError = true;
+    });
+
 }]);

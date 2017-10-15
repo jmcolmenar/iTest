@@ -23,8 +23,10 @@ package com.itest.controller;
 
 import com.itest.model.ChangePasswordModel;
 import com.itest.model.CourseModel;
+import com.itest.model.DoneExamHeader;
 import com.itest.model.UserProfileModel;
 import com.itest.service.CourseManagementService;
+import com.itest.service.LearnerManagementService;
 import com.itest.service.TranslationService;
 import com.itest.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,10 @@ public class LearnerController {
     @Autowired
     @Qualifier("translationServiceImpl")
     TranslationService translationService;
+
+    @Autowired
+    @Qualifier("learnerManagementServiceImpl")
+    private LearnerManagementService learnerManagementService;
 
     @GetMapping("/getFullName")
     public Map<String, String> getFullName(){
@@ -124,6 +130,14 @@ public class LearnerController {
     }
 
 
+    @PostMapping("/getDoneExams")
+    public List<DoneExamHeader> getDoneExams(@RequestParam(value = "groupId") int groupId){
+        // Get the Done examen Header by a group
+        List<DoneExamHeader> doneExamsHeaderList = this.learnerManagementService.GetDoneExamsHeader(groupId);
+
+        // Return the list of Done Exam Header
+        return doneExamsHeaderList;
+    }
 
 
 }

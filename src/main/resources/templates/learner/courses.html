@@ -10,7 +10,7 @@
                 <div id="{{course.year}}" class="collapse {{($first) ? 'in' : ''}}">
                     <br/>
                     <div class="list-group" ng-repeat="subject in course.subjectList">
-                        <a href="#" class="list-group-item">
+                        <a href="#/subject" class="list-group-item" ng-click="setSelectedSubject(subject)">
                             <h3 class="list-group-item-heading">{{subject.subjectName}}</h3>
                             <h5 class="list-group-item-text">{{subject.subjectDescription}}</h5>
                         </a>

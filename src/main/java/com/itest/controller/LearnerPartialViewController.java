@@ -43,4 +43,9 @@ public class LearnerPartialViewController {
     public String getCoursesPartialView(){
         return "learner/courses";
     }
+
+    @GetMapping("/subject")
+    public String getSubjectPartialView(){
+        return "learner/subject";
+    }
 }

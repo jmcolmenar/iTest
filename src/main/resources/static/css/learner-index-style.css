@@ -68,6 +68,10 @@ body{
 .list-group-item{
     box-shadow: rgba(255, 0, 0, 0.3) 2px 2px 2px 2px;
 }
+.list-group-item:hover{
+    box-shadow: rgba(0, 0, 0, 0.4) 2px 2px 2px 2px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
 
 .btn-course{
     background-color: rgb(217, 32, 38);
