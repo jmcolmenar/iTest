@@ -21,7 +21,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.impl;
 
-import com.itest.constant.LanguageConstant;
+import com.itest.helper.constant.LanguageConstant;
 import com.itest.service.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

@@ -22,7 +22,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.itest;
 
-import com.itest.constant.LanguageConstant;
+import com.itest.helper.constant.LanguageConstant;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

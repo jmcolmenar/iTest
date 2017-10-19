@@ -21,7 +21,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.converter;
 
-import com.itest.Helper.FormatterHelper;
+import com.itest.helper.FormatterHelper;
 import com.itest.entity.Calificacion;
 import com.itest.entity.Examen;
 import com.itest.model.DoneExamHeader;

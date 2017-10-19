@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.constant;
+package com.itest.helper.constant;
 
 import java.util.Locale;
 

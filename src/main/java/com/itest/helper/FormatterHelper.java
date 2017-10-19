@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.Helper;
+package com.itest.helper;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
