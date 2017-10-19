@@ -88,11 +88,13 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
     public List<DoneExamHeader> getDoneExamsHeader(int groupId){
         try{
-            // Get the done exams from database
+            // Get the done exams from database and user id
             List<Examen> doneExamList = this.examenRepository.findDoneExams(userManagementService.getUserIdOfCurrentUser(), groupId);
 
+            int userId = this.userManagementService.getUserIdOfCurrentUser();
+
             // Convert the entity object list to model object list
-            return this.examenConverter.convertExamenListToDoneExamHeaderList(doneExamList);
+            return this.examenConverter.convertExamenListToDoneExamHeaderList(doneExamList, userId);
 
         }catch(Exception exc){
             // TODO: Log the exception
