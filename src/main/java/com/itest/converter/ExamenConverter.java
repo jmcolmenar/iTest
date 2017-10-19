@@ -33,7 +33,7 @@ import java.util.List;
 @Component("examenConverter")
 public class ExamenConverter {
 
-    public List<DoneExamHeader> convertExamenListToDoneExamHeaderList(List<Examen> examenList){
+    public List<DoneExamHeader> convertExamenListToDoneExamHeaderList(List<Examen> examenList, int userId){
         // Initialize the Donde Exam Header list
         List<DoneExamHeader> doneExamHeaderList = new ArrayList<>();
 
@@ -47,10 +47,16 @@ public class ExamenConverter {
                 doneExam.setExamName(exam.getTitulo());
                 doneExam.setMaximumScore(FormatterHelper.formatNumberWithTwoDecimals(exam.getNotaMax()));
 
-                // TODO: Get the last "Clasificacion" object for the exam
+                // Get the "Calificacion" object corresponding to the user
+                Calificacion calificacion = null;
                 List<Calificacion> calificacionList = exam.getCalifs();
                 calificacionList.sort((o1, o2) -> o2.getFechaFin().compareTo(o1.getFechaFin()));
-                Calificacion calificacion = calificacionList.get(0);
+                for(Calificacion calificacionAux : exam.getCalifs()){
+                    if(calificacionAux.getUsuarios().getIdusu() == userId){
+                        calificacion = calificacionAux;
+                        break;
+                    }
+                }
 
                 doneExam.setScore(FormatterHelper.formatNumberWithTwoDecimals(calificacion.getNota()));
                 doneExam.setStartDate(FormatterHelper.formatDateToString(calificacion.getFechaIni()));
