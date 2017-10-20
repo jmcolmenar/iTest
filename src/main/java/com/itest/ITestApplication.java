@@ -22,7 +22,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.itest;
 
-import com.itest.helper.constant.LanguageConstant;
+import com.itest.constant.LanguageConstant;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +32,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @SpringBootApplication
 public class ITestApplication {
 
-	// Bean with the locale resolver to be used in the application context. For defult the locale is spanish
+	// Bean with the locale resolver to be used in the application context. For default the locale is spanish
 	@Bean
 	public LocaleResolver localeResolver() {
 		SessionLocaleResolver slr = new SessionLocaleResolver();

@@ -19,31 +19,34 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.helper;
+package com.itest.component;
+
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public final class FormatterHelper {
+@Component("formatterComponent")
+public class FormatterComponent {
 
 
-    public static String formatDateToString(Date date){
+    public String formatDateToString(Date date){
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
         return df.format(date);
     }
 
-    public static String formatNumberWithTwoDecimals(float number){
+    public String formatNumberWithTwoDecimals(float number){
         return String.format("%.2f", number);
     }
 
-    public static String formatNumberWithTwoDecimals(BigDecimal number){
+    public String formatNumberWithTwoDecimals(BigDecimal number){
         return String.format("%.2f", number);
     }
 
-    public static String formatMillisecondsToHoursMinutesAndSeconds(long milliseconds){
+    public String formatMillisecondsToHoursMinutesAndSeconds(long milliseconds){
         int seconds = (int) (milliseconds / 1000) % 60 ;
         int minutes = (int) ((milliseconds / (1000*60)) % 60);
         int hours = (int) ((milliseconds / (1000*60*60)) % 24);

@@ -21,10 +21,12 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.converter;
 
-import com.itest.helper.FormatterHelper;
+import com.itest.component.FormatterComponent;
 import com.itest.entity.Calificacion;
 import com.itest.entity.Examen;
 import com.itest.model.DoneExamHeader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -32,6 +34,10 @@ import java.util.List;
 
 @Component("examenConverter")
 public class ExamenConverter {
+
+    @Autowired
+    @Qualifier("formatterComponent")
+    private FormatterComponent formatterComponent;
 
     public List<DoneExamHeader> convertExamenListToDoneExamHeaderList(List<Examen> examenList, int userId){
         // Initialize the Donde Exam Header list
@@ -45,7 +51,7 @@ public class ExamenConverter {
                 DoneExamHeader doneExam = new DoneExamHeader();
                 doneExam.setExamId(exam.getIdexam());
                 doneExam.setExamName(exam.getTitulo());
-                doneExam.setMaximumScore(FormatterHelper.formatNumberWithTwoDecimals(exam.getNotaMax()));
+                doneExam.setMaximumScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
 
                 // Get the "Calificacion" object corresponding to the user
                 Calificacion calificacion = null;
@@ -58,10 +64,10 @@ public class ExamenConverter {
                     }
                 }
 
-                doneExam.setScore(FormatterHelper.formatNumberWithTwoDecimals(calificacion.getNota()));
-                doneExam.setStartDate(FormatterHelper.formatDateToString(calificacion.getFechaIni()));
-                doneExam.setEndDate(FormatterHelper.formatDateToString(calificacion.getFechaFin()));
-                doneExam.setTime(FormatterHelper.formatMillisecondsToHoursMinutesAndSeconds(calificacion.getFechaFin().getTime() - calificacion.getFechaIni().getTime()));
+                doneExam.setScore(this.formatterComponent.formatNumberWithTwoDecimals(calificacion.getNota()));
+                doneExam.setStartDate(this.formatterComponent.formatDateToString(calificacion.getFechaIni()));
+                doneExam.setEndDate(this.formatterComponent.formatDateToString(calificacion.getFechaFin()));
+                doneExam.setTime(this.formatterComponent.formatMillisecondsToHoursMinutesAndSeconds(calificacion.getFechaFin().getTime() - calificacion.getFechaIni().getTime()));
 
                 // Add DoneExamHeader object to the list
                 doneExamHeaderList.add(doneExam);
