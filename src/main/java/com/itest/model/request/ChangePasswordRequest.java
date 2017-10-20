@@ -19,37 +19,37 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.model;
+package com.itest.model.request;
 
-public class ChangePasswordModel {
+public class ChangePasswordRequest {
 
-    // If the change password is changed successfully
-    private boolean isChanged;
+    private String oldPassword;
 
-    // The error message when the password of user cannot be changed
-    private String errorMessage;
+    private String newPassword;
 
-    public ChangePasswordModel() {
+    private String repeatPassword;
+
+    public String getOldPassword() {
+        return oldPassword;
     }
 
-    public ChangePasswordModel(boolean isChanged, String errorMessage) {
-        this.isChanged = isChanged;
-        this.errorMessage = errorMessage;
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
-    public boolean getIsChanged() {
-        return isChanged;
+    public String getNewPassword() {
+        return newPassword;
     }
 
-    public void setIsChanged(boolean changed) {
-        isChanged = changed;
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getRepeatPassword() {
+        return repeatPassword;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setRepeatPassword(String repeatPassword) {
+        this.repeatPassword = repeatPassword;
     }
 }

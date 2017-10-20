@@ -38,7 +38,7 @@ app.config(['$routeProvider', function ($routeProvider){
         })
         .when('/subject',{
             templateUrl: '/learner/partial/subject',
-            controller: 'subjectCtrl',
+            controller: 'subjectCtrl'
         });
 }]);
 
@@ -49,8 +49,11 @@ app.controller("mainCtrl", ['$scope', '$http', '$window', function($scope, $http
     $scope.init = function(){
         // Request to get the full name of user
         $http.get('/api/user/getFullName').success(function(response){
-            // Set the variable with the courses
+            // Set the full name of user
             $scope.fullName = response.fullName;
+        }).error(function(response){
+            // Set the full name with "Error" message
+            $scope.fullName = 'Error...';
         });
 
         // Request to get the courses list of user
@@ -103,28 +106,33 @@ app.controller("changePassCtrl", ['$scope', '$http', function($scope, $http){
             // Show the modal with the error
             $("#errorModal").modal("show");
         }else{
-            $http.post('/api/user/changePassword', $.param($scope.changePasswordData), {
+            var changePasswordRequest = {
+                oldPassword : $scope.changePasswordData.oldPassword,
+                newPassword : $scope.changePasswordData.newPassword,
+                repeatPassword : $scope.changePasswordData.repeatPassword,
+            };
+            $http.post('/api/user/changePassword', changePasswordRequest, {
                 headers : {
-                    "content-type" : "application/x-www-form-urlencoded"
+                    "content-type" : "application/json"
                 }
-            }).success(function(data) {
+            }).success(function(response) {
                 // Check if has an error in the change password process
-                if(data.isChanged){
-                    // Shows the model with iformation message when the password has been changed successfully
-                    $("#successfullyModal").modal("show");
-                }else{
+                if(response.hasError){
                     // Shows the error message in the change password process
                     $scope.showProcessError = true;
-                    $scope.processErrorMessage = data.errorMessage;
+                    $scope.processErrorMessage = response.errorMessage;
 
                     // Show the modal with the error
                     $("#errorModal").modal("show");
+                }else{
+                    // Shows the model with iformation message when the password has been changed successfully
+                    $("#successfullyModal").modal("show");
                 }
 
                 // Clear the change password fields
                 $scope.changePasswordData = {};
 
-            }).error(function(data) {
+            }).error(function(response) {
                 // Error changing the password, shows the error message
                 $scope.showRequestError = true;
 
@@ -199,26 +207,34 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
     // Function to update the user profile
     $scope.updateUserProfile = function () {
 
-        // Initialize of user profile model object
-        var userProfileModel = {};
-        userProfileModel.name = $scope.profile.name;
-        userProfileModel.lastName = $scope.profile.lastname;
-        userProfileModel.email = $scope.profile.email;
-        userProfileModel.dni = $scope.profile.dni;
-        userProfileModel.languageId = getLanguageIdFromButtons();
+        var updateUserProfileRequest = {
+            name : $scope.profile.name,
+            lastName : $scope.profile.lastname,
+            email : $scope.profile.email,
+            dni : $scope.profile.dni,
+            languageId : getLanguageIdFromButtons()
+        };
 
         // Post request to update the user profile
-        $http.post('/api/user/updateUserProfile', $.param(userProfileModel), {
+        $http.post('/api/user/updateUserProfile', updateUserProfileRequest, {
             headers : {
-                "content-type" : "application/x-www-form-urlencoded"
+                "content-type" : "application/json"
             }
-        }).success(function(data) {
-            // Hide confirmation modal
-            $("#confirmationModal").modal("hide");
+        }).success(function(response) {
+            if(response.hasError){
+                // Hide confirmation modal
+                $("#confirmationModal").modal("hide");
 
-            // Shows the static modal with successful message
-            $("#successfullyModal").modal({backdrop: "static"});
-        }).error(function(data) {
+                // Shows the error modal
+                $("#errorModal").modal("show");
+            }else{
+                // Hide confirmation modal
+                $("#confirmationModal").modal("hide");
+
+                // Shows the static modal with successful message
+                $("#successfullyModal").modal({backdrop: "static"});
+            }
+        }).error(function(response) {
             // Hide confirmation modal
             $("#confirmationModal").modal("hide");
 

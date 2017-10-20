@@ -21,18 +21,25 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service;
 
-import com.itest.model.ChangePasswordModel;
-import com.itest.model.UserProfileModel;
+import com.itest.model.request.ChangePasswordRequest;
+import com.itest.model.request.UpdateUserProfileRequest;
+import com.itest.model.response.ChangePasswordResponse;
+import com.itest.model.response.GetFullNameResponse;
+import com.itest.model.response.GetUserProfileResponse;
+import com.itest.model.response.UpdateUserProfileResponse;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public interface UserManagementService {
 
     int getUserIdOfCurrentUser();
 
-    ChangePasswordModel changeUserPassword(String oldPass, String newPass, String repeatPass);
+    ChangePasswordResponse changeUserPassword(ChangePasswordRequest request);
 
-    String getUserFullName();
+    GetFullNameResponse getUserFullName();
 
-    UserProfileModel getUserProfile();
+    GetUserProfileResponse getUserProfile();
 
-    boolean updateUserProfile(String name, String lastname, String dni, String email);
+    UpdateUserProfileResponse updateUserProfile(UpdateUserProfileRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse);
 }

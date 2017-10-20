@@ -22,25 +22,25 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.converter;
 
 import com.itest.entity.Usuario;
-import com.itest.model.UserProfileModel;
+import com.itest.model.response.GetUserProfileResponse;
 import org.springframework.stereotype.Component;
 
 @Component("usuarioConverter")
 public class UsuarioConverter {
 
-    public UserProfileModel convertUsuarioToUserProfileModel(Usuario usuario){
-        // Initialize the user porfile mode
-        UserProfileModel userProfileModel = new UserProfileModel();
+    public GetUserProfileResponse convertUsuarioToGetUserProfileResponse(Usuario usuario){
+        // Initialize the user porfile response
+        GetUserProfileResponse getUserProfileResponse = new GetUserProfileResponse();
 
         // Fill the user profile model with the "Usuario" entity from database
-        userProfileModel.setUsername(usuario.getUsuario());
-        userProfileModel.setName(usuario.getNombre());
-        userProfileModel.setLastName(usuario.getApes());
-        userProfileModel.setEmail(usuario.getEmail() != null ? usuario.getEmail() : "");
-        userProfileModel.setDni(usuario.getDni());
+        getUserProfileResponse.setUsername(usuario.getUsuario());
+        getUserProfileResponse.setName(usuario.getNombre());
+        getUserProfileResponse.setLastName(usuario.getApes());
+        getUserProfileResponse.setEmail(usuario.getEmail() != null ? usuario.getEmail() : "");
+        getUserProfileResponse.setDni(usuario.getDni());
 
-        // Return the user profile mode
-        return userProfileModel;
+        // Return the user profile response
+        return getUserProfileResponse;
     }
 
 }

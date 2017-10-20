@@ -21,20 +21,19 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.controller;
 
-import com.itest.model.ChangePasswordModel;
-import com.itest.model.UserProfileModel;
-import com.itest.service.TranslationService;
+import com.itest.model.request.ChangePasswordRequest;
+import com.itest.model.request.UpdateUserProfileRequest;
+import com.itest.model.response.ChangePasswordResponse;
+import com.itest.model.response.GetFullNameResponse;
+import com.itest.model.response.GetUserProfileResponse;
+import com.itest.model.response.UpdateUserProfileResponse;
 import com.itest.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user/")
@@ -44,68 +43,43 @@ public class UserController {
     @Qualifier("userManagementServiceImpl")
     private UserManagementService userManagementService;
 
-    @Autowired
-    @Qualifier("translationServiceImpl")
-    TranslationService translationService;
-
     @GetMapping("/getFullName")
-    public Map<String, String> getFullName(){
+    public GetFullNameResponse getFullName(){
 
-        // Get the full name of current user
-        String fullname = this.userManagementService.getUserFullName();
+        // Call to the service to get the full name of current user
+        GetFullNameResponse response = this.userManagementService.getUserFullName();
 
-        // Fill the map
-        Map<String, String> map = new HashMap<>();
-        map.put("fullName", fullname);
-
-        // Return the full name
-        return map;
+        // Return the response
+        return response;
     }
 
     @PostMapping("/changePassword")
-    public ChangePasswordModel changePassword(@RequestParam(value = "oldPassword", required = false)String oldPassword,
-                                              @RequestParam(value = "newPassword", required = false)String newPassword,
-                                              @RequestParam(value = "repeatPassword", required = false)String repeatPassword){
+    public ChangePasswordResponse changePassword(@RequestBody ChangePasswordRequest request){
 
-        // Call to the service to process the change password
-        ChangePasswordModel changePasswordModel = this.userManagementService.changeUserPassword(oldPassword, newPassword, repeatPassword);
+        // Call to the service to change the user password
+        ChangePasswordResponse changePasswordModel = this.userManagementService.changeUserPassword(request);
 
-        // Return the model to change the password
+        // Return the response object
         return changePasswordModel;
     }
 
     @GetMapping("/getUserProfile")
-    public UserProfileModel getUserProfile(){
+    public GetUserProfileResponse getUserProfile(){
 
-        // Call to the service to get the user profile model
-        UserProfileModel userProfileModel = this.userManagementService.getUserProfile();
+        // Call to the service to get the user profile
+        GetUserProfileResponse response = this.userManagementService.getUserProfile();
 
-        // Set the language identifier of user profile model
-        userProfileModel.setLanguageId(this.translationService.getCurrentLanguageId());
-
-        // Return the user profile model
-        return userProfileModel;
+        // Return the user profile response
+        return response;
     }
 
     @PostMapping("/updateUserProfile")
-    public ResponseEntity updateUerProfile(@RequestParam(value = "name", required = false) String name,
-                                           @RequestParam(value = "lastName", required = false) String lastName,
-                                           @RequestParam(value = "dni", required = false) String dni,
-                                           @RequestParam(value = "email", required = false) String email,
-                                           @RequestParam(value = "languageId", required = false) int languageId,
-                                           HttpServletRequest request, HttpServletResponse response){
+    public UpdateUserProfileResponse updateUerProfile(@RequestBody UpdateUserProfileRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse){
 
-        // Update the user profile in database
-        boolean isUpdated = this.userManagementService.updateUserProfile(name, lastName, dni, email);
+        // Call to the service to update the user profile
+        UpdateUserProfileResponse response = this.userManagementService.updateUserProfile(request, httpRequest, httpResponse);
 
-        // Set the language by the language identifier
-        this.translationService.setLocale(languageId, request, response);
-
-        // Check if the user is updated to return an Ok or Bad response
-        if(isUpdated){
-            return new ResponseEntity(HttpStatus.OK);
-        }else{
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        // Return the user profile response
+        return response;
     }
 }

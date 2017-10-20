@@ -19,24 +19,27 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.repository;
+package com.itest.model.response;
 
-import com.itest.entity.Usuario;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+public class Response {
 
-import javax.transaction.Transactional;
-import java.io.Serializable;
+    private boolean hasError;
 
-@Repository("usuarioRepository")
-public interface UsuarioRepository extends JpaRepository<Usuario, Serializable> {
+    private String ErrorMessage;
 
-    public abstract Usuario findByIdusu(int idusu);
+    public boolean isHasError() {
+        return hasError;
+    }
 
-    @Query("select u.idusu from Usuario u where u.usuario = :username")
-    public abstract int getUserIdByUsername(@Param("username") String username);
+    public void setHasError(boolean hasError) {
+        this.hasError = hasError;
+    }
 
+    public String getErrorMessage() {
+        return ErrorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        ErrorMessage = errorMessage;
+    }
 }
