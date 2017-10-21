@@ -161,38 +161,32 @@ app.controller("changePassCtrl", ['$scope', '$http', function($scope, $http){
 
 // User profile controller
 app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile', function($scope, $http, $window, currentProfile) {
-
-    // The states of buttons for language
-    const BUTTON_SELECTED_STATE = 'btn-language active';
-    const BUTTON_NO_SELECTED_STATE = 'btn-language';
-
     // The identifier of languages
     const SPANISH_ID = 0;
     const ENGLISH_ID = 1;
 
-    // The variables with the status of languages buttons
-    $scope.spanishButtonState = '';
-    $scope.englishButtonState = '';
+    // Select the language button with the current language of user
+    if(currentProfile.userProfileData.languageId == SPANISH_ID){
+        $("#spanishButton").addClass("active");
+    }else if (currentProfile.userProfileData.languageId == ENGLISH_ID){
+        $("#englishButton").addClass("active");
+    }
 
     // Function to set the language buttons state
-    $scope.setButtonState = function (langId) {
-        if(langId == SPANISH_ID){
-            $scope.spanishButtonState = BUTTON_SELECTED_STATE;
-            $scope.englishButtonState = BUTTON_NO_SELECTED_STATE;
-        }else if(langId == ENGLISH_ID){
-            $scope.spanishButtonState = BUTTON_NO_SELECTED_STATE;
-            $scope.englishButtonState = BUTTON_SELECTED_STATE;
-        }
-    };
+    $scope.setButtonState = function (event) {
+        $("#spanishButton").removeClass("active");
+        $("#englishButton").removeClass("active");
 
-    // Executes the function to shows the selected language
-    $scope.setButtonState(currentProfile.userProfileData.languageId);
+        var clickedButton = event.currentTarget;
+
+        $("#" + clickedButton.id).addClass("active");
+    };
 
     // Function to get the identifier of selected language button
     var getLanguageIdFromButtons = function () {
-        if($scope.spanishButtonState == BUTTON_SELECTED_STATE){
+        if($("#spanishButton").hasClass("active")){
             return SPANISH_ID;
-        }else if($scope.englishButtonState == BUTTON_SELECTED_STATE){
+        }else if($("#englishButton").hasClass("active")){
             return ENGLISH_ID;
         }
     };

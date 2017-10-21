@@ -9,10 +9,10 @@
                 <div class="form-group">
                     <label for="language" th:text="#{userProfile.language}"></label>
                     <div id="language">
-                        <button type="button" class="btn btn-sm {{spanishButtonState}}" ng-click="setButtonState(0)">
+                        <button id="spanishButton" type="button" class="btn btn-sm btn-language" ng-click="setButtonState($event)">
                             <span class="lang-sm" lang="es"></span> <span th:text="#{userProfile.language.spanish}"></span>
                         </button>
-                        <button type="button" class="btn btn-sm {{englishButtonState}}" ng-click="setButtonState(1)">
+                        <button id="englishButton" type="button" class="btn btn-sm btn-language" ng-click="setButtonState($event)">
                             <span class="lang-sm" lang="en"></span> <span th:text="#{userProfile.language.english}"></span>
                         </button>
                     </div>

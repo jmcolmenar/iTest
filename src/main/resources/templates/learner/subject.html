@@ -16,8 +16,8 @@
             </div>
             <div id="available-exams-div" ng-show="isAvailableExamsButtonActived()">
                 <p ng-hide="availableExamsList.length > 0" >No hay ningún examen disponible actualmente.</p>
-                <div class="table-responsive">
-                    <table class="table table-striped" ng-show="availableExamsList.length > 0">
+                <div class="table-responsive" ng-show="availableExamsList.length > 0">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -32,9 +32,9 @@
                 </div>
             </div>
             <div id="next-exams-div" ng-show="isNextExamsButtonActived()">
-                <p ng-hide="nextExamsList.length > 0" >No hay ningun examen próximo actualmente</p>
-                <div class="table-responsive">
-                    <table class="table table-striped" ng-show="nextExamsList.length > 0">
+                <p ng-hide="nextExamsList.length > 0" >No hay ningún examen disponible actualmente.</p>
+                <div class="table-responsive" ng-show="nextExamsList.length > 0">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -49,9 +49,9 @@
                 </div>
             </div>
             <div id="done-exams-div" ng-show="isDoneExamsButtonActived()">
-                <p ng-hide="doneExamsList.length > 0" >No hay ningun examen realizado actualmente</p>
-                <div class="table-responsive">
-                    <table class="table table-striped" ng-show="doneExamsList.length > 0">
+                <p ng-hide="doneExamsList.length > 0" >No hay ningún examen disponible actualmente.</p>
+                <div class="table-responsive" ng-show="doneExamsList.length > 0">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
                             <th>#</th>
