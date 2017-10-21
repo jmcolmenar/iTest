@@ -21,7 +21,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.model;
 
-public class DoneExamHeader {
+public class DoneExamModel {
 
     private int examId;
 

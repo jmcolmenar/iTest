@@ -26,7 +26,10 @@ import com.itest.converter.MatriculaConverter;
 import com.itest.entity.Examen;
 import com.itest.entity.Matricula;
 import com.itest.model.CourseModel;
-import com.itest.model.DoneExamHeader;
+import com.itest.model.DoneExamModel;
+import com.itest.model.request.GetDoneExamsRequest;
+import com.itest.model.response.GetCoursesResponse;
+import com.itest.model.response.GetDoneExamsResponse;
 import com.itest.repository.ExamenRepository;
 import com.itest.repository.MatriculaRepository;
 import com.itest.service.LearnerManagementService;
@@ -62,7 +65,10 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
     @Qualifier("examenConverter")
     private ExamenConverter examenConverter;
 
-    public List<CourseModel> getCourseList() {
+    public GetCoursesResponse getCourseList() {
+
+        // Initialize the Get Courses Response
+        GetCoursesResponse getCoursesResponse = new GetCoursesResponse();
 
         try{
             // Get the user identifier of current user
@@ -77,29 +83,51 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
             // Order the list by year (From highest to lowest)
             Collections.sort(courseModelList, (o1, o2) -> o2.getYear().compareTo(o1.getYear()));
 
-            // Return the course model list
-            return courseModelList;
+            // Fill the response object with the course model list
+            getCoursesResponse.setCoursesList(courseModelList);
 
         }catch(Exception exc){
             // TODO: Log the exception
-            return new ArrayList<>();
+
+            // Has an error getting the courses
+            getCoursesResponse.setHasError(true);
         }
+
+        // Return the response
+        return getCoursesResponse;
     }
 
-    public List<DoneExamHeader> getDoneExamsHeader(int groupId){
-        try{
-            // Get the done exams from database and user id
-            List<Examen> doneExamList = this.examenRepository.findDoneExams(userManagementService.getUserIdOfCurrentUser(), groupId);
+    public GetDoneExamsResponse getDoneExamsHeader(GetDoneExamsRequest request){
 
+        // Initialize the response
+        GetDoneExamsResponse getDoneExamsResponse = new GetDoneExamsResponse();
+
+        try{
+            // Get the request variables
+            int groupId = request.getGroupId();
+
+            // Get the done exams from database and user id
+            List<Examen> examList = this.examenRepository.findDoneExams(userManagementService.getUserIdOfCurrentUser(), groupId);
+
+            // Get the identifier of current user
             int userId = this.userManagementService.getUserIdOfCurrentUser();
 
             // Convert the entity object list to model object list
-            return this.examenConverter.convertExamenListToDoneExamHeaderList(doneExamList, userId);
+            List<DoneExamModel> doneExamsList = this.examenConverter.convertExamenListToDoneExamHeaderList(examList, userId);
+
+            // Fill the response with the done exams list
+            getDoneExamsResponse.setDoneExamsList(doneExamsList);
 
         }catch(Exception exc){
             // TODO: Log the exception
-            return new ArrayList<>();
+
+
+            // Has an error retrieving the done exams by the user
+            getDoneExamsResponse.setHasError(true);
         }
+
+        // Return the response
+        return getDoneExamsResponse;
     }
 
 }

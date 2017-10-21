@@ -19,24 +19,21 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service;
+package com.itest.model.response;
 
 import com.itest.model.DoneExamModel;
-import com.itest.model.request.GetDoneExamsRequest;
-import com.itest.model.response.GetCoursesResponse;
-import com.itest.model.response.GetDoneExamsResponse;
 
 import java.util.List;
 
-public interface LearnerManagementService {
+public class GetDoneExamsResponse extends Response {
 
-    GetCoursesResponse getCourseList();
+    private List<DoneExamModel> doneExamsList;
 
-    GetDoneExamsResponse getDoneExamsHeader(GetDoneExamsRequest request);
+    public List<DoneExamModel> getDoneExamsList() {
+        return doneExamsList;
+    }
 
-    //void GetPendingExams();
-
-    //void GetNewExams();
-
-    //void GetNewAvailableExams();
+    public void setDoneExamsList(List<DoneExamModel> doneExamsList) {
+        this.doneExamsList = doneExamsList;
+    }
 }

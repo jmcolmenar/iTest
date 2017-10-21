@@ -24,7 +24,7 @@ package com.itest.converter;
 import com.itest.component.FormatterComponent;
 import com.itest.entity.Calificacion;
 import com.itest.entity.Examen;
-import com.itest.model.DoneExamHeader;
+import com.itest.model.DoneExamModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -39,16 +39,16 @@ public class ExamenConverter {
     @Qualifier("formatterComponent")
     private FormatterComponent formatterComponent;
 
-    public List<DoneExamHeader> convertExamenListToDoneExamHeaderList(List<Examen> examenList, int userId){
+    public List<DoneExamModel> convertExamenListToDoneExamHeaderList(List<Examen> examenList, int userId){
         // Initialize the Donde Exam Header list
-        List<DoneExamHeader> doneExamHeaderList = new ArrayList<>();
+        List<DoneExamModel> doneExamModelList = new ArrayList<>();
 
         // Check the Examen list to convert is not empty
         if(examenList != null && !examenList.isEmpty()){
 
             for(Examen exam : examenList){
-                // Initialize DoneExamHeader object
-                DoneExamHeader doneExam = new DoneExamHeader();
+                // Initialize DoneExamModel object
+                DoneExamModel doneExam = new DoneExamModel();
                 doneExam.setExamId(exam.getIdexam());
                 doneExam.setExamName(exam.getTitulo());
                 doneExam.setMaximumScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
@@ -69,13 +69,13 @@ public class ExamenConverter {
                 doneExam.setEndDate(this.formatterComponent.formatDateToString(calificacion.getFechaFin()));
                 doneExam.setTime(this.formatterComponent.formatMillisecondsToHoursMinutesAndSeconds(calificacion.getFechaFin().getTime() - calificacion.getFechaIni().getTime()));
 
-                // Add DoneExamHeader object to the list
-                doneExamHeaderList.add(doneExam);
+                // Add DoneExamModel object to the list
+                doneExamModelList.add(doneExam);
             }
         }
 
         // Return the Donde Exam Header list
-        return doneExamHeaderList;
+        return doneExamModelList;
     }
 
 }

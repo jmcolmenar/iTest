@@ -21,8 +21,10 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.controller;
 
-import com.itest.model.CourseModel;
-import com.itest.model.DoneExamHeader;
+import com.itest.model.DoneExamModel;
+import com.itest.model.request.GetDoneExamsRequest;
+import com.itest.model.response.GetCoursesResponse;
+import com.itest.model.response.GetDoneExamsResponse;
 import com.itest.service.LearnerManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,23 +41,23 @@ public class LearnerController {
     private LearnerManagementService learnerManagementService;
 
     @GetMapping("/getCourses")
-    public List<CourseModel> getCourses(){
+    public GetCoursesResponse getCourses(){
 
-        // Get the course list of current user
-        List<CourseModel> courseList = this.learnerManagementService.getCourseList();
+        // Call to the service to get the course list of current user
+        GetCoursesResponse response = this.learnerManagementService.getCourseList();
 
-        // Return the course list
-        return courseList;
+        // Return the response
+        return response;
     }
 
     @PostMapping("/getDoneExams")
-    public List<DoneExamHeader> getDoneExams(@RequestParam(value = "groupId") int groupId){
+    public GetDoneExamsResponse getDoneExams(@RequestBody GetDoneExamsRequest request){
 
-        // Get the Done examen Header by a group
-        List<DoneExamHeader> doneExamsHeaderList = this.learnerManagementService.getDoneExamsHeader(groupId);
+        // Call to the service to get the Done examens by a group
+        GetDoneExamsResponse response = this.learnerManagementService.getDoneExamsHeader(request);
 
-        // Return the list of Done Exam Header
-        return doneExamsHeaderList;
+        // Return the response
+        return response;
     }
 
 

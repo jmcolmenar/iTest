@@ -58,8 +58,20 @@ app.controller("mainCtrl", ['$scope', '$http', '$window', function($scope, $http
 
         // Request to get the courses list of user
         $http.get('/api/learner/getCourses').success(function(response){
-            // Set the variable with the courses
-            $scope.courseList = response;
+            if(response.hasError){
+                // TODO: Show error modal
+
+                // Set an empty courses list
+                $scope.courseList = {};
+            }else{
+                // Set the variable with the courses
+                $scope.courseList = response.coursesList;
+            }
+        }).error(function(response){
+            // TODO: Show error modal
+
+            // Set an empty courses list
+            $scope.courseList = {};
         });
     };
 
@@ -252,16 +264,30 @@ app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
         groupId: $scope.selectedGroupId
     });
 
-    // Get the done exams of selected subject
-    $http.post('/api/learner/getDoneExams', requestData, {
-        headers : {
-            "content-type" : "application/x-www-form-urlencoded"
-        }
-    }).success(function(data) {
-        // Set the list of done exams
-        $scope.doneExams = data;
+    var getDoneExamsRequest = {
+        groupId : $scope.selectedGroupId
+    };
 
-    }).error(function(data) {
+    // Get the done exams of selected subject
+    $http.post('/api/learner/getDoneExams', getDoneExamsRequest, {
+        headers : {
+            "content-type" : "application/json"
+        }
+    }).success(function(response) {
+        if(response.hasError){
+            // TODO: Shows an error modal
+
+            // Set an empty exams list
+            $scope.doneExams = {};
+        }else{
+            // Set the list of done exams
+            $scope.doneExams = response.doneExamsList;
+        }
+
+
+    }).error(function(response) {
+        // TODO: Shows an error modal
+
         // Error retrieving the exams of selected subject
         $scope.showRequestError = true;
     });
