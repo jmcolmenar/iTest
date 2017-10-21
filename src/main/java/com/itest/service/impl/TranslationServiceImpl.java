@@ -23,6 +23,8 @@ package com.itest.service.impl;
 
 import com.itest.constant.LanguageConstant;
 import com.itest.service.TranslationService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -37,6 +39,8 @@ import java.util.Locale;
 
 @Service("translationServiceImpl")
 public class TranslationServiceImpl implements TranslationService{
+
+    private final Log LOG = LogFactory.getLog(TranslationServiceImpl.class);
 
     @Autowired
     private MessageSource messageSource;
@@ -68,7 +72,8 @@ public class TranslationServiceImpl implements TranslationService{
                 throw new Exception("There is not a Locale with LanguageId = "+ languageId);
             }
         }catch(Exception exc){
-            // TODO: Log the exception
+            // Log the exception
+            LOG.error("Error setting the locale. Exception: " + exc.getMessage());
         }
     }
 
@@ -88,7 +93,8 @@ public class TranslationServiceImpl implements TranslationService{
                 cultureId = LanguageConstant.ENGLISH_ID;
             }
         }catch(Exception exc){
-            // TODO: Log the exception
+            // Log the exception
+            LOG.error("Error getting the LanguageId of current user. Exception: " + exc.getMessage());
         }
 
         // Return the culture id

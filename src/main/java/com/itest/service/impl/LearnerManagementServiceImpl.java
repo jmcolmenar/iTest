@@ -34,6 +34,8 @@ import com.itest.repository.ExamenRepository;
 import com.itest.repository.MatriculaRepository;
 import com.itest.service.LearnerManagementService;
 import com.itest.service.UserManagementService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,8 @@ import java.util.List;
 
 @Service("learnerManagementServiceImpl")
 public class LearnerManagementServiceImpl implements LearnerManagementService {
+
+    private final Log LOG = LogFactory.getLog(LearnerManagementServiceImpl.class);
 
     @Autowired
     @Qualifier("matriculaRepository")
@@ -87,7 +91,8 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
             getCoursesResponse.setCoursesList(courseModelList);
 
         }catch(Exception exc){
-            // TODO: Log the exception
+            // Log the exception
+            LOG.error("Error getting the courses. Exception: " + exc.getMessage());
 
             // Has an error getting the courses
             getCoursesResponse.setHasError(true);
@@ -119,8 +124,8 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
             getDoneExamsResponse.setDoneExamsList(doneExamsList);
 
         }catch(Exception exc){
-            // TODO: Log the exception
-
+            // Log the exception
+            LOG.debug("Error getting the done exams of user. Exception: " + exc.getMessage());
 
             // Has an error retrieving the done exams by the user
             getDoneExamsResponse.setHasError(true);

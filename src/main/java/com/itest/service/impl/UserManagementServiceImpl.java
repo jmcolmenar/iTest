@@ -32,6 +32,8 @@ import com.itest.model.response.UpdateUserProfileResponse;
 import com.itest.repository.UsuarioRepository;
 import com.itest.service.TranslationService;
 import com.itest.service.UserManagementService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -44,6 +46,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @Service("userManagementServiceImpl")
 public class UserManagementServiceImpl implements UserManagementService {
+
+    private static final Log LOG = LogFactory.getLog(UserManagementServiceImpl.class);
 
     @Autowired
     @Qualifier("usuarioRepository")
@@ -116,7 +120,8 @@ public class UserManagementServiceImpl implements UserManagementService {
                 changePasswordResponse.setErrorMessage(errorMessage);
             }
         }catch(Exception exc){
-            // TODO: Log the exception
+            // Log the exception
+            LOG.error("Error changing the user password. Exception: " + exc.getMessage());
 
             // Set the error message when an exception is thrown
             String errorMessage = this.translationService.getMessage("changePassword.errorChangingPassword");
@@ -142,7 +147,8 @@ public class UserManagementServiceImpl implements UserManagementService {
             getFullNameResponse.setFullName(usuario.getNombre() + " " + usuario.getApes());
 
         }catch (Exception exc){
-            // TODO: Log the exception
+            // Log the exception
+            LOG.error("Error getting the fullname of user. Exception: " + exc.getMessage());
 
             // Set the error getting the full name
             getFullNameResponse.setHasError(true);
@@ -171,7 +177,8 @@ public class UserManagementServiceImpl implements UserManagementService {
             getUserProfileResponse.setLanguageId(this.translationService.getCurrentLanguageId());
 
         }catch(Exception exc){
-            // TODO: Log the exception
+            // Log the exception
+            LOG.error("Error getting the user profile. Exception: " + exc.getMessage());
 
             // Has an error getting the user profile
             getUserProfileResponse.setHasError(true);
@@ -183,7 +190,7 @@ public class UserManagementServiceImpl implements UserManagementService {
 
     public UpdateUserProfileResponse updateUserProfile(UpdateUserProfileRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
         // Initialize the Response
-        UpdateUserProfileResponse userProfileResponse = new UpdateUserProfileResponse();
+        UpdateUserProfileResponse updateUserProfileResponse = new UpdateUserProfileResponse();
 
         try{
             // Get the Request variables
@@ -210,13 +217,14 @@ public class UserManagementServiceImpl implements UserManagementService {
             this.translationService.setLocale(languageId, httpRequest, httpResponse);
 
         }catch(Exception exc){
-            // TODO: Log the exception
+            // Log the exception
+            LOG.error("Error updating the user profile. Exception: " + exc.getMessage());
 
             // It has an error updating the user profile
-            userProfileResponse.setHasError(true);
+            updateUserProfileResponse.setHasError(true);
         }
 
         // Return the user profile response
-        return userProfileResponse;
+        return updateUserProfileResponse;
     }
 }
