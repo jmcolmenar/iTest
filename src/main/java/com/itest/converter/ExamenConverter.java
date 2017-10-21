@@ -52,6 +52,7 @@ public class ExamenConverter {
                 doneExam.setExamId(exam.getIdexam());
                 doneExam.setExamName(exam.getTitulo());
                 doneExam.setMaximumScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
+                doneExam.setActiveReview(exam.getRevActiva() == 1);
 
                 // Get the "Calificacion" object corresponding to the user
                 Calificacion calificacion = null;

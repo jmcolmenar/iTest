@@ -37,6 +37,8 @@ public class DoneExamModel {
 
     private String time;
 
+    private boolean activeReview;
+
     public int getExamId() {
         return examId;
     }
@@ -91,5 +93,13 @@ public class DoneExamModel {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public boolean isActiveReview() {
+        return activeReview;
+    }
+
+    public void setActiveReview(boolean activeReview) {
+        this.activeReview = activeReview;
     }
 }

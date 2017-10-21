@@ -37,8 +37,7 @@ public interface ExamenRepository extends JpaRepository<Examen, Serializable> {
             "   ex " +
             "from " +
             "   Examen ex " +
-            "where ex.revActiva = 1 " +
-            "   and ex.fechaIniRev <= current_date " +
+            "where ex.fechaIniRev <= current_date " +
             "   and ex.fechaFinRev >= current_date" +
             "   and :userid in (select excal.usuarios.idusu from ex.califs excal where excal.fechaIni <= current_date) " +
             "   and ex.grupos.idgrupo = :groupid")

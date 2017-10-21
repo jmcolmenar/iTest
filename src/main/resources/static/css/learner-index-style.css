@@ -130,3 +130,12 @@ body{
 #available-exams-div, #next-exams-div, #done-exams-div{
     padding-top: 25px;
 }
+
+#send-eamil-to-tutor-button{
+    margin-bottom: 20px;
+}
+
+.btn-exams-type:focus, .btn-exams-type:hover{
+    outline: none;
+    background-color: rgba(255, 0, 0, 0.65);
+}
