@@ -19,21 +19,17 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.model.response;
+package com.itest.model.request;
 
-import com.itest.model.DoneExamModel;
+public class GetExamsInfoRequest {
 
-import java.util.List;
+    private int groupId;
 
-public class GetDoneExamsResponse extends Response {
-
-    private List<DoneExamModel> doneExamsList;
-
-    public List<DoneExamModel> getDoneExamsList() {
-        return doneExamsList;
+    public int getGroupId() {
+        return groupId;
     }
 
-    public void setDoneExamsList(List<DoneExamModel> doneExamsList) {
-        this.doneExamsList = doneExamsList;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 }

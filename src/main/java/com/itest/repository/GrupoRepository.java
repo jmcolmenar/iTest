@@ -19,21 +19,14 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service;
+package com.itest.repository;
 
-import com.itest.model.request.GetExamsInfoRequest;
-import com.itest.model.response.GetCoursesResponse;
-import com.itest.model.response.GetExamsInfoResponse;
+import com.itest.entity.Grupo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface LearnerManagementService {
+import java.io.Serializable;
 
-    GetCoursesResponse getCourseList();
-
-    GetExamsInfoResponse getDoneExamsHeader(GetExamsInfoRequest request);
-
-    //void GetPendingExams();
-
-    //void GetNewExams();
-
-    //void GetNewAvailableExams();
+@Repository("grupoRepository")
+public interface GrupoRepository extends JpaRepository<Grupo, Serializable> {
 }

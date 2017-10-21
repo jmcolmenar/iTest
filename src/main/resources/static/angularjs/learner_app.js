@@ -264,12 +264,12 @@ app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
         groupId: $scope.selectedGroupId
     });
 
-    var getDoneExamsRequest = {
+    var getExamsInfoRequest = {
         groupId : $scope.selectedGroupId
     };
 
     // Get the done exams of selected subject
-    $http.post('/api/learner/getDoneExams', getDoneExamsRequest, {
+    $http.post('/api/learner/getExamsInfo', getExamsInfoRequest, {
         headers : {
             "content-type" : "application/json"
         }
@@ -277,11 +277,13 @@ app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
         if(response.hasError){
             // TODO: Shows an error modal
 
-            // Set an empty exams list
-            $scope.doneExams = {};
+            // Set empty subject and exams info
+            this.subject = {};
+            this.doneExams = {};
         }else{
             // Set the list of done exams
-            $scope.doneExams = response.doneExamsList;
+            this.subject = response.subject;
+            this.doneExams = response.doneExamsList;
         }
 
 

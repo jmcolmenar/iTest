@@ -27,6 +27,8 @@ public class SubjectModel {
 
     private int subjectId;
 
+    private String year;
+
     private String subjectName;
 
     private String subjectDescription;
@@ -61,5 +63,13 @@ public class SubjectModel {
 
     public void setSubjectDescription(String subjectDescription) {
         this.subjectDescription = subjectDescription;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 }

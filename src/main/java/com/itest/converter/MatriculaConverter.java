@@ -40,6 +40,10 @@ public class MatriculaConverter {
     @Qualifier("translationServiceImpl")
     TranslationService translationService;
 
+    @Autowired
+    @Qualifier("grupoConverter")
+    GrupoConverter grupoConverter;
+
     public List<CourseModel> convertMatriculaListToCourseModelList(List<Matricula> matriculaList){
         // Initialize the list with the Course model objects
         List<CourseModel> courseModelList = new ArrayList<>();
@@ -60,14 +64,14 @@ public class MatriculaConverter {
                     List<SubjectModel> subjectList = yearAndSubjectsMap.get(year);
 
                     // Add subject model to list
-                    SubjectModel subject = this.convertGrupoToSubjectModel(mat.getGrupos());
+                    SubjectModel subject = this.grupoConverter.convertGrupoToSubjectModel(mat.getGrupos());
                     subjectList.add(subject);
                 }else{
                     // Initialize the subject list to this year
                     List<SubjectModel> subjectList = new ArrayList<>();
 
                     // Add the subject model to the list
-                    SubjectModel subject = this.convertGrupoToSubjectModel(mat.getGrupos());
+                    SubjectModel subject = this.grupoConverter.convertGrupoToSubjectModel(mat.getGrupos());
                     subjectList.add(subject);
 
                     // Put the year and subject list in the map
@@ -87,23 +91,4 @@ public class MatriculaConverter {
 
         return courseModelList;
     }
-
-    private SubjectModel convertGrupoToSubjectModel(Grupo group){
-        // Initialize subject model object
-        SubjectModel subjectModel = new SubjectModel();
-
-        // Fill the object with group id, subject id and subject name
-        subjectModel.setGroupId(group.getIdgrupo());
-        subjectModel.setSubjectId(group.getAsignaturas().getIdasig());
-        subjectModel.setSubjectName(group.getAsignaturas().getNombre());
-
-        // fill the subject description
-        Asignatura asignatura = group.getAsignaturas();
-        String subjectDescription = this.translationService.getMessage("coursesList.subjectGroup") + " " + group.getGrupo();
-        subjectModel.setSubjectDescription(subjectDescription);
-
-        // Return the subject model object
-        return subjectModel;
-    }
-
 }
