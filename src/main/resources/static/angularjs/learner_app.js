@@ -278,12 +278,12 @@ app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
             // TODO: Shows an error modal
 
             // Set empty subject and exams info
-            this.subject = {};
-            this.doneExams = {};
+            $scope.subject = {};
+            $scope.doneExams = {};
         }else{
             // Set the list of done exams
-            this.subject = response.subject;
-            this.doneExams = response.doneExamsList;
+            $scope.subject = response.subject;
+            $scope.doneExamsList = response.doneExamsList;
         }
 
 
@@ -293,5 +293,26 @@ app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
         // Error retrieving the exams of selected subject
         $scope.showRequestError = true;
     });
+
+    // Function to active the clicked button and deactive the others
+    $scope.clickExamsButton = function($event){
+        $("#availableExamsButton").removeClass("active");
+        $("#nextExamsButton").removeClass("active");
+        $("#doneExamsButton").removeClass("active");
+
+        var clickedButton = $event.currentTarget;
+        $("#"+clickedButton.id).addClass("active");
+    };
+
+    // Functions to check the activated button
+    $scope.isAvailableExamsButtonActived = function(){
+        return $("#availableExamsButton").hasClass("active");
+    };
+    $scope.isNextExamsButtonActived = function(){
+        return $("#nextExamsButton").hasClass("active");
+    };
+    $scope.isDoneExamsButtonActived = function(){
+        return $("#doneExamsButton").hasClass("active");
+    };
 
 }]);

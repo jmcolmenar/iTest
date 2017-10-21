@@ -37,7 +37,7 @@ body{
     margin-top: 0px;
 }
 
-#main-courses-div, #main-pass-div, #main-profile-div{
+#main-courses-div, #main-pass-div, #main-profile-div, #main-subject-div{
     border: 3px solid rgb(217, 32, 38);
     border-top: 16px solid rgb(217, 32, 38);
     box-shadow: rgba(255, 0, 0, 0.3) 3px 3px 3px 3px;
@@ -90,4 +90,43 @@ body{
 
 .course-class {
     text-align: center;
+}
+
+/* === SUBJECT === */
+
+#subject-title-div{
+    padding-top: 15px;
+    color: rgb(0, 0, 0);
+    padding-left: 30px;
+    border-bottom: 2px solid rgb(217, 32, 38);
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+#subject-title-div h1{
+    margin-top: 0px;
+    border-bottom: 3px solid black;
+    display: inline;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#subject-title-div h3{
+    margin-left: 10px;
+}
+
+#subject-title-div h5{
+    margin-left: 15px;
+}
+
+.btn-exams-type{
+    background-color: rgba(255, 0, 0, 0.65);
+}
+
+#subject-exams-main-div{
+    margin-top: -20px;
+    margin-bottom: 20px;
+}
+
+#available-exams-div, #next-exams-div, #done-exams-div{
+    padding-top: 25px;
 }

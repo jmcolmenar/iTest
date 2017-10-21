@@ -1,3 +1,82 @@
-<div>
-    <h1>SUBJECT</h1>
+<div id="main-subject-div" xmlns:th="http://www.thymeleaf.org">
+    <div id="subject-title-div">
+        <h1>{{subject.year}}</h1>
+        <h3>{{subject.subjectName}}</h3>
+        <h5>{{subject.subjectDescription}}</h5>
+    </div>
+    <br/>
+    <div class="container-fluid">
+        <div id="subject-exams-main-div">
+            <h2>Lista de exámenes</h2>
+            <p>A continuación, se muestra la lista de examanes disponibles, próximos y realizados por el alumno.</p>
+            <div class="btn-group">
+                <button id="availableExamsButton" type="button" class="btn btn-danger btn-exams-type active" ng-click="clickExamsButton($event)">Disponibles</button>
+                <button id="nextExamsButton" type="button" class="btn btn-danger btn-exams-type" ng-click="clickExamsButton($event)">Próximos</button>
+                <button id="doneExamsButton" type="button" class="btn btn-danger btn-exams-type" ng-click="clickExamsButton($event)">Realizados</button>
+            </div>
+            <div id="available-exams-div" ng-show="isAvailableExamsButtonActived()">
+                <p ng-hide="availableExamsList.length > 0" >No hay ningún examen disponible actualmente.</p>
+                <div class="table-responsive">
+                    <table class="table table-striped" ng-show="availableExamsList.length > 0">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="availableExam in availableExamsList">
+                            <td>{{$index + 1}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="next-exams-div" ng-show="isNextExamsButtonActived()">
+                <p ng-hide="nextExamsList.length > 0" >No hay ningun examen próximo actualmente</p>
+                <div class="table-responsive">
+                    <table class="table table-striped" ng-show="nextExamsList.length > 0">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="nextExam in nextExamsList">
+                            <td>{{$index + 1}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="done-exams-div" ng-show="isDoneExamsButtonActived()">
+                <p ng-hide="doneExamsList.length > 0" >No hay ningun examen realizado actualmente</p>
+                <div class="table-responsive">
+                    <table class="table table-striped" ng-show="doneExamsList.length > 0">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Nota</th>
+                            <th>Nota Máxima</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Tiempo</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="doneExam in doneExamsList">
+                            <td>{{$index + 1}}</td>
+                            <td>{{doneExam.examName}}</td>
+                            <td>{{doneExam.score}}</td>
+                            <td>{{doneExam.maximumScore}}</td>
+                            <td>{{doneExam.startDate}}</td>
+                            <td>{{doneExam.endDate}}</td>
+                            <td>{{doneExam.time}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
