@@ -2,6 +2,9 @@
 
 body{
     margin-top: 70px;
+    background-image: url(/img/background.png);
+    background-position: left top;
+    background-repeat: repeat;
 }
 
 .navbar-brand{
@@ -42,6 +45,7 @@ body{
     border-top: 16px solid rgb(217, 32, 38);
     box-shadow: rgba(255, 0, 0, 0.3) 3px 3px 3px 3px;
     margin-bottom: 15px;
+    background-color: white;
 }
 
 .form-horizontal{
@@ -127,12 +131,29 @@ body{
     margin-bottom: 20px;
 }
 
+#exams-button-group{
+    max-width: 500px;
+}
+
 #available-exams-div, #next-exams-div, #done-exams-div{
     padding-top: 25px;
 }
 
-#send-eamil-to-tutor-button{
+#send-eamil-to-tutor-button, #go-to-home-button{
     margin-bottom: 20px;
+}
+
+#go-to-home-button{
+    margin-right: 10px;
+}
+
+/* For small devices (phones) the "back" and "Send email to tutor" buttons are small */
+@media(max-width: 350px){
+    #send-eamil-to-tutor-button, #go-to-home-button{
+        padding:6px 12px;
+        font-size:14px;
+        border-radius:4px
+    }
 }
 
 .btn-exams-type:focus, .btn-exams-type:hover{

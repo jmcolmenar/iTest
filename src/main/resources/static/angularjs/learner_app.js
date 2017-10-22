@@ -254,10 +254,6 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
 app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
 
     // Prepare te request to get the exams by the Group Id of selected subject
-    var requestData = $.param({
-        groupId: $scope.selectedGroupId
-    });
-
     var getExamsInfoRequest = {
         groupId : $scope.selectedGroupId
     };
@@ -279,8 +275,6 @@ app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
             $scope.subject = response.subject;
             $scope.doneExamsList = response.doneExamsList;
         }
-
-
     }).error(function(response) {
         // TODO: Shows an error modal
 
@@ -290,9 +284,9 @@ app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
 
     // Function to active the clicked button and deactive the others
     $scope.clickExamsButton = function($event){
-        $("#availableExamsButton").removeClass("active");
-        $("#nextExamsButton").removeClass("active");
-        $("#doneExamsButton").removeClass("active");
+        $("#available-exams-button").removeClass("active");
+        $("#next-exams-button").removeClass("active");
+        $("#done-exams-button").removeClass("active");
 
         var clickedButton = $event.currentTarget;
         $("#"+clickedButton.id).addClass("active");
@@ -300,13 +294,13 @@ app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
 
     // Functions to check the activated button
     $scope.isAvailableExamsButtonActived = function(){
-        return $("#availableExamsButton").hasClass("active");
+        return $("#available-exams-button").hasClass("active");
     };
     $scope.isNextExamsButtonActived = function(){
-        return $("#nextExamsButton").hasClass("active");
+        return $("#next-exams-button").hasClass("active");
     };
     $scope.isDoneExamsButtonActived = function(){
-        return $("#doneExamsButton").hasClass("active");
+        return $("#done-exams-button").hasClass("active");
     };
 
 }]);

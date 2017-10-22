@@ -1,3 +1,4 @@
+<a href="#/" id="go-to-home-button" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-arrow-left"></i></a>
 <button id="send-eamil-to-tutor-button" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;Enviar correo al profesor</button>
 <div id="main-subject-div" xmlns:th="http://www.thymeleaf.org">
     <div id="subject-title-div">
@@ -10,10 +11,10 @@
         <div id="subject-exams-main-div">
             <h2>Lista de exámenes</h2>
             <p>A continuación, se muestra la lista de examanes disponibles, próximos y realizados por el alumno.</p>
-            <div class="btn-group">
-                <button id="availableExamsButton" type="button" class="btn btn-danger btn-exams-type active" ng-click="clickExamsButton($event)">Disponibles</button>
-                <button id="nextExamsButton" type="button" class="btn btn-danger btn-exams-type" ng-click="clickExamsButton($event)">Próximos</button>
-                <button id="doneExamsButton" type="button" class="btn btn-danger btn-exams-type" ng-click="clickExamsButton($event)">Realizados</button>
+            <div id="exams-button-group" class="btn-group btn-group-justified">
+                <a id="available-exams-button" type="button" class="btn btn-danger btn-exams-type active" ng-click="clickExamsButton($event)">Disponibles</a>
+                <a id="next-exams-button" type="button" class="btn btn-danger btn-exams-type" ng-click="clickExamsButton($event)">Próximos</a>
+                <a id="done-exams-button" type="button" class="btn btn-danger btn-exams-type" ng-click="clickExamsButton($event)">Realizados</a>
             </div>
             <div id="available-exams-div" ng-show="isAvailableExamsButtonActived()">
                 <p ng-hide="availableExamsList.length > 0" >No hay ningún examen disponible actualmente.</p>
@@ -74,7 +75,7 @@
                             <td>{{doneExam.startDate}}</td>
                             <td>{{doneExam.endDate}}</td>
                             <td>{{doneExam.time}}</td>
-                            <td><button class="btn btn-primary btn-xs {{doneExam.activeReview ? '' : 'disabled'}}">Revisar</button></td>
+                            <td><button class="btn btn-primary btn-xs" ng-show="doneExam.activeReview">Revisar</button></td>
                         </tr>
                         </tbody>
                     </table>
