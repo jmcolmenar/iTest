@@ -39,6 +39,9 @@ app.config(['$routeProvider', function ($routeProvider){
         .when('/subject',{
             templateUrl: '/learner/partial/subject',
             controller: 'subjectCtrl'
+        })
+        .otherwise({
+            redirectTo: '/'
         });
 }]);
 
