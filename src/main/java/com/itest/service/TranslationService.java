@@ -27,8 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 public interface TranslationService {
 
     // Get the translated message by the resource identifier
-    public abstract String getMessage(String messageResource);
+    String getMessage(String messageResource);
 
     // Set the application locale from language id
-    public abstract void setLocale(int languageId, HttpServletRequest request, HttpServletResponse response);
+    void setLocale(int languageId, HttpServletRequest request, HttpServletResponse response);
 }
