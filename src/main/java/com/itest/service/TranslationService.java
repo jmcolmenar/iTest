@@ -31,7 +31,4 @@ public interface TranslationService {
 
     // Set the application locale from language id
     public abstract void setLocale(int languageId, HttpServletRequest request, HttpServletResponse response);
-
-    // Get the current language identifier
-    public abstract int getCurrentLanguageId();
 }

@@ -45,4 +45,6 @@ public interface UserManagementService {
     GetUserProfileResponse getUserProfile();
 
     UpdateUserProfileResponse updateUserProfile(UpdateUserProfileRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse);
+
+    void setLocaleByCurrentUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
 }

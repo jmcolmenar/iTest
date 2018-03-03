@@ -76,28 +76,4 @@ public class TranslationServiceImpl implements TranslationService{
             LOG.error("Error setting the locale. Exception: " + exc.getMessage());
         }
     }
-
-    // Get the current culture identifier
-    public int getCurrentLanguageId(){
-        // The culture id to return (Spanish for default)
-        int cultureId = LanguageConstant.SPANISH_ID;
-
-        try{
-            // Get the current locate from the context
-            Locale locale = LocaleContextHolder.getLocale();
-
-            // Set the culture id from locale
-            if(locale.getLanguage().equals(LanguageConstant.SPANISH_LANGUAGE)){
-                cultureId = LanguageConstant.SPANISH_ID;
-            }else if(locale.getLanguage().equals(LanguageConstant.ENGLISH_LANGUAGE)){
-                cultureId = LanguageConstant.ENGLISH_ID;
-            }
-        }catch(Exception exc){
-            // Log the exception
-            LOG.error("Error getting the LanguageId of current user. Exception: " + exc.getMessage());
-        }
-
-        // Return the culture id
-        return cultureId;
-    }
 }

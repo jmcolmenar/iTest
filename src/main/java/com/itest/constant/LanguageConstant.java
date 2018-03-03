@@ -26,21 +26,15 @@ import java.util.Locale;
 public class LanguageConstant {
 
     // The identifiers of cultures
-
     public static final int SPANISH_ID = 0;
-
     public static final int ENGLISH_ID = 1;
 
     // The strings with the languages of locales
-
     public static final String SPANISH_LANGUAGE = "es";
-
     public static final String ENGLISH_LANGUAGE = "en";
 
 
     // The strings with the locales
-
     public static Locale SPANSIH_LOCALE = new Locale(SPANISH_LANGUAGE, "");
-
     public static Locale ENGLISH_LOCALE = new Locale(ENGLISH_LANGUAGE, "");
 }

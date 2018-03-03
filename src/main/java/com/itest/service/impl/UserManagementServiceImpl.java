@@ -189,17 +189,12 @@ public class UserManagementServiceImpl implements UserManagementService {
 
         try{
 
-            // Get the user id of current user
-            int userId = this.getUserIdOfCurrentUser();
-
             // Get the user from database by user id
+            int userId = this.getUserIdOfCurrentUser();
             Usuario usuario = this.usuarioRepository.findByIdusu(userId);
 
             // Convert the "Usuario" entity from database to response object
             getUserProfileResponse = this.usuarioConverter.convertUsuarioToGetUserProfileResponse(usuario);
-
-            // Set the language identifier of user profile response
-            getUserProfileResponse.setLanguageId(this.translationService.getCurrentLanguageId());
 
         }catch(Exception exc){
             // Log the exception
@@ -236,6 +231,7 @@ public class UserManagementServiceImpl implements UserManagementService {
             usuario.setApes(lastname);
             usuario.setDni(dni);
             usuario.setEmail(email);
+            usuario.setIdioma(languageId);
             this.usuarioRepository.save(usuario);
 
             // Set the language by the language identifier
@@ -251,5 +247,17 @@ public class UserManagementServiceImpl implements UserManagementService {
 
         // Return the user profile response
         return updateUserProfileResponse;
+    }
+
+    public void setLocaleByCurrentUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        // Get the current user from database
+        int userId = this.getUserIdOfCurrentUser();
+        Usuario user = this.usuarioRepository.findByIdusu(userId);
+
+        // Get the language of current user
+        int languageId = user.getIdioma();
+
+        // Set the locale by the language of user
+        this.translationService.setLocale(languageId, httpServletRequest, httpServletResponse);
     }
 }

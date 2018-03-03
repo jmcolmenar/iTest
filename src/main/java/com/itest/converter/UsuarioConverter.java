@@ -38,6 +38,7 @@ public class UsuarioConverter {
         getUserProfileResponse.setLastName(usuario.getApes());
         getUserProfileResponse.setEmail(usuario.getEmail() != null ? usuario.getEmail() : "");
         getUserProfileResponse.setDni(usuario.getDni());
+        getUserProfileResponse.setLanguageId(usuario.getIdioma());
 
         // Return the user profile response
         return getUserProfileResponse;

@@ -57,6 +57,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         // Check if the user is a valid user
         boolean isValidUser = this.userManagementService.isAuthorizedUser(authentication);
 
+        // When the current user is authorized, the current locale of application is set
+        if(isValidUser){
+            this.userManagementService.setLocaleByCurrentUser(httpServletRequest, httpServletResponse);
+        }
+
         // Return the current user in JSON format
         ObjectMapper mapper = new ObjectMapper();
         CurrentUserModel currentUserModel = new CurrentUserModel(isValidUser, authentication.getName());
