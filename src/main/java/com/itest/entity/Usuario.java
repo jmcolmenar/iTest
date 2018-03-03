@@ -37,6 +37,9 @@ public class Usuario  {
 	@Column(unique=true, nullable=false, length=20)
 	private String usuario;
 
+	@Column(nullable=false)
+	private int idioma;
+
 	//bi-directional many-to-one association to Calificacion
 	@OneToMany(mappedBy="usuarios")
 	private List<Calificacion> califs;
@@ -131,6 +134,14 @@ public class Usuario  {
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+
+	public int getIdioma() {
+		return idioma;
+	}
+
+	public void setIdioma(int idioma) {
+		this.idioma = idioma;
 	}
 
 	public List<Calificacion> getCalifs() {
