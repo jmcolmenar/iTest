@@ -23,8 +23,10 @@ package com.itest.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itest.model.CurrentUserModel;
+import com.itest.service.UserManagementService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +34,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Set;
 
 
 /**
@@ -40,11 +41,10 @@ import java.util.Set;
  */
 @Component("customAuthenticationSuccessHandler")
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    // Roles of users
-    public static final String ROLE_LEARNER = "LEARNER";
-    public static final String ROLE_KID = "KID";
-    public static final String ROLE_TUTOR = "TUTOR";
-    public static final String ROLE_ADMIN = "ADMIN";
+
+    @Autowired
+    @Qualifier("userManagementServiceImpl")
+    UserManagementService userManagementService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
@@ -55,36 +55,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         httpServletResponse.setContentType("application/json");
 
         // Check if the user is a valid user
-        boolean isValidUser = this.isAuthenticatedUser(authentication);
+        boolean isValidUser = this.userManagementService.isAuthorizedUser(authentication);
 
         // Return the current user in JSON format
         ObjectMapper mapper = new ObjectMapper();
         CurrentUserModel currentUserModel = new CurrentUserModel(isValidUser, authentication.getName());
         String loggedUserJson = mapper.writeValueAsString(currentUserModel);
         httpServletResponse.getWriter().print(loggedUserJson);
-    }
-
-     /**
-     * Check if the current user in the Authentication context is valid
-     * @param auth The current authentication
-     * @return If the current user is a valid user
-     */
-    public boolean isAuthenticatedUser(Authentication auth) {
-        boolean authenticated = false;
-
-        // Check the Authentication object
-        if(auth == null){
-            return false;
-        }
-
-        // Get the roles of authenticated user
-        Set<String> roles = AuthorityUtils.authorityListToSet(auth.getAuthorities());
-
-        // Check if there is an authenticated user with the Admin, Tutor or Learner role
-        if(roles != null && !roles.isEmpty()){
-            authenticated = roles.contains(ROLE_LEARNER) || roles.contains(ROLE_KID) || roles.contains(ROLE_TUTOR) || roles.contains(ROLE_ADMIN);
-        }
-
-        return authenticated;
     }
 }

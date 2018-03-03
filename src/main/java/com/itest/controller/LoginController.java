@@ -21,9 +21,11 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.controller;
 
-import com.itest.configuration.CustomAuthenticationSuccessHandler;
+import com.itest.constant.UserRoleConstant;
 import com.itest.model.CurrentUserModel;
+import com.itest.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,7 +43,8 @@ import java.util.Set;
 public class LoginController {
 
     @Autowired
-    CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+    @Qualifier("userManagementServiceImpl")
+    private UserManagementService userManagementService;
 
     /**
      * Return the index page as a view
@@ -64,7 +67,7 @@ public class LoginController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         // Check if the user is a valid user
-        boolean isValidUser = this.authenticationSuccessHandler.isAuthenticatedUser(auth);
+        boolean isValidUser = this.userManagementService.isAuthorizedUser(auth);
 
         // Return the current user
         return new CurrentUserModel(isValidUser, auth != null ? auth.getName() : null);
@@ -122,13 +125,13 @@ public class LoginController {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
         // Redirects depending of user's roles
-        if (roles.contains(CustomAuthenticationSuccessHandler.ROLE_LEARNER) || roles.contains(CustomAuthenticationSuccessHandler.ROLE_KID)) {
+        if (roles.contains(UserRoleConstant.ROLE_LEARNER) || roles.contains(UserRoleConstant.ROLE_KID)) {
             // Redirects to learner index
             route = "/learner/";
-        }else if(roles.contains(CustomAuthenticationSuccessHandler.ROLE_TUTOR)){
+        }else if(roles.contains(UserRoleConstant.ROLE_TUTOR)){
             // Redirects to tutor index
             route = "/tutor/";
-        }else if(roles.contains(CustomAuthenticationSuccessHandler.ROLE_ADMIN)){
+        }else if(roles.contains(UserRoleConstant.ROLE_ADMIN)){
             // Redirects to admin index
             route = "/admin/";
         }

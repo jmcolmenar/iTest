@@ -21,6 +21,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.impl;
 
+import com.itest.constant.UserRoleConstant;
 import com.itest.converter.UsuarioConverter;
 import com.itest.entity.Usuario;
 import com.itest.model.request.ChangePasswordRequest;
@@ -38,11 +39,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
 
 @Service("userManagementServiceImpl")
 public class UserManagementServiceImpl implements UserManagementService {
@@ -61,6 +64,28 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Qualifier("translationServiceImpl")
     TranslationService translationService;
 
+    public boolean isAuthorizedUser(Authentication auth){
+        boolean isAuthorized = false;
+
+        // Check the Authentication object
+        if(auth == null){
+            return false;
+        }
+
+        // Get the roles of authenticated user
+        Set<String> roles = AuthorityUtils.authorityListToSet(auth.getAuthorities());
+
+        // Check if the authenticated user has the Admin, Tutor ,Learner or Kid role
+        if(roles != null && !roles.isEmpty()){
+            isAuthorized = roles.contains(UserRoleConstant.ROLE_LEARNER)
+                    || roles.contains(UserRoleConstant.ROLE_KID)
+                    || roles.contains(UserRoleConstant.ROLE_TUTOR)
+                    || roles.contains(UserRoleConstant.ROLE_ADMIN);
+        }
+
+        // Return if the current user is authorized
+        return isAuthorized;
+    }
 
     public int getUserIdOfCurrentUser() {
         // Get the current user from SecurityContextHolder

@@ -23,6 +23,7 @@ package com.itest.configuration;
 
 import javax.sql.DataSource;
 
+import com.itest.constant.UserRoleConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
@@ -60,10 +61,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Authorizes the requests to resources depending of user's roles
-        http.authorizeRequests().antMatchers("/api/user/**", "/user/**").access("hasAnyAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_LEARNER +"','"+ CustomAuthenticationSuccessHandler.ROLE_KID +"','"+ CustomAuthenticationSuccessHandler.ROLE_TUTOR +"','"+ CustomAuthenticationSuccessHandler.ROLE_ADMIN +"')");
-        http.authorizeRequests().antMatchers("/api/learner/**", "/learner/**").access("hasAnyAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_LEARNER +"','"+ CustomAuthenticationSuccessHandler.ROLE_KID +"')");
-        http.authorizeRequests().antMatchers("/api/tutor/**", "/tutor/**").access("hasAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_TUTOR +"')");
-        http.authorizeRequests().antMatchers("/api/admin/**", "/admin/**").access("hasAuthority('"+ CustomAuthenticationSuccessHandler.ROLE_ADMIN +"')");
+        http.authorizeRequests().antMatchers("/api/user/**", "/user/**").access("hasAnyAuthority('"+ UserRoleConstant.ROLE_LEARNER +"','"+ UserRoleConstant.ROLE_KID +"','"+ UserRoleConstant.ROLE_TUTOR +"','"+ UserRoleConstant.ROLE_ADMIN +"')");
+        http.authorizeRequests().antMatchers("/api/learner/**", "/learner/**").access("hasAnyAuthority('"+ UserRoleConstant.ROLE_LEARNER +"','"+ UserRoleConstant.ROLE_KID +"')");
+        http.authorizeRequests().antMatchers("/api/tutor/**", "/tutor/**").access("hasAuthority('"+ UserRoleConstant.ROLE_TUTOR +"')");
+        http.authorizeRequests().antMatchers("/api/admin/**", "/admin/**").access("hasAuthority('"+ UserRoleConstant.ROLE_ADMIN +"')");
 
         // Specifies the AuthenticationEntryPoint and AccessDeniedHandler to be used
         http.exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
