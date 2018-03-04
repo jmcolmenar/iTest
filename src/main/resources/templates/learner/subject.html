@@ -1,5 +1,5 @@
 <a href="#/" id="go-to-home-button" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-arrow-left"></i></a>
-<button id="send-eamil-to-tutor-button" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;Enviar correo al profesor</button>
+<button xmlns:th="http://www.thymeleaf.org" id="send-eamil-to-tutor-button" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;<span th:text="#{subject.sendMailToTeacher}"></span></button>
 <div id="main-subject-div" xmlns:th="http://www.thymeleaf.org">
     <div id="subject-title-div">
         <h1>{{subject.year}}</h1>
@@ -9,15 +9,15 @@
     <br/>
     <div class="container-fluid">
         <div id="subject-exams-main-div">
-            <h2>Lista de exámenes</h2>
-            <p>A continuación, se muestra la lista de examanes disponibles, próximos y realizados por el alumno.</p>
+            <h2 th:text="#{subject.examList}"></h2>
+            <p th:text="#{subject.examListDescription}"></p>
             <div id="exams-button-group" class="btn-group btn-group-justified">
-                <a id="available-exams-button" type="button" class="btn btn-danger btn-exams-type active" ng-click="clickExamsButton($event)">Disponibles</a>
-                <a id="next-exams-button" type="button" class="btn btn-danger btn-exams-type" ng-click="clickExamsButton($event)">Próximos</a>
-                <a id="done-exams-button" type="button" class="btn btn-danger btn-exams-type" ng-click="clickExamsButton($event)">Realizados</a>
+                <a id="available-exams-button" type="button" class="btn btn-danger btn-exams-type active" ng-click="clickExamsButton($event)" th:text="#{subject.availableExamTab}"></a>
+                <a id="next-exams-button" type="button" class="btn btn-danger btn-exams-type" ng-click="clickExamsButton($event)" th:text="#{subject.upcomingExamTab}"></a>
+                <a id="done-exams-button" type="button" class="btn btn-danger btn-exams-type" ng-click="clickExamsButton($event)" th:text="#{subject.doneExamTab}"></a>
             </div>
             <div id="available-exams-div" ng-show="isAvailableExamsButtonActived()">
-                <p ng-hide="availableExamsList.length > 0" >No hay ningún examen disponible actualmente.</p>
+                <p ng-hide="availableExamsList.length > 0" th:text="#{subject.emptyExamList}"></p>
                 <div class="table-responsive" ng-show="availableExamsList.length > 0">
                     <table class="table table-striped">
                         <thead>
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div id="next-exams-div" ng-show="isNextExamsButtonActived()">
-                <p ng-hide="nextExamsList.length > 0" >No hay ningún examen disponible actualmente.</p>
+                <p ng-hide="nextExamsList.length > 0" th:text="#{subject.emptyExamList}"></p>
                 <div class="table-responsive" ng-show="nextExamsList.length > 0">
                     <table class="table table-striped">
                         <thead>
@@ -51,18 +51,18 @@
                 </div>
             </div>
             <div id="done-exams-div" ng-show="isDoneExamsButtonActived()">
-                <p ng-hide="doneExamsList.length > 0" >No hay ningún examen disponible actualmente.</p>
+                <p ng-hide="doneExamsList.length > 0" th:text="#{subject.emptyExamList}"></p>
                 <div class="table-responsive" ng-show="doneExamsList.length > 0">
                     <table class="table table-striped">
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Nombre</th>
-                            <th>Nota</th>
-                            <th>Nota Máxima</th>
-                            <th>Fecha Inicio</th>
-                            <th>Fecha Fin</th>
-                            <th>Tiempo</th>
+                            <th th:text="#{subject.examInfo.name}"></th>
+                            <th th:text="#{subject.examInfo.score}"></th>
+                            <th th:text="#{subject.examInfo.maxScore}"></th>
+                            <th th:text="#{subject.examInfo.startDate}"></th>
+                            <th th:text="#{subject.examInfo.endDate}"></th>
+                            <th th:text="#{subject.examInfo.time}"></th>
                             <th></th>
                         </tr>
                         </thead>
@@ -75,7 +75,7 @@
                             <td>{{doneExam.startDate}}</td>
                             <td>{{doneExam.endDate}}</td>
                             <td>{{doneExam.time}}</td>
-                            <td><button class="btn btn-primary btn-xs" ng-show="doneExam.activeReview">Revisar</button></td>
+                            <td><button class="btn btn-primary btn-xs" ng-show="doneExam.activeReview" th:text="#{subject.doneExam.reviewButton}"></button></td>
                         </tr>
                         </tbody>
                     </table>
