@@ -41,5 +41,5 @@ public interface ExamenRepository extends JpaRepository<Examen, Serializable> {
             "   and ex.fechaFinRev >= current_date" +
             "   and :userid in (select excal.usuarios.idusu from ex.califs excal where excal.fechaIni <= current_date) " +
             "   and ex.grupos.idgrupo = :groupid")
-    public abstract List<Examen> findDoneExams(@Param("userid") int userId, @Param("groupid") int groupId);
+    List<Examen> findDoneExams(@Param("userid") int userId, @Param("groupid") int groupId);
 }

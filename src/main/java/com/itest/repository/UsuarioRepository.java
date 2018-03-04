@@ -34,9 +34,9 @@ import java.io.Serializable;
 @Repository("usuarioRepository")
 public interface UsuarioRepository extends JpaRepository<Usuario, Serializable> {
 
-    public abstract Usuario findByIdusu(int idusu);
+    Usuario findByIdusu(int idusu);
 
     @Query("select u.idusu from Usuario u where u.usuario = :username")
-    public abstract int getUserIdByUsername(@Param("username") String username);
+    int getUserIdByUsername(@Param("username") String username);
 
 }

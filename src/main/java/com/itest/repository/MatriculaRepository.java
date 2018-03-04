@@ -34,6 +34,6 @@ import java.util.List;
 public interface MatriculaRepository extends JpaRepository<Matricula, Serializable> {
 
     @Query("select mat from Matricula mat where mat.usuarios.idusu = :userid")
-    public abstract List<Matricula> selectMatriculaListByUsernameOfUsuario(@Param("userid") int userId);
+    List<Matricula> selectMatriculaListByUsernameOfUsuario(@Param("userid") int userId);
 
 }
