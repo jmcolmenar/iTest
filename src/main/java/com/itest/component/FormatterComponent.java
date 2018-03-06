@@ -33,7 +33,7 @@ public class FormatterComponent {
 
 
     public String formatDateToString(Date date){
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
         return df.format(date);
     }

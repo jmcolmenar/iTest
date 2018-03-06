@@ -21,7 +21,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.model;
 
-public class DoneExamModel {
+public class ExamBasicInfoModel {
 
     private int examId;
 
@@ -34,10 +34,6 @@ public class DoneExamModel {
     private String startDate;
 
     private String endDate;
-
-    private String time;
-
-    private boolean activeReview;
 
     public int getExamId() {
         return examId;
@@ -85,21 +81,5 @@ public class DoneExamModel {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public boolean isActiveReview() {
-        return activeReview;
-    }
-
-    public void setActiveReview(boolean activeReview) {
-        this.activeReview = activeReview;
     }
 }

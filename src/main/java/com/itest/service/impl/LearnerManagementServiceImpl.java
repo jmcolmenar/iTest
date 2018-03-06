@@ -21,21 +21,19 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.impl;
 
-import com.itest.converter.ExamenConverter;
 import com.itest.converter.GrupoConverter;
 import com.itest.converter.MatriculaConverter;
-import com.itest.entity.Examen;
 import com.itest.entity.Grupo;
 import com.itest.entity.Matricula;
 import com.itest.model.CourseModel;
-import com.itest.model.DoneExamModel;
+import com.itest.model.DoneExamInfoModel;
 import com.itest.model.SubjectModel;
 import com.itest.model.request.GetExamsInfoRequest;
 import com.itest.model.response.GetCoursesResponse;
 import com.itest.model.response.GetExamsInfoResponse;
-import com.itest.repository.ExamenRepository;
 import com.itest.repository.GrupoRepository;
 import com.itest.repository.MatriculaRepository;
+import com.itest.service.LearnerExamService;
 import com.itest.service.LearnerManagementService;
 import com.itest.service.UserManagementService;
 import org.apache.commons.logging.Log;
@@ -44,6 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,10 +60,6 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
     private MatriculaConverter matriculaConverter;
 
     @Autowired
-    @Qualifier("examenRepository")
-    private ExamenRepository examenRepository;
-
-    @Autowired
     @Qualifier("grupoRepository")
     private GrupoRepository grupoRepository;
 
@@ -77,8 +72,8 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
     private UserManagementService userManagementService;
 
     @Autowired
-    @Qualifier("examenConverter")
-    private ExamenConverter examenConverter;
+    @Qualifier("learnerExamServiceImpl")
+    private LearnerExamService learnerExamService;
 
     public GetCoursesResponse getCourseList() {
 
@@ -113,7 +108,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
         return getCoursesResponse;
     }
 
-    public GetExamsInfoResponse getDoneExamsHeader(GetExamsInfoRequest request){
+    public GetExamsInfoResponse getExamsInfo(GetExamsInfoRequest request){
 
         // Initialize the response
         GetExamsInfoResponse getExamsInfoResponse = new GetExamsInfoResponse();
@@ -122,23 +117,20 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
             // Get the request variables
             int groupId = request.getGroupId();
 
-            // Get the group entity from database
+            // Get the group entity from database and convert to the subject model
             Grupo group = this.grupoRepository.findOne(groupId);
-
-            // Convert the group to Subject model
             SubjectModel subjectModel = this.grupoConverter.convertGrupoToSubjectModel(group);
-
-            // Get the done exams from database and user id
-            List<Examen> examList = this.examenRepository.findDoneExams(userManagementService.getUserIdOfCurrentUser(), groupId);
 
             // Get the identifier of current user
             int userId = this.userManagementService.getUserIdOfCurrentUser();
 
-            // Convert the entity object list to model object list
-            List<DoneExamModel> doneExamsList = this.examenConverter.convertExamenListToDoneExamHeaderList(examList, userId);
+            // Get the done exams from database
+            List<DoneExamInfoModel> doneExamsList = this.learnerExamService.getDoneExamsList(groupId, userId);
 
             // Fill the variables of the response
             getExamsInfoResponse.setSubject(subjectModel);
+            getExamsInfoResponse.setAvailableExamsList(new ArrayList<>()); // TODO: Get the available exams
+            getExamsInfoResponse.setNextExamsList(new ArrayList<>()); // TODO: Get the next exams
             getExamsInfoResponse.setDoneExamsList(doneExamsList);
 
         }catch(Exception exc){

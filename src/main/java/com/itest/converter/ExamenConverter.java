@@ -24,7 +24,7 @@ package com.itest.converter;
 import com.itest.component.FormatterComponent;
 import com.itest.entity.Calificacion;
 import com.itest.entity.Examen;
-import com.itest.model.DoneExamModel;
+import com.itest.model.DoneExamInfoModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -39,20 +39,21 @@ public class ExamenConverter {
     @Qualifier("formatterComponent")
     private FormatterComponent formatterComponent;
 
-    public List<DoneExamModel> convertExamenListToDoneExamHeaderList(List<Examen> examenList, int userId){
-        // Initialize the Donde Exam Header list
-        List<DoneExamModel> doneExamModelList = new ArrayList<>();
+    public List<DoneExamInfoModel> convertExamenListToDoneExamInfoModelList(List<Examen> examenList, int userId){
 
-        // Check the Examen list to convert is not empty
+        // Initialize the Donde Exam Info Model list
+        List<DoneExamInfoModel> doneExamInfoModelList = new ArrayList<>();
+
+        // Check the Examen list is not empty
         if(examenList != null && !examenList.isEmpty()){
 
             for(Examen exam : examenList){
                 // Initialize DoneExamModel object
-                DoneExamModel doneExam = new DoneExamModel();
+                DoneExamInfoModel doneExam = new DoneExamInfoModel();
                 doneExam.setExamId(exam.getIdexam());
                 doneExam.setExamName(exam.getTitulo());
                 doneExam.setMaximumScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
-                doneExam.setActiveReview(exam.getRevActiva() == 1);
+                doneExam.setAvailableReview(exam.getRevActiva() == 1);
 
                 // Get the "Calificacion" object corresponding to the user
                 Calificacion calificacion = null;
@@ -65,18 +66,21 @@ public class ExamenConverter {
                     }
                 }
 
-                doneExam.setScore(this.formatterComponent.formatNumberWithTwoDecimals(calificacion.getNota()));
-                doneExam.setStartDate(this.formatterComponent.formatDateToString(calificacion.getFechaIni()));
-                doneExam.setEndDate(this.formatterComponent.formatDateToString(calificacion.getFechaFin()));
-                doneExam.setTime(this.formatterComponent.formatMillisecondsToHoursMinutesAndSeconds(calificacion.getFechaFin().getTime() - calificacion.getFechaIni().getTime()));
+                // Check the calification object is not null
+                if (calificacion != null) {
+                    doneExam.setScore(this.formatterComponent.formatNumberWithTwoDecimals(calificacion.getNota()));
+                    doneExam.setStartDate(this.formatterComponent.formatDateToString(calificacion.getFechaIni()));
+                    doneExam.setEndDate(this.formatterComponent.formatDateToString(calificacion.getFechaFin()));
+                    doneExam.setTime(this.formatterComponent.formatMillisecondsToHoursMinutesAndSeconds(calificacion.getFechaFin().getTime() - calificacion.getFechaIni().getTime()));
+                }
 
                 // Add DoneExamModel object to the list
-                doneExamModelList.add(doneExam);
+                doneExamInfoModelList.add(doneExam);
             }
         }
 
-        // Return the Donde Exam Header list
-        return doneExamModelList;
+        // Return the Donde Exam Info Model list
+        return doneExamInfoModelList;
     }
 
 }

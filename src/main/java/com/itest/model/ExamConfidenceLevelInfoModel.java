@@ -19,15 +19,37 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service;
+package com.itest.model;
 
-import com.itest.model.request.GetExamsInfoRequest;
-import com.itest.model.response.GetCoursesResponse;
-import com.itest.model.response.GetExamsInfoResponse;
+public class ExamConfidenceLevelInfoModel {
 
-public interface LearnerManagementService {
+    private boolean activeConfidenceLevel;
 
-    GetCoursesResponse getCourseList();
+    private String penalty;
 
-    GetExamsInfoResponse getExamsInfo(GetExamsInfoRequest request);
+    private String reward;
+
+    public boolean isActiveConfidenceLevel() {
+        return activeConfidenceLevel;
+    }
+
+    public void setActiveConfidenceLevel(boolean activeConfidenceLevel) {
+        this.activeConfidenceLevel = activeConfidenceLevel;
+    }
+
+    public String getPenalty() {
+        return penalty;
+    }
+
+    public void setPenalty(String penalty) {
+        this.penalty = penalty;
+    }
+
+    public String getReward() {
+        return reward;
+    }
+
+    public void setReward(String reward) {
+        this.reward = reward;
+    }
 }

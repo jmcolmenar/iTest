@@ -48,10 +48,10 @@ public class LearnerController {
     }
 
     @PostMapping("/getExamsInfo")
-    public GetExamsInfoResponse getDoneExams(@RequestBody GetExamsInfoRequest request){
+    public GetExamsInfoResponse getExamsInfo(@RequestBody GetExamsInfoRequest request){
 
         // Call to the service to get the exams info
-        GetExamsInfoResponse response = this.learnerManagementService.getDoneExamsHeader(request);
+        GetExamsInfoResponse response = this.learnerManagementService.getExamsInfo(request);
 
         // Return the response
         return response;

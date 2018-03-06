@@ -21,7 +21,8 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.model.response;
 
-import com.itest.model.DoneExamModel;
+import com.itest.model.DoneExamInfoModel;
+import com.itest.model.ExamExtraInfoModel;
 import com.itest.model.SubjectModel;
 
 import java.util.List;
@@ -30,7 +31,11 @@ public class GetExamsInfoResponse extends Response {
 
     private SubjectModel subject;
 
-    private List<DoneExamModel> doneExamsList;
+    private List<ExamExtraInfoModel> availableExamsList;
+
+    private List<ExamExtraInfoModel> nextExamsList;
+
+    private List<DoneExamInfoModel> doneExamsList;
 
     public SubjectModel getSubject() {
         return subject;
@@ -40,11 +45,27 @@ public class GetExamsInfoResponse extends Response {
         this.subject = subject;
     }
 
-    public List<DoneExamModel> getDoneExamsList() {
+    public List<ExamExtraInfoModel> getAvailableExamsList() {
+        return availableExamsList;
+    }
+
+    public void setAvailableExamsList(List<ExamExtraInfoModel> availableExamsList) {
+        this.availableExamsList = availableExamsList;
+    }
+
+    public List<ExamExtraInfoModel> getNextExamsList() {
+        return nextExamsList;
+    }
+
+    public void setNextExamsList(List<ExamExtraInfoModel> nextExamsList) {
+        this.nextExamsList = nextExamsList;
+    }
+
+    public List<DoneExamInfoModel> getDoneExamsList() {
         return doneExamsList;
     }
 
-    public void setDoneExamsList(List<DoneExamModel> doneExamsList) {
+    public void setDoneExamsList(List<DoneExamInfoModel> doneExamsList) {
         this.doneExamsList = doneExamsList;
     }
 }
