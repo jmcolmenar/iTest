@@ -24,12 +24,17 @@ package com.itest.converter;
 import com.itest.component.FormatterComponent;
 import com.itest.entity.Calificacion;
 import com.itest.entity.Examen;
+import com.itest.entity.TemaExamen;
 import com.itest.model.DoneExamInfoModel;
+import com.itest.model.ExamConfidenceLevelInfoModel;
+import com.itest.model.ExamExtraInfoModel;
+import com.itest.model.ExamPartialCorrectionInfoModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component("examenConverter")
@@ -39,7 +44,7 @@ public class ExamenConverter {
     @Qualifier("formatterComponent")
     private FormatterComponent formatterComponent;
 
-    public List<DoneExamInfoModel> convertExamenListToDoneExamInfoModelList(List<Examen> examenList, int userId){
+    public List<DoneExamInfoModel> convertExamenListToDoneExamInfoModelList(List<Examen> examenList){
 
         // Initialize the Donde Exam Info Model list
         List<DoneExamInfoModel> doneExamInfoModelList = new ArrayList<>();
@@ -48,31 +53,25 @@ public class ExamenConverter {
         if(examenList != null && !examenList.isEmpty()){
 
             for(Examen exam : examenList){
-                // Initialize DoneExamModel object
+                // Initialize and fill the model object
                 DoneExamInfoModel doneExam = new DoneExamInfoModel();
                 doneExam.setExamId(exam.getIdexam());
                 doneExam.setExamName(exam.getTitulo());
-                doneExam.setMaximumScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
-                doneExam.setAvailableReview(exam.getRevActiva() == 1);
+                doneExam.setMaxScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
 
-                // Get the "Calificacion" object corresponding to the user
-                Calificacion calificacion = null;
-                List<Calificacion> calificacionList = exam.getCalifs();
-                calificacionList.sort((o1, o2) -> o2.getFechaFin().compareTo(o1.getFechaFin()));
-                for(Calificacion calificacionAux : exam.getCalifs()){
-                    if(calificacionAux.getUsuarios().getIdusu() == userId){
-                        calificacion = calificacionAux;
-                        break;
-                    }
-                }
+                // Get the "Calificacion" object corresponding to the user (It should not be null and only one)
+                Calificacion calificacion = exam.getCalifs().stream().findFirst().get();
+                doneExam.setScore(this.formatterComponent.formatNumberWithTwoDecimals(calificacion.getNota()));
+                doneExam.setStartDate(this.formatterComponent.formatDateToString(calificacion.getFechaIni()));
+                doneExam.setEndDate(this.formatterComponent.formatDateToString(calificacion.getFechaFin()));
+                doneExam.setTime(this.formatterComponent.formatMillisecondsToHoursMinutesAndSeconds(calificacion.getFechaFin().getTime() - calificacion.getFechaIni().getTime()));
 
-                // Check the calification object is not null
-                if (calificacion != null) {
-                    doneExam.setScore(this.formatterComponent.formatNumberWithTwoDecimals(calificacion.getNota()));
-                    doneExam.setStartDate(this.formatterComponent.formatDateToString(calificacion.getFechaIni()));
-                    doneExam.setEndDate(this.formatterComponent.formatDateToString(calificacion.getFechaFin()));
-                    doneExam.setTime(this.formatterComponent.formatMillisecondsToHoursMinutesAndSeconds(calificacion.getFechaFin().getTime() - calificacion.getFechaIni().getTime()));
-                }
+                // Check if the review is available
+                Date now = new Date();
+                boolean isAvailableReview = exam.getRevActiva() == 1 // Active review
+                        && exam.getFechaIni().before(now) && exam.getFechaFin().after(now) // Review date period
+                        && calificacion.getFechaFin().before(now); // The exam has finished
+                doneExam.setAvailableReview(isAvailableReview);
 
                 // Add DoneExamModel object to the list
                 doneExamInfoModelList.add(doneExam);
@@ -81,6 +80,53 @@ public class ExamenConverter {
 
         // Return the Donde Exam Info Model list
         return doneExamInfoModelList;
+    }
+
+    // TODO: Review this conversion
+    public List<ExamExtraInfoModel> convertExamListToExamExtraInfoModelList(List<Examen> examenList){
+
+        // Initialize the Exam Extra Info Model list
+        List<ExamExtraInfoModel> examExtraInfoModelList = new ArrayList<>();
+
+        // Check the Examen list is not empty
+        if(examenList != null && !examenList.isEmpty()){
+
+            for(Examen exam : examenList){
+
+                // Initialize and fill the model object
+                ExamExtraInfoModel examExtraInfo = new ExamExtraInfoModel();
+                examExtraInfo.setExamId(exam.getIdexam());
+                examExtraInfo.setExamName(exam.getTitulo());
+                examExtraInfo.setStartDate(this.formatterComponent.formatDateToString(exam.getFechaIni()));
+                examExtraInfo.setEndDate(this.formatterComponent.formatDateToString(exam.getFechaFin()));
+                examExtraInfo.setMaxScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
+                examExtraInfo.setStartReviewDate(this.formatterComponent.formatDateToString(exam.getFechaIniRev()));
+                examExtraInfo.setEndReviewDate(this.formatterComponent.formatDateToString(exam.getFechaFinRev()));
+                examExtraInfo.setExamTime(exam.getDuracion());
+                examExtraInfo.setQuestionsNumber(exam.getTemasExam().stream().mapToInt(TemaExamen::getNPregs).sum());
+                examExtraInfo.setShowRightAnswersNumber(exam.getMuestraNumCorr() == 1);
+
+                // Set partial correction
+                ExamPartialCorrectionInfoModel partialCorrectionModel = new ExamPartialCorrectionInfoModel();
+                partialCorrectionModel.setActivePartialCorrection(exam.getCorrParcial() == 1);
+                partialCorrectionModel.setPenaltyFailedAnswer(String.valueOf(exam.getPRespFallada()));
+                partialCorrectionModel.setPenaltyNotAnsweredQuestion(String.valueOf(exam.getPPregNoResp()));
+                examExtraInfo.setPartialCorrection(partialCorrectionModel);
+
+                // Set confidence level
+                ExamConfidenceLevelInfoModel confidenceLevelModel = new ExamConfidenceLevelInfoModel();
+                confidenceLevelModel.setActiveConfidenceLevel(exam.getNivelConfianza() == 1);
+                confidenceLevelModel.setPenalty(String.valueOf(exam.getPNivelConfianza()));
+                confidenceLevelModel.setReward(String.valueOf(exam.getRNivelConfianza()));
+                examExtraInfo.setConfidenceLevel(confidenceLevelModel);
+
+                // Add exam model object to the list
+                examExtraInfoModelList.add(examExtraInfo);
+            }
+        }
+
+        // Return the Exam Extra Info Model list
+        return examExtraInfoModelList;
     }
 
 }

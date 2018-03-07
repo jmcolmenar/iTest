@@ -37,9 +37,36 @@ public interface ExamenRepository extends JpaRepository<Examen, Serializable> {
             "   ex " +
             "from " +
             "   Examen ex " +
-            "where ex.fechaIniRev <= current_date " +
-            "   and ex.fechaFinRev >= current_date" +
-            "   and :userid in (select excal.usuarios.idusu from ex.califs excal where excal.fechaIni <= current_date) " +
+            "where " +
+            "   :userid not in (select excal.usuarios.idusu from ex.califs excal) " +
+            "   and ex.grupos.idgrupo = :groupid " +
+            "   and ex.visibilidad = 1 " +
+            "   and ex.fechaIni <= current_date and ex.fechaFin >= current_date" +
+            "   and (case when ex.personalizado = 1 then (select count(exInd) from ex.examIndivid exInd where exInd.usuarios.idusu = :userid) else 1 end) > 0 " +
+            "order by " +
+            "   ex.grupos.asignaturas.nombre, ex.grupos.grupo")
+    List<Examen> findAvailableExams(@Param("userid") int userId, @Param("groupid") int groupId);
+
+    @Query("select " +
+            "   ex " +
+            "from " +
+            "   Examen ex " +
+            "where " +
+            "   :userid not in (select excal.usuarios.idusu from ex.califs excal) " +
+            "   and ex.grupos.idgrupo = :groupid " +
+            "   and ex.publicado = 1 " +
+            "   and ex.fechaIni >= current_date and ex.fechaFin >= current_date " +
+            "   and (case when ex.personalizado = 1 then (select count(exInd) from ex.examIndivid exInd where exInd.usuarios.idusu = :userid) else 1 end) > 0 " +
+            "order by " +
+            "   ex.grupos.asignaturas.nombre, ex.grupos.grupo")
+    List<Examen> findNextExams(@Param("userid") int userId, @Param("groupid") int groupId);
+
+    @Query("select " +
+            "   ex " +
+            "from " +
+            "   Examen ex " +
+            "where " +
+            "   :userid in (select excal.usuarios.idusu from ex.califs excal) " +
             "   and ex.grupos.idgrupo = :groupid")
     List<Examen> findDoneExams(@Param("userid") int userId, @Param("groupid") int groupId);
 }

@@ -27,6 +27,7 @@ import com.itest.entity.Grupo;
 import com.itest.entity.Matricula;
 import com.itest.model.CourseModel;
 import com.itest.model.DoneExamInfoModel;
+import com.itest.model.ExamExtraInfoModel;
 import com.itest.model.SubjectModel;
 import com.itest.model.request.GetExamsInfoRequest;
 import com.itest.model.response.GetCoursesResponse;
@@ -124,13 +125,15 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
             // Get the identifier of current user
             int userId = this.userManagementService.getUserIdOfCurrentUser();
 
-            // Get the done exams from database
+            // Get the available, next and done exams from database
+            List<ExamExtraInfoModel> availableExamsList = this.learnerExamService.getAvailableExamsList(groupId, userId);
+            List<ExamExtraInfoModel> nextExamsList = this.learnerExamService.getNextExamsList(groupId, userId);
             List<DoneExamInfoModel> doneExamsList = this.learnerExamService.getDoneExamsList(groupId, userId);
 
             // Fill the variables of the response
             getExamsInfoResponse.setSubject(subjectModel);
-            getExamsInfoResponse.setAvailableExamsList(new ArrayList<>()); // TODO: Get the available exams
-            getExamsInfoResponse.setNextExamsList(new ArrayList<>()); // TODO: Get the next exams
+            getExamsInfoResponse.setAvailableExamsList(availableExamsList);
+            getExamsInfoResponse.setNextExamsList(nextExamsList);
             getExamsInfoResponse.setDoneExamsList(doneExamsList);
 
         }catch(Exception exc){

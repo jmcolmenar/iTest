@@ -25,7 +25,7 @@ public class DoneExamInfoModel extends ExamBasicInfoModel {
 
     private String time;
 
-    private String socore;
+    private String score;
 
     private String maxScore;
 
@@ -39,12 +39,12 @@ public class DoneExamInfoModel extends ExamBasicInfoModel {
         this.time = time;
     }
 
-    public String getSocore() {
-        return socore;
+    public String getScore() {
+        return score;
     }
 
-    public void setSocore(String socore) {
-        this.socore = socore;
+    public void setScore(String score) {
+        this.score = score;
     }
 
     public String getMaxScore() {

@@ -52,8 +52,13 @@ public class LearnerExamServiceImpl implements LearnerExamService {
      * @return The list of available exams
      */
     public List<ExamExtraInfoModel> getAvailableExamsList(int groupId, int learnerId){
-        // TODO: Get the list of available exams
-        List<ExamExtraInfoModel> availableExamModelList = new ArrayList();
+        // Get the list of available exams from database
+        List<Examen> examsList = this.examenRepository.findAvailableExams(learnerId, groupId);
+
+        // Convert the list of entity objects to model objects
+        List<ExamExtraInfoModel> availableExamModelList = this.examenConverter.convertExamListToExamExtraInfoModelList(examsList);
+
+        // Return the available exam model list
         return availableExamModelList;
     }
 
@@ -64,8 +69,13 @@ public class LearnerExamServiceImpl implements LearnerExamService {
      * @return The list of next exams
      */
     public List<ExamExtraInfoModel> getNextExamsList(int groupId, int learnerId){
-        // TODO: Get the list of next exams
-        List<ExamExtraInfoModel> nextExamModelList = new ArrayList();
+        // Get the list of next exams from database
+        List<Examen> examsList = this.examenRepository.findNextExams(learnerId, groupId);
+
+        // Convert the list of entity objects to model objects
+        List<ExamExtraInfoModel> nextExamModelList = this.examenConverter.convertExamListToExamExtraInfoModelList(examsList);
+
+        // Return the next exam model list
         return nextExamModelList;
     }
 
@@ -77,11 +87,11 @@ public class LearnerExamServiceImpl implements LearnerExamService {
      */
     public List<DoneExamInfoModel> getDoneExamsList(int groupId, int learnerId){
 
-        // Get the done exams from database and user id
+        // Get the done exams from database
         List<Examen> examList = this.examenRepository.findDoneExams(learnerId, groupId);
 
         // Convert the entity object list to model object list
-        List<DoneExamInfoModel> doneExamModelList = this.examenConverter.convertExamenListToDoneExamInfoModelList(examList, learnerId);
+        List<DoneExamInfoModel> doneExamModelList = this.examenConverter.convertExamenListToDoneExamInfoModelList(examList);
 
         // Return the done exam model list
         return doneExamModelList;

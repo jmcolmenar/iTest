@@ -27,10 +27,6 @@ public class ExamBasicInfoModel {
 
     private String examName;
 
-    private String score;
-
-    private String maximumScore;
-
     private String startDate;
 
     private String endDate;
@@ -49,22 +45,6 @@ public class ExamBasicInfoModel {
 
     public void setExamName(String examName) {
         this.examName = examName;
-    }
-
-    public String getScore() {
-        return score;
-    }
-
-    public void setScore(String score) {
-        this.score = score;
-    }
-
-    public String getMaximumScore() {
-        return maximumScore;
-    }
-
-    public void setMaximumScore(String maximumScore) {
-        this.maximumScore = maximumScore;
     }
 
     public String getStartDate() {

@@ -44,7 +44,6 @@ public class GrupoConverter {
         subjectModel.setSubjectId(grupo.getAsignaturas().getIdasig());
         subjectModel.setYear(grupo.getAnio());
         subjectModel.setSubjectName(grupo.getAsignaturas().getNombre());
-        subjectModel.setSubjectDescription(grupo.getAsignaturas().getNombre());
         subjectModel.setSubjectDescription(this.translationService.getMessage("coursesList.subjectGroup") + " " + grupo.getGrupo());
 
         // Return the subject model
