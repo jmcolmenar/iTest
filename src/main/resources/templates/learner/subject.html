@@ -24,11 +24,21 @@
                             <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Nombre</th>
+                                <th>Fecha/Hora de inicio</th>
+                                <th>Fecha/Hora de fin</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr ng-repeat="availableExam in availableExamsList">
                                 <td>{{$index + 1}}</td>
+                                <td>{{availableExam.examName}}</td>
+                                <td>{{availableExam.startDate}}</td>
+                                <td>{{availableExam.endDate}}</td>
+                                <td><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#extraInfoExamModal" ng-click="setCurrentExamExtraInfo(availableExam)"><span class="glyphicon glyphicon-plus"></span>&nbsp;Detalles</button></td>
+                                <td><button class="btn btn-primary btn-xs">Comenzar examen</button></td>
                             </tr>
                             </tbody>
                         </table>
@@ -41,11 +51,19 @@
                             <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Nombre</th>
+                                <th>Fecha/Hora de inicio</th>
+                                <th>Fecha/Hora de fin</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr ng-repeat="nextExam in nextExamsList">
                                 <td>{{$index + 1}}</td>
+                                <td>{{nextExam.examName}}</td>
+                                <td>{{nextExam.startDate}}</td>
+                                <td>{{nextExam.endDate}}</td>
+                                <td><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#extraInfoExamModal" ng-click="setCurrentExamExtraInfo(nextExam)"><span class="glyphicon glyphicon-plus"></span>&nbsp;Detalles</button></td>
                             </tr>
                             </tbody>
                         </table>
@@ -81,6 +99,46 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal holding extra info of available and next exams -->
+    <div class="modal fade" id="extraInfoExamModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title">{{currentExamExtraInfo.examName}}</h3>
+                </div>
+                <div class="modal-body">
+                    <ul class="ul-no-indent">
+                        <li><p><b>Fecha/Hora de inicio:</b> {{currentExamExtraInfo.startDate}}</p></li>
+                        <li><p><b>Fecha/Hora de fin:</b> {{currentExamExtraInfo.endDate}}</p></li>
+                        <li><p><b>Numero de preguntas:</b> {{currentExamExtraInfo.questionsNumber}}</p></li>
+                        <li><p><b>Tiempo de examen:</b> {{currentExamExtraInfo.examTime}} (min.)</p></li>
+
+                        <!-- Partial correction -->
+                        <li ng-show="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b>Se calificarán las preguntas parcialmente acertadas en caso de varias respuestas correctas</b></p></li>
+                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b>No se darán calificaciones parciales a las preguntas parcialmente acertadas</b></p></li>
+                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b>Penalizaciones por pregunta fallada:</b> {{currentExamExtraInfo.partialCorrection.penaltyFailedAnswer}}</p></li>
+                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b>Penalizaciones por pregunta no contestada:</b> {{currentExamExtraInfo.partialCorrection.penaltyNotAnsweredQuestion}}</p></li>
+
+                        <!-- Show right answers -->
+                        <li ng-show="currentExamExtraInfo.showRightAnswersNumber"><p><b>Se mostrará el número de respuestas correctas para cada pregunta</b></p></li>
+                        <li ng-hide="currentExamExtraInfo.showRightAnswersNumber"><p><b>No se mostrará el número de respuestas correctas para cada pregunta</b></p></li>
+
+                        <li><p><b>Nota maxima:</b> {{currentExamExtraInfo.maxScore}}</p></li>
+                        <li><p><b>Fecha de Inicio de la revision:</b> {{currentExamExtraInfo.startReviewDate}}</p></li>
+                        <li><p><b>Fecha de fin de la revisión:</b> {{currentExamExtraInfo.endReviewDate}}</p></li>
+
+                        <!-- Confidence level -->
+                        <li ng-hide="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b>El nivel de confianza no está activado.</b></p></li>
+                        <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b>El nivel de confianza está activado.</b></p></li>
+                        <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b>Penalización:</b>{{currentExamExtraInfo.confidenceLevel.penalty}}</p></li>
+                        <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b>Recompensa:</b>{{currentExamExtraInfo.confidenceLevel.reward}}</p></li>
+                    </ul>
                 </div>
             </div>
         </div>

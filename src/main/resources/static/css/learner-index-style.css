@@ -81,13 +81,6 @@ body{
     background-color: rgb(217, 32, 38);
 }
 
-.course-divider{
-    width: 100%;
-    height: 2px;
-    background-color: rgb(217, 32, 38);
-    display: inline-block;
-}
-
 .last-course{
     display: none !important;
 }
@@ -160,3 +153,7 @@ body{
     outline: none;
     background-color: rgba(255, 0, 0, 0.65);
 }
+
+.ul-no-indent {
+    padding-left:0;
+}​

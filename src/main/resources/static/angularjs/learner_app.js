@@ -276,6 +276,8 @@ app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
         }else{
             // Set the list of done exams
             $scope.subject = response.subject;
+            $scope.availableExamsList = response.availableExamsList;
+            $scope.nextExamsList = response.nextExamsList;
             $scope.doneExamsList = response.doneExamsList;
         }
     }).error(function(response) {
@@ -305,5 +307,10 @@ app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
     $scope.isDoneExamsButtonActived = function(){
         return $("#done-exams-button").hasClass("active");
     };
+
+    // Function to set the current exam in order to show the extra info in the modal
+    $scope.setCurrentExamExtraInfo = function (exam) {
+        $scope.currentExamExtraInfo = exam;
+    }
 
 }]);
