@@ -100,6 +100,7 @@ public class ExamenConverter {
                 examExtraInfo.setStartDate(this.formatterComponent.formatDateToString(exam.getFechaIni()));
                 examExtraInfo.setEndDate(this.formatterComponent.formatDateToString(exam.getFechaFin()));
                 examExtraInfo.setMaxScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
+                examExtraInfo.setActiveReview(exam.getRevActiva() == 1);
                 examExtraInfo.setStartReviewDate(this.formatterComponent.formatDateToString(exam.getFechaIniRev()));
                 examExtraInfo.setEndReviewDate(this.formatterComponent.formatDateToString(exam.getFechaFinRev()));
                 examExtraInfo.setExamTime(exam.getDuracion());
@@ -109,7 +110,7 @@ public class ExamenConverter {
                 // Set partial correction
                 ExamPartialCorrectionInfoModel partialCorrectionModel = new ExamPartialCorrectionInfoModel();
                 partialCorrectionModel.setActivePartialCorrection(exam.getCorrParcial() == 1);
-                partialCorrectionModel.setPenaltyFailedAnswer(String.valueOf(exam.getPRespFallada()));
+                partialCorrectionModel.setPenaltyFailedAnswer(String.valueOf(exam.getPPregFallada()));
                 partialCorrectionModel.setPenaltyNotAnsweredQuestion(String.valueOf(exam.getPPregNoResp()));
                 examExtraInfo.setPartialCorrection(partialCorrectionModel);
 

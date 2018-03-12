@@ -33,6 +33,8 @@ public class ExamExtraInfoModel extends ExamBasicInfoModel{
 
     private String maxScore;
 
+    private boolean activeReview;
+
     private String startReviewDate;
 
     private String endReviewDate;
@@ -77,6 +79,14 @@ public class ExamExtraInfoModel extends ExamBasicInfoModel{
 
     public void setMaxScore(String maxScore) {
         this.maxScore = maxScore;
+    }
+
+    public boolean isActiveReview() {
+        return activeReview;
+    }
+
+    public void setActiveReview(boolean activeReview) {
+        this.activeReview = activeReview;
     }
 
     public String getStartReviewDate() {

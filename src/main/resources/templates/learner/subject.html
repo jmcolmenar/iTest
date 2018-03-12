@@ -24,9 +24,9 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nombre</th>
-                                <th>Fecha/Hora de inicio</th>
-                                <th>Fecha/Hora de fin</th>
+                                <th th:text="#{subject.examInfo.name}"></th>
+                                <th th:text="#{subject.examInfo.startDateTime}"></th>
+                                <th th:text="#{subject.examInfo.endDateTime}"></th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -37,8 +37,8 @@
                                 <td>{{availableExam.examName}}</td>
                                 <td>{{availableExam.startDate}}</td>
                                 <td>{{availableExam.endDate}}</td>
-                                <td><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#extraInfoExamModal" ng-click="setCurrentExamExtraInfo(availableExam)"><span class="glyphicon glyphicon-plus"></span>&nbsp;Detalles</button></td>
-                                <td><button class="btn btn-primary btn-xs">Comenzar examen</button></td>
+                                <td><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#extraInfoExamModal" ng-click="setCurrentExamExtraInfo(availableExam)"><span class="glyphicon glyphicon-plus"></span>&nbsp;<span th:text="#{subject.examInfo.moreDetails}"></span></button></td>
+                                <td><button class="btn btn-primary btn-xs" th:text="#{subject.available.startExamButton}"></button></td>
                             </tr>
                             </tbody>
                         </table>
@@ -51,9 +51,9 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nombre</th>
-                                <th>Fecha/Hora de inicio</th>
-                                <th>Fecha/Hora de fin</th>
+                                <th th:text="#{subject.examInfo.name}"></th>
+                                <th th:text="#{subject.examInfo.startDateTime}"></th>
+                                <th th:text="#{subject.examInfo.endDateTime}"></th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -63,7 +63,7 @@
                                 <td>{{nextExam.examName}}</td>
                                 <td>{{nextExam.startDate}}</td>
                                 <td>{{nextExam.endDate}}</td>
-                                <td><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#extraInfoExamModal" ng-click="setCurrentExamExtraInfo(nextExam)"><span class="glyphicon glyphicon-plus"></span>&nbsp;Detalles</button></td>
+                                <td><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#extraInfoExamModal" ng-click="setCurrentExamExtraInfo(nextExam)"><span class="glyphicon glyphicon-plus"></span>&nbsp;<span th:text="#{subject.examInfo.moreDetails}"></span></button></td>
                             </tr>
                             </tbody>
                         </table>
@@ -114,30 +114,32 @@
                 </div>
                 <div class="modal-body">
                     <ul class="ul-no-indent">
-                        <li><p><b>Fecha/Hora de inicio:</b> {{currentExamExtraInfo.startDate}}</p></li>
-                        <li><p><b>Fecha/Hora de fin:</b> {{currentExamExtraInfo.endDate}}</p></li>
-                        <li><p><b>Numero de preguntas:</b> {{currentExamExtraInfo.questionsNumber}}</p></li>
-                        <li><p><b>Tiempo de examen:</b> {{currentExamExtraInfo.examTime}} (min.)</p></li>
+                        <!-- Basic information -->
+                        <li><p><b th:text="#{subject.examExtraInfo.startDateTime}"></b> {{currentExamExtraInfo.startDate}}</p></li>
+                        <li><p><b th:text="#{subject.examExtraInfo.endDateTime}"></b> {{currentExamExtraInfo.endDate}}</p></li>
+                        <li><p><b th:text="#{subject.examExtraInfo.questionNumber}">Numero de preguntas:</b> {{currentExamExtraInfo.questionsNumber}}</p></li>
+                        <li><p><b th:text="#{subject.examExtraInfo.maxScore}"></b> {{currentExamExtraInfo.maxScore}}</p></li>
+                        <li><p><b th:text="#{subject.examExtraInfo.examTime}"></b> {{currentExamExtraInfo.examTime}} <span th:text="#{subject.examExtraInfo.examTimeMin}"></span></p></li>
 
                         <!-- Partial correction -->
-                        <li ng-show="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b>Se calificarán las preguntas parcialmente acertadas en caso de varias respuestas correctas</b></p></li>
-                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b>No se darán calificaciones parciales a las preguntas parcialmente acertadas</b></p></li>
-                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b>Penalizaciones por pregunta fallada:</b> {{currentExamExtraInfo.partialCorrection.penaltyFailedAnswer}}</p></li>
-                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b>Penalizaciones por pregunta no contestada:</b> {{currentExamExtraInfo.partialCorrection.penaltyNotAnsweredQuestion}}</p></li>
+                        <li ng-show="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b th:text="#{subject.examExtraInfo.partialCorrection}"></b></p></li>
+                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b th:text="#{subject.examExtraInfo.notPartialCorrection}"></b></p></li>
+                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b th:text="#{subject.examExtraInfo.notPartialCorrectionFailedQuestion}"></b> {{currentExamExtraInfo.partialCorrection.penaltyFailedAnswer}}</p></li>
+                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b th:text="#{subject.examExtraInfo.notPartialCorrectionNotAnsweredQuestion}"></b> {{currentExamExtraInfo.partialCorrection.penaltyNotAnsweredQuestion}}</p></li>
 
                         <!-- Show right answers -->
-                        <li ng-show="currentExamExtraInfo.showRightAnswersNumber"><p><b>Se mostrará el número de respuestas correctas para cada pregunta</b></p></li>
-                        <li ng-hide="currentExamExtraInfo.showRightAnswersNumber"><p><b>No se mostrará el número de respuestas correctas para cada pregunta</b></p></li>
-
-                        <li><p><b>Nota maxima:</b> {{currentExamExtraInfo.maxScore}}</p></li>
-                        <li><p><b>Fecha de Inicio de la revision:</b> {{currentExamExtraInfo.startReviewDate}}</p></li>
-                        <li><p><b>Fecha de fin de la revisión:</b> {{currentExamExtraInfo.endReviewDate}}</p></li>
+                        <li ng-show="currentExamExtraInfo.showRightAnswersNumber"><p><b th:text="#{subject.examExtraInfo.showRightAnswers}"></b></p></li>
+                        <li ng-hide="currentExamExtraInfo.showRightAnswersNumber"><p><b th:text="#{subject.examExtraInfo.notShowRightAnswers}"></b></p></li>
 
                         <!-- Confidence level -->
-                        <li ng-hide="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b>El nivel de confianza no está activado.</b></p></li>
-                        <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b>El nivel de confianza está activado.</b></p></li>
-                        <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b>Penalización:</b>{{currentExamExtraInfo.confidenceLevel.penalty}}</p></li>
-                        <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b>Recompensa:</b>{{currentExamExtraInfo.confidenceLevel.reward}}</p></li>
+                        <li ng-hide="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b th:text="#{subject.examExtraInfo.notConfidenceLevel}"></b></p></li>
+                        <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b th:text="#{subject.examExtraInfo.confidenceLevel}"></b></p></li>
+                        <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b th:text="#{subject.examExtraInfo.confidenceLevelPenalty}"></b>{{currentExamExtraInfo.confidenceLevel.penalty}}</p></li>
+                        <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b th:text="#{subject.examExtraInfo.confidenceLevelReward}"></b>{{currentExamExtraInfo.confidenceLevel.reward}}</p></li>
+
+                        <!-- Start and End review dates are visible when the review is activated -->
+                        <li ng-show="currentExamExtraInfo.activeReview"><p><b th:text="#{subject.examExtraInfo.startReviewDate}"></b> {{currentExamExtraInfo.startReviewDate}}</p></li>
+                        <li ng-show="currentExamExtraInfo.activeReview"><p><b th:text="#{subject.examExtraInfo.endReviewDate}"></b> {{currentExamExtraInfo.endReviewDate}}</p></li>
                     </ul>
                 </div>
             </div>
