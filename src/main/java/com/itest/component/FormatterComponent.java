@@ -38,6 +38,10 @@ public class FormatterComponent {
         return df.format(date);
     }
 
+    public String formatNumberWithTwoDecimals(double number){
+        return String.format("%.2f", number);
+    }
+
     public String formatNumberWithTwoDecimals(float number){
         return String.format("%.2f", number);
     }

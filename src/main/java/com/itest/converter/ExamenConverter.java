@@ -108,17 +108,21 @@ public class ExamenConverter {
                 examExtraInfo.setShowRightAnswersNumber(exam.getMuestraNumCorr() == 1);
 
                 // Set partial correction
+                double penaltyFailedQuestion = (exam.getNotaMax() / examExtraInfo.getQuestionsNumber()) * exam.getPPregFallada();
+                double penaltyNotAnsweredQuestion = (exam.getNotaMax() / examExtraInfo.getQuestionsNumber()) * exam.getPPregNoResp();
                 ExamPartialCorrectionInfoModel partialCorrectionModel = new ExamPartialCorrectionInfoModel();
                 partialCorrectionModel.setActivePartialCorrection(exam.getCorrParcial() == 1);
-                partialCorrectionModel.setPenaltyFailedAnswer(String.valueOf(exam.getPPregFallada()));
-                partialCorrectionModel.setPenaltyNotAnsweredQuestion(String.valueOf(exam.getPPregNoResp()));
+                partialCorrectionModel.setPenaltyFailedQuestion(this.formatterComponent.formatNumberWithTwoDecimals(penaltyFailedQuestion));
+                partialCorrectionModel.setPenaltyNotAnsweredQuestion(this.formatterComponent.formatNumberWithTwoDecimals(penaltyNotAnsweredQuestion));
                 examExtraInfo.setPartialCorrection(partialCorrectionModel);
 
                 // Set confidence level
+                double penaltyConfidenceLevel = (exam.getNotaMax() / examExtraInfo.getQuestionsNumber()) * exam.getPNivelConfianza();
+                double rewardConfidenceLevel = (exam.getNotaMax() / examExtraInfo.getQuestionsNumber()) * exam.getRNivelConfianza();
                 ExamConfidenceLevelInfoModel confidenceLevelModel = new ExamConfidenceLevelInfoModel();
                 confidenceLevelModel.setActiveConfidenceLevel(exam.getNivelConfianza() == 1);
-                confidenceLevelModel.setPenalty(String.valueOf(exam.getPNivelConfianza()));
-                confidenceLevelModel.setReward(String.valueOf(exam.getRNivelConfianza()));
+                confidenceLevelModel.setPenalty(this.formatterComponent.formatNumberWithTwoDecimals(penaltyConfidenceLevel));
+                confidenceLevelModel.setReward(this.formatterComponent.formatNumberWithTwoDecimals(rewardConfidenceLevel));
                 examExtraInfo.setConfidenceLevel(confidenceLevelModel);
 
                 // Add exam model object to the list

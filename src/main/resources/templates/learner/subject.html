@@ -121,21 +121,26 @@
                         <li><p><b th:text="#{subject.examExtraInfo.maxScore}"></b> {{currentExamExtraInfo.maxScore}}</p></li>
                         <li><p><b th:text="#{subject.examExtraInfo.examTime}"></b> {{currentExamExtraInfo.examTime}} <span th:text="#{subject.examExtraInfo.examTimeMin}"></span></p></li>
 
-                        <!-- Partial correction -->
-                        <li ng-show="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b th:text="#{subject.examExtraInfo.partialCorrection}"></b></p></li>
-                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b th:text="#{subject.examExtraInfo.notPartialCorrection}"></b></p></li>
-                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b th:text="#{subject.examExtraInfo.notPartialCorrectionFailedQuestion}"></b> {{currentExamExtraInfo.partialCorrection.penaltyFailedAnswer}}</p></li>
-                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b th:text="#{subject.examExtraInfo.notPartialCorrectionNotAnsweredQuestion}"></b> {{currentExamExtraInfo.partialCorrection.penaltyNotAnsweredQuestion}}</p></li>
-
                         <!-- Show right answers -->
                         <li ng-show="currentExamExtraInfo.showRightAnswersNumber"><p><b th:text="#{subject.examExtraInfo.showRightAnswers}"></b></p></li>
                         <li ng-hide="currentExamExtraInfo.showRightAnswersNumber"><p><b th:text="#{subject.examExtraInfo.notShowRightAnswers}"></b></p></li>
 
+                        <!-- Partial correction -->
+                        <li ng-show="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b th:text="#{subject.examExtraInfo.partialCorrection}"></b></p></li>
+                        <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b th:text="#{subject.examExtraInfo.notPartialCorrection}"></b></p></li>
+                        <ul class="ul-secondary-small-indent">
+                            <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b th:text="#{subject.examExtraInfo.notPartialCorrectionFailedQuestion}"></b> {{currentExamExtraInfo.partialCorrection.penaltyFailedQuestion}}</p></li>
+                            <li ng-hide="currentExamExtraInfo.partialCorrection.activePartialCorrection"><p><b th:text="#{subject.examExtraInfo.notPartialCorrectionNotAnsweredQuestion}"></b> {{currentExamExtraInfo.partialCorrection.penaltyNotAnsweredQuestion}}</p></li>
+                        </ul>
+
                         <!-- Confidence level -->
                         <li ng-hide="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b th:text="#{subject.examExtraInfo.notConfidenceLevel}"></b></p></li>
                         <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b th:text="#{subject.examExtraInfo.confidenceLevel}"></b></p></li>
-                        <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b th:text="#{subject.examExtraInfo.confidenceLevelPenalty}"></b>{{currentExamExtraInfo.confidenceLevel.penalty}}</p></li>
-                        <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b th:text="#{subject.examExtraInfo.confidenceLevelReward}"></b>{{currentExamExtraInfo.confidenceLevel.reward}}</p></li>
+                        <ul class="ul-secondary-small-indent">
+                            <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b th:text="#{subject.examExtraInfo.confidenceLevelPenalty}"></b> {{currentExamExtraInfo.confidenceLevel.penalty}}</p></li>
+                            <li ng-show="currentExamExtraInfo.confidenceLevel.activeConfidenceLevel"><p><b th:text="#{subject.examExtraInfo.confidenceLevelReward}"></b> {{currentExamExtraInfo.confidenceLevel.reward}}</p></li>
+                        </ul>
+
 
                         <!-- Start and End review dates are visible when the review is activated -->
                         <li ng-show="currentExamExtraInfo.activeReview"><p><b th:text="#{subject.examExtraInfo.startReviewDate}"></b> {{currentExamExtraInfo.startReviewDate}}</p></li>

@@ -27,7 +27,7 @@ public class ExamPartialCorrectionInfoModel {
 
     private String penaltyNotAnsweredQuestion;
 
-    private String penaltyFailedAnswer;
+    private String penaltyFailedQuestion;
 
     public boolean isActivePartialCorrection() {
         return activePartialCorrection;
@@ -45,11 +45,11 @@ public class ExamPartialCorrectionInfoModel {
         this.penaltyNotAnsweredQuestion = penaltyNotAnsweredQuestion;
     }
 
-    public String getPenaltyFailedAnswer() {
-        return penaltyFailedAnswer;
+    public String getPenaltyFailedQuestion() {
+        return penaltyFailedQuestion;
     }
 
-    public void setPenaltyFailedAnswer(String penaltyFailedAnswer) {
-        this.penaltyFailedAnswer = penaltyFailedAnswer;
+    public void setPenaltyFailedQuestion(String penaltyFailedQuestion) {
+        this.penaltyFailedQuestion = penaltyFailedQuestion;
     }
 }
