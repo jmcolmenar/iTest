@@ -44,6 +44,31 @@ public class ExamenConverter {
     @Qualifier("formatterComponent")
     private FormatterComponent formatterComponent;
 
+    public DoneExamInfoModel convertExamenToDoneExamInfoModelByUser(Examen exam, int learnerId){
+        // Initialize and fill the model object
+        DoneExamInfoModel doneExam = new DoneExamInfoModel();
+        doneExam.setExamId(exam.getIdexam());
+        doneExam.setExamName(exam.getTitulo());
+        doneExam.setMaxScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
+
+        // Get the "Calificacion" object corresponding to the user
+        Calificacion calificacion = exam.getCalifs().stream().filter(c -> c.getUsuarios().getIdusu() == learnerId).findFirst().get();
+        doneExam.setScore(this.formatterComponent.formatNumberWithTwoDecimals(calificacion.getNota()));
+        doneExam.setStartDate(this.formatterComponent.formatDateToString(calificacion.getFechaIni()));
+        doneExam.setEndDate(this.formatterComponent.formatDateToString(calificacion.getFechaFin()));
+        doneExam.setTime(this.formatterComponent.formatMillisecondsToHoursMinutesAndSeconds(calificacion.getFechaFin().getTime() - calificacion.getFechaIni().getTime()));
+
+        // Check if the review is available
+        Date now = new Date();
+        boolean isAvailableReview = exam.getRevActiva() == 1 // Active review
+                && exam.getFechaIni().before(now) && exam.getFechaFin().after(now) // Review date period
+                && calificacion.getFechaFin().before(now); // The exam has finished
+        doneExam.setAvailableReview(isAvailableReview);
+
+        // Return the exam model
+        return doneExam;
+    }
+
     public List<DoneExamInfoModel> convertExamenListToDoneExamInfoModelList(List<Examen> examenList){
 
         // Initialize the Donde Exam Info Model list
@@ -82,7 +107,6 @@ public class ExamenConverter {
         return doneExamInfoModelList;
     }
 
-    // TODO: Review this conversion
     public List<ExamExtraInfoModel> convertExamListToExamExtraInfoModelList(List<Examen> examenList){
 
         // Initialize the Exam Extra Info Model list

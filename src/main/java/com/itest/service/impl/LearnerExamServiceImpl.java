@@ -22,10 +22,14 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.service.impl;
 
 import com.itest.converter.ExamenConverter;
+import com.itest.converter.LogExamenConverter;
 import com.itest.entity.Examen;
+import com.itest.entity.LogExamen;
 import com.itest.model.DoneExamInfoModel;
 import com.itest.model.ExamExtraInfoModel;
+import com.itest.model.ExamQuestionModel;
 import com.itest.repository.ExamenRepository;
+import com.itest.repository.LogExamenRepository;
 import com.itest.service.LearnerExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,6 +48,14 @@ public class LearnerExamServiceImpl implements LearnerExamService {
     @Autowired
     @Qualifier("examenConverter")
     private ExamenConverter examenConverter;
+
+    @Autowired
+    @Qualifier("logExamenRepository")
+    private LogExamenRepository logExamenRepository;
+
+    @Autowired
+    @Qualifier("logExamenConverter")
+    private LogExamenConverter logExamenConverter;
 
     /**
      * Get the list of available exams of current subject for the learner
@@ -95,5 +107,41 @@ public class LearnerExamServiceImpl implements LearnerExamService {
 
         // Return the done exam model list
         return doneExamModelList;
+    }
+
+    /**
+     * Get the done exam info corresponding to the learner
+     * @param examId The exam identifier
+     * @param learnerId The user identifier
+     * @return The done exam by the user
+     */
+    public DoneExamInfoModel getDoneExam(int examId, int learnerId){
+
+        // Get the exam by id
+        Examen exam = this.examenRepository.findOne(examId);
+
+        // Convert the exam database object to model object
+        DoneExamInfoModel doneExamModel = this.examenConverter.convertExamenToDoneExamInfoModelByUser(exam, learnerId);
+
+        // Return the done exam model
+        return doneExamModel;
+    }
+
+    /**
+     * Get the questions of the exam to review by the learner
+     * @param examId Exam identifier to review
+     * @param learnerId User identifier of the learner
+     * @return The list of exam questions to review
+     */
+    public List<ExamQuestionModel> getExamQuestionsToReviewList(int examId, int learnerId){
+
+        // Get the logs of the exam to review
+        List<LogExamen> logExamList = this.logExamenRepository.findByExamIdAndUserIdOrderById(examId, learnerId);
+
+        // Convert the database objects to model objects
+        List<ExamQuestionModel> questionModelList = this.logExamenConverter.convertLogExamListToExamQuestionModelList(logExamList);
+
+        // Return the question model list
+        return questionModelList;
     }
 }

@@ -94,7 +94,7 @@
                                 <td>{{doneExam.startDate}}</td>
                                 <td>{{doneExam.endDate}}</td>
                                 <td>{{doneExam.time}}</td>
-                                <td><button class="btn btn-primary btn-xs" ng-show="doneExam.availableReview" th:text="#{subject.doneExam.reviewButton}"></button></td>
+                                <td><button class="btn btn-primary btn-xs" ng-show="doneExam.availableReview" ng-click="goToExamReview(doneExam.examId)" th:text="#{subject.doneExam.reviewButton}"></button></td>
                             </tr>
                             </tbody>
                         </table>

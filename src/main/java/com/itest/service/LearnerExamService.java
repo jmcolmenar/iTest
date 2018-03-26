@@ -23,6 +23,7 @@ package com.itest.service;
 
 import com.itest.model.DoneExamInfoModel;
 import com.itest.model.ExamExtraInfoModel;
+import com.itest.model.ExamQuestionModel;
 
 import java.util.List;
 
@@ -51,4 +52,20 @@ public interface LearnerExamService {
      * @return The list of done exams
      */
     List<DoneExamInfoModel> getDoneExamsList(int groupId, int learnerId);
+
+    /**
+     * Get the done exam info corresponding to the user
+     * @param examId The exam identifier
+     * @param learnerId The user identifier
+     * @return The done exam by the user
+     */
+    DoneExamInfoModel getDoneExam(int examId, int learnerId);
+
+    /**
+     * Get the questions of the exam to review by the learner
+     * @param examId Exam identifier to review
+     * @param learnerId User identifier of the learner
+     * @return The list of exam questions to review
+     */
+    List<ExamQuestionModel> getExamQuestionsToReviewList(int examId, int learnerId);
 }

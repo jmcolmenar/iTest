@@ -19,19 +19,17 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service;
+package com.itest.model.request;
 
-import com.itest.model.request.GetExamToReviewRequest;
-import com.itest.model.request.GetExamsInfoRequest;
-import com.itest.model.response.GetCoursesResponse;
-import com.itest.model.response.GetExamToReviewResponse;
-import com.itest.model.response.GetExamsInfoResponse;
+public class GetExamToReviewRequest {
 
-public interface LearnerManagementService {
+    private int examId;
 
-    GetCoursesResponse getCourseList();
+    public int getExamId() {
+        return examId;
+    }
 
-    GetExamsInfoResponse getExamsInfo(GetExamsInfoRequest request);
-
-    GetExamToReviewResponse getExamToReview(GetExamToReviewRequest request);
+    public void setExamId(int examId) {
+        this.examId = examId;
+    }
 }

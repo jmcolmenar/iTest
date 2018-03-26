@@ -313,4 +313,40 @@ app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
         $scope.currentExamExtraInfo = exam;
     }
 
+    // Function to go to exam review
+    $scope.goToExamReview = function (examId) {
+
+        // Prepare te request to get the exam to review
+        var getExamToReviewRequest = {
+            examId : examId
+        };
+
+        // Get the exam to review of selected subject
+        $http.post('/api/learner/getExamToReview', getExamToReviewRequest, {
+            headers : {
+                "content-type" : "application/json"
+            }
+        }).success(function(response) {
+            if(response.hasError){
+                // TODO: Shows an error modal
+
+                // Set empty subject and exams info
+                $scope.subject = {};
+                $scope.doneExams = {};
+            }else{
+                // Set the list of done exams
+                $scope.subject = response.subject;
+                $scope.availableExamsList = response.availableExamsList;
+                $scope.nextExamsList = response.nextExamsList;
+                $scope.doneExamsList = response.doneExamsList;
+            }
+        }).error(function(response) {
+            // TODO: Shows an error modal
+
+            // Error retrieving the exams of selected subject
+            $scope.showRequestError = true;
+        });
+
+    }
+
 }]);

@@ -25,12 +25,11 @@ import com.itest.converter.GrupoConverter;
 import com.itest.converter.MatriculaConverter;
 import com.itest.entity.Grupo;
 import com.itest.entity.Matricula;
-import com.itest.model.CourseModel;
-import com.itest.model.DoneExamInfoModel;
-import com.itest.model.ExamExtraInfoModel;
-import com.itest.model.SubjectModel;
+import com.itest.model.*;
+import com.itest.model.request.GetExamToReviewRequest;
 import com.itest.model.request.GetExamsInfoRequest;
 import com.itest.model.response.GetCoursesResponse;
+import com.itest.model.response.GetExamToReviewResponse;
 import com.itest.model.response.GetExamsInfoResponse;
 import com.itest.repository.GrupoRepository;
 import com.itest.repository.MatriculaRepository;
@@ -43,7 +42,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -146,6 +144,45 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
         // Return the response
         return getExamsInfoResponse;
+    }
+
+
+    public GetExamToReviewResponse getExamToReview(GetExamToReviewRequest request) {
+
+        // Initialize the response
+        GetExamToReviewResponse getExamToReviewResponse = new GetExamToReviewResponse();
+
+        try{
+            // Get the request variables
+            int examId = request.getExamId();
+
+            // Get the identifier of current user
+            int userId = this.userManagementService.getUserIdOfCurrentUser();
+
+            // Get the done exam by the learner
+            DoneExamInfoModel doneExam = this.learnerExamService.getDoneExam(examId, userId);
+            
+            // Get the questions of the exam
+            List<ExamQuestionModel> questionList = this.learnerExamService.getExamQuestionsToReviewList(examId, userId);
+
+            // Set the variable of the response object
+            getExamToReviewResponse.setExamId(examId);
+            getExamToReviewResponse.setSubjectName("Asignatura");
+            getExamToReviewResponse.setExamTitle(doneExam.getExamName());
+            getExamToReviewResponse.setScore(doneExam.getScore());
+            getExamToReviewResponse.setMaxScore(doneExam.getMaxScore());
+            getExamToReviewResponse.setQuestionList(questionList);
+
+        }catch(Exception exc){
+            // Log the exception
+            LOG.error("Error getting the done exams of user. Exception: " + exc.getMessage());
+
+            // Has an error retrieving the exam info to review
+            getExamToReviewResponse.setHasError(true);
+        }
+
+        // Return the response
+        return getExamToReviewResponse;
     }
 
 }

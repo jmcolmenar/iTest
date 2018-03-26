@@ -21,8 +21,10 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.controller;
 
+import com.itest.model.request.GetExamToReviewRequest;
 import com.itest.model.request.GetExamsInfoRequest;
 import com.itest.model.response.GetCoursesResponse;
+import com.itest.model.response.GetExamToReviewResponse;
 import com.itest.model.response.GetExamsInfoResponse;
 import com.itest.service.LearnerManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +59,14 @@ public class LearnerController {
         return response;
     }
 
+    @PostMapping("/getExamToReview")
+    public GetExamToReviewResponse getExamToReview(@RequestBody GetExamToReviewRequest request){
+
+        // Cal to the service to get the exam info to review
+        GetExamToReviewResponse response = this.learnerManagementService.getExamToReview(request);
+
+        // Return the response
+        return response;
+    }
 
 }
