@@ -44,15 +44,15 @@ public class ExamenConverter {
     @Qualifier("formatterComponent")
     private FormatterComponent formatterComponent;
 
-    public DoneExamInfoModel convertExamenToDoneExamInfoModelByUser(Examen exam, int learnerId){
+    public DoneExamInfoModel convertExamenToDoneExamInfoModel(Examen exam){
         // Initialize and fill the model object
         DoneExamInfoModel doneExam = new DoneExamInfoModel();
         doneExam.setExamId(exam.getIdexam());
         doneExam.setExamName(exam.getTitulo());
         doneExam.setMaxScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
 
-        // Get the "Calificacion" object corresponding to the user
-        Calificacion calificacion = exam.getCalifs().stream().filter(c -> c.getUsuarios().getIdusu() == learnerId).findFirst().get();
+        // Get the "Calificacion" object corresponding to the user (It should not be null and only one)
+        Calificacion calificacion = exam.getCalifs().stream().findFirst().get();
         doneExam.setScore(this.formatterComponent.formatNumberWithTwoDecimals(calificacion.getNota()));
         doneExam.setStartDate(this.formatterComponent.formatDateToString(calificacion.getFechaIni()));
         doneExam.setEndDate(this.formatterComponent.formatDateToString(calificacion.getFechaFin()));
@@ -78,25 +78,8 @@ public class ExamenConverter {
         if(examenList != null && !examenList.isEmpty()){
 
             for(Examen exam : examenList){
-                // Initialize and fill the model object
-                DoneExamInfoModel doneExam = new DoneExamInfoModel();
-                doneExam.setExamId(exam.getIdexam());
-                doneExam.setExamName(exam.getTitulo());
-                doneExam.setMaxScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
-
-                // Get the "Calificacion" object corresponding to the user (It should not be null and only one)
-                Calificacion calificacion = exam.getCalifs().stream().findFirst().get();
-                doneExam.setScore(this.formatterComponent.formatNumberWithTwoDecimals(calificacion.getNota()));
-                doneExam.setStartDate(this.formatterComponent.formatDateToString(calificacion.getFechaIni()));
-                doneExam.setEndDate(this.formatterComponent.formatDateToString(calificacion.getFechaFin()));
-                doneExam.setTime(this.formatterComponent.formatMillisecondsToHoursMinutesAndSeconds(calificacion.getFechaFin().getTime() - calificacion.getFechaIni().getTime()));
-
-                // Check if the review is available
-                Date now = new Date();
-                boolean isAvailableReview = exam.getRevActiva() == 1 // Active review
-                        && exam.getFechaIni().before(now) && exam.getFechaFin().after(now) // Review date period
-                        && calificacion.getFechaFin().before(now); // The exam has finished
-                doneExam.setAvailableReview(isAvailableReview);
+                // Convert the done exam to exam model
+                DoneExamInfoModel doneExam = this.convertExamenToDoneExamInfoModel(exam);
 
                 // Add DoneExamModel object to the list
                 doneExamInfoModelList.add(doneExam);

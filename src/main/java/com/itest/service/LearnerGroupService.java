@@ -19,21 +19,27 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.repository;
+package com.itest.service;
 
-import com.itest.entity.Matricula;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import com.itest.model.CourseModel;
+import com.itest.model.SubjectModel;
 
-import java.io.Serializable;
 import java.util.List;
 
-@Repository("matriculaRepository")
-public interface MatriculaRepository extends JpaRepository<Matricula, Serializable> {
+public interface LearnerGroupService {
 
-    @Query("select mat from Matricula mat where mat.usuarios.idusu = :userid")
-    List<Matricula> selectMatriculaListByUserId(@Param("userid") int userId);
+    /**
+     * Get the list of courses of the learner
+     * @param learnerId The learner identifier
+     * @return The course model list
+     */
+    List<CourseModel> getCourseList(int learnerId);
+
+    /**
+     * Get the subject corresponding to a group
+     * @param groupId The group identifier
+     * @return The subject model
+     */
+    SubjectModel getSubjectFromGroup(int groupId);
 
 }

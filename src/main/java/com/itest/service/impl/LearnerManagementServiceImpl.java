@@ -21,19 +21,14 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.impl;
 
-import com.itest.converter.GrupoConverter;
-import com.itest.converter.MatriculaConverter;
-import com.itest.entity.Grupo;
-import com.itest.entity.Matricula;
 import com.itest.model.*;
 import com.itest.model.request.GetExamToReviewRequest;
 import com.itest.model.request.GetExamsInfoRequest;
 import com.itest.model.response.GetCoursesResponse;
 import com.itest.model.response.GetExamToReviewResponse;
 import com.itest.model.response.GetExamsInfoResponse;
-import com.itest.repository.GrupoRepository;
-import com.itest.repository.MatriculaRepository;
 import com.itest.service.LearnerExamService;
+import com.itest.service.LearnerGroupService;
 import com.itest.service.LearnerManagementService;
 import com.itest.service.UserManagementService;
 import org.apache.commons.logging.Log;
@@ -42,7 +37,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service("learnerManagementServiceImpl")
@@ -51,20 +45,8 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
     private final Log LOG = LogFactory.getLog(LearnerManagementServiceImpl.class);
 
     @Autowired
-    @Qualifier("matriculaRepository")
-    private MatriculaRepository matriculaRepository;
-
-    @Autowired
-    @Qualifier("matriculaConverter")
-    private MatriculaConverter matriculaConverter;
-
-    @Autowired
-    @Qualifier("grupoRepository")
-    private GrupoRepository grupoRepository;
-
-    @Autowired
-    @Qualifier("grupoConverter")
-    private GrupoConverter grupoConverter;
+    @Qualifier("learnerGroupServiceImpl")
+    private LearnerGroupService learnerGroupService;
 
     @Autowired
     @Qualifier("userManagementServiceImpl")
@@ -80,17 +62,11 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
         GetCoursesResponse getCoursesResponse = new GetCoursesResponse();
 
         try{
-            // Get the user identifier of current user
+            // Get the current user identifier
             int userId = this.userManagementService.getUserIdOfCurrentUser();
 
-            // Get the Matricula table list of current user
-            List<Matricula> matriculaList = this.matriculaRepository.selectMatriculaListByUsernameOfUsuario(userId);
-
-            // Convert the Matricula objects list to Course model
-            List<CourseModel> courseModelList = this.matriculaConverter.convertMatriculaListToCourseModelList(matriculaList);
-
-            // Order the list by year (From highest to lowest)
-            Collections.sort(courseModelList, (o1, o2) -> o2.getYear().compareTo(o1.getYear()));
+            // Get the courses list of user
+            List<CourseModel> courseModelList = this.learnerGroupService.getCourseList(userId);
 
             // Fill the response object with the course model list
             getCoursesResponse.setCoursesList(courseModelList);
@@ -113,15 +89,12 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
         GetExamsInfoResponse getExamsInfoResponse = new GetExamsInfoResponse();
 
         try{
-            // Get the request variables
+            // Get the request variables and current user identifier
             int groupId = request.getGroupId();
-
-            // Get the group entity from database and convert to the subject model
-            Grupo group = this.grupoRepository.findOne(groupId);
-            SubjectModel subjectModel = this.grupoConverter.convertGrupoToSubjectModel(group);
-
-            // Get the identifier of current user
             int userId = this.userManagementService.getUserIdOfCurrentUser();
+
+            // Get the subject from the group
+            SubjectModel subjectModel = this.learnerGroupService.getSubjectFromGroup(groupId);
 
             // Get the available, next and done exams from database
             List<ExamExtraInfoModel> availableExamsList = this.learnerExamService.getAvailableExamsList(groupId, userId);
@@ -153,10 +126,8 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
         GetExamToReviewResponse getExamToReviewResponse = new GetExamToReviewResponse();
 
         try{
-            // Get the request variables
+            // Get the request variables and current user identifier
             int examId = request.getExamId();
-
-            // Get the identifier of current user
             int userId = this.userManagementService.getUserIdOfCurrentUser();
 
             // Get the done exam by the learner
@@ -165,9 +136,12 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
             // Get the questions of the exam
             List<ExamQuestionModel> questionList = this.learnerExamService.getExamQuestionsToReviewList(examId, userId);
 
+            // Get the subject name from the exam
+            String subjectName = this.learnerExamService.getSubjectNameFromExam(examId);
+
             // Set the variable of the response object
             getExamToReviewResponse.setExamId(examId);
-            getExamToReviewResponse.setSubjectName("Asignatura");
+            getExamToReviewResponse.setSubjectName(subjectName);
             getExamToReviewResponse.setExamTitle(doneExam.getExamName());
             getExamToReviewResponse.setScore(doneExam.getScore());
             getExamToReviewResponse.setMaxScore(doneExam.getMaxScore());

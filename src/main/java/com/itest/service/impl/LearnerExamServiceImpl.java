@@ -118,13 +118,27 @@ public class LearnerExamServiceImpl implements LearnerExamService {
     public DoneExamInfoModel getDoneExam(int examId, int learnerId){
 
         // Get the exam by id
-        Examen exam = this.examenRepository.findOne(examId);
+        Examen exam = this.examenRepository.findDoneExamByUserIdAndExamId(learnerId, examId);
 
         // Convert the exam database object to model object
-        DoneExamInfoModel doneExamModel = this.examenConverter.convertExamenToDoneExamInfoModelByUser(exam, learnerId);
+        DoneExamInfoModel doneExamModel = this.examenConverter.convertExamenToDoneExamInfoModel(exam);
 
         // Return the done exam model
         return doneExamModel;
+    }
+
+    /**
+     * Get the subject name from an exam
+     * @param examId The exam identifier
+     * @return The subject name
+     */
+    public String getSubjectNameFromExam(int examId){
+
+        // Get the exam by id
+        Examen exam = this.examenRepository.findOne(examId);
+
+        // Return the subject name
+        return exam.getGrupos().getAsignaturas().getNombre();
     }
 
     /**

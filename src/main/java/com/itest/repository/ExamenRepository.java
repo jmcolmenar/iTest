@@ -69,4 +69,13 @@ public interface ExamenRepository extends JpaRepository<Examen, Serializable> {
             "   :userid in (select excal.usuarios.idusu from ex.califs excal) " +
             "   and ex.grupos.idgrupo = :groupid")
     List<Examen> findDoneExams(@Param("userid") int userId, @Param("groupid") int groupId);
+
+    @Query("select " +
+            "   cal.examenes " +
+            "from " +
+            "   Calificacion cal " +
+            "where " +
+            "   cal.examenes.idexam = :examid " +
+            "   and cal.usuarios.idusu = :userid")
+    Examen findDoneExamByUserIdAndExamId(@Param("userid") int userId, @Param("examid") int examId);
 }

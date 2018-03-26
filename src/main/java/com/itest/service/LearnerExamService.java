@@ -62,6 +62,13 @@ public interface LearnerExamService {
     DoneExamInfoModel getDoneExam(int examId, int learnerId);
 
     /**
+     * Get the subject name from an exam
+     * @param examId The exam identifier
+     * @return The subject name
+     */
+    String getSubjectNameFromExam(int examId);
+
+    /**
      * Get the questions of the exam to review by the learner
      * @param examId Exam identifier to review
      * @param learnerId User identifier of the learner
