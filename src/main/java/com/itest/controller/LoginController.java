@@ -23,7 +23,7 @@ package com.itest.controller;
 
 import com.itest.constant.UserRoleConstant;
 import com.itest.model.CurrentUserModel;
-import com.itest.service.UserManagementService;
+import com.itest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -43,8 +43,8 @@ import java.util.Set;
 public class LoginController {
 
     @Autowired
-    @Qualifier("userManagementServiceImpl")
-    private UserManagementService userManagementService;
+    @Qualifier("userServiceImpl")
+    private UserService userService;
 
     /**
      * Return the index page as a view
@@ -67,7 +67,7 @@ public class LoginController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         // Check if the user is a valid user
-        boolean isValidUser = this.userManagementService.isAuthorizedUser(auth);
+        boolean isValidUser = this.userService.isAuthorizedUser(auth);
 
         // Return the current user
         return new CurrentUserModel(isValidUser, auth != null ? auth.getName() : null);

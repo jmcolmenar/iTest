@@ -47,7 +47,7 @@ public class UserController {
     public GetFullNameResponse getFullName(){
 
         // Call to the service to get the full name of current user
-        GetFullNameResponse response = this.userManagementService.getUserFullName();
+        GetFullNameResponse response = this.userManagementService.getFullName();
 
         // Return the response
         return response;
@@ -57,7 +57,7 @@ public class UserController {
     public ChangePasswordResponse changePassword(@RequestBody ChangePasswordRequest request){
 
         // Call to the service to change the user password
-        ChangePasswordResponse changePasswordModel = this.userManagementService.changeUserPassword(request);
+        ChangePasswordResponse changePasswordModel = this.userManagementService.changePassword(request);
 
         // Return the response object
         return changePasswordModel;
@@ -74,7 +74,7 @@ public class UserController {
     }
 
     @PostMapping("/updateUserProfile")
-    public UpdateUserProfileResponse updateUerProfile(@RequestBody UpdateUserProfileRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse){
+    public UpdateUserProfileResponse updateUserProfile(@RequestBody UpdateUserProfileRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse){
 
         // Call to the service to update the user profile
         UpdateUserProfileResponse response = this.userManagementService.updateUserProfile(request, httpRequest, httpResponse);

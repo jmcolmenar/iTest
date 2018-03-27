@@ -21,31 +21,24 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.impl;
 
-import com.itest.constant.UserRoleConstant;
-import com.itest.converter.UsuarioConverter;
-import com.itest.entity.Usuario;
+import com.itest.model.UserInfoModel;
 import com.itest.model.request.ChangePasswordRequest;
 import com.itest.model.request.UpdateUserProfileRequest;
 import com.itest.model.response.ChangePasswordResponse;
 import com.itest.model.response.GetFullNameResponse;
 import com.itest.model.response.GetUserProfileResponse;
 import com.itest.model.response.UpdateUserProfileResponse;
-import com.itest.repository.UsuarioRepository;
 import com.itest.service.TranslationService;
 import com.itest.service.UserManagementService;
+import com.itest.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Set;
 
 @Service("userManagementServiceImpl")
 public class UserManagementServiceImpl implements UserManagementService {
@@ -53,52 +46,14 @@ public class UserManagementServiceImpl implements UserManagementService {
     private static final Log LOG = LogFactory.getLog(UserManagementServiceImpl.class);
 
     @Autowired
-    @Qualifier("usuarioRepository")
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    @Qualifier("usuarioConverter")
-    private UsuarioConverter usuarioConverter;
+    @Qualifier("userServiceImpl")
+    UserService userService;
 
     @Autowired
     @Qualifier("translationServiceImpl")
     TranslationService translationService;
 
-    public boolean isAuthorizedUser(Authentication auth){
-        boolean isAuthorized = false;
-
-        // Check the Authentication object
-        if(auth == null){
-            return false;
-        }
-
-        // Get the roles of authenticated user
-        Set<String> roles = AuthorityUtils.authorityListToSet(auth.getAuthorities());
-
-        // Check if the authenticated user has the Admin, Tutor ,Learner or Kid role
-        if(roles != null && !roles.isEmpty()){
-            isAuthorized = roles.contains(UserRoleConstant.ROLE_LEARNER)
-                    || roles.contains(UserRoleConstant.ROLE_KID)
-                    || roles.contains(UserRoleConstant.ROLE_TUTOR)
-                    || roles.contains(UserRoleConstant.ROLE_ADMIN);
-        }
-
-        // Return if the current user is authorized
-        return isAuthorized;
-    }
-
-    public int getUserIdOfCurrentUser() {
-        // Get the current user from SecurityContextHolder
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // Get the username
-        String username = authentication.getName();
-
-        // Return the user identifier from username
-        return this.usuarioRepository.getUserIdByUsername(username);
-    }
-
-    public ChangePasswordResponse changeUserPassword(ChangePasswordRequest request){
+    public ChangePasswordResponse changePassword(ChangePasswordRequest request){
 
         // Initialize the change password response
         ChangePasswordResponse changePasswordResponse = new ChangePasswordResponse();
@@ -109,40 +64,15 @@ public class UserManagementServiceImpl implements UserManagementService {
             String newPass = request.getNewPassword();
             String repeatPass = request.getRepeatPassword();
 
-            // Check the new password and the repeated password is the same
-            if(newPass.equals(repeatPass)){
+            // Change the user password
+            String errorMessage = this.userService.changeUserPassword(oldPass, newPass, repeatPass);
 
-                // Get the user Id of current user
-                int userId = this.getUserIdOfCurrentUser();
+            // Check if has an error changing the user password
+            if(errorMessage != null){
 
-                // Get the password of current user (In MD5 format)
-                Usuario usuario = this.usuarioRepository.findByIdusu(userId);
-                String currentpasswordMd5 = usuario.getPassw();
-
-                // Initialize the encoder MD5 algorithmic and encode the old password
-                Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
-                String oldPassordMd5 = md5PasswordEncoder.encodePassword(oldPass, null);
-
-                // Check the old password is the same that the current password of user
-                if(currentpasswordMd5.equals(oldPassordMd5)){
-
-                    // Update the password of user
-                    String newPasswordMd5 = md5PasswordEncoder.encodePassword(newPass, null);
-                    usuario.setPassw(newPasswordMd5);
-                    this.usuarioRepository.save(usuario);
-                }else{
-
-                    // Set the error message when the password of user is not correct
-                    String errorMessage = this.translationService.getMessage("changePassword.errorIncorrectPassword");
-                    changePasswordResponse.setHasError(true);
-                    changePasswordResponse.setErrorMessage(errorMessage);
-                }
-            }else{
-
-                // Set the error message when the new and repeated password is not the same
-                String errorMessage = this.translationService.getMessage("changePassword.errorNewAndRepeatPassword");
-                changePasswordResponse.setHasError(true);
+                // Set the error message and the error flag in the response object
                 changePasswordResponse.setErrorMessage(errorMessage);
+                changePasswordResponse.setHasError(true);
             }
         }catch(Exception exc){
             // Log the exception
@@ -157,19 +87,16 @@ public class UserManagementServiceImpl implements UserManagementService {
         return changePasswordResponse;
     }
 
-    public GetFullNameResponse getUserFullName() {
+    public GetFullNameResponse getFullName() {
         // Initialize the response object
         GetFullNameResponse getFullNameResponse = new GetFullNameResponse();
 
         try{
-            // Get the user id of current user
-            int userId = this.getUserIdOfCurrentUser();
+            // Get the user info
+            UserInfoModel userInfoModel = this.userService.getUserInfo();
 
-            // Get the user from database by user id
-            Usuario usuario = this.usuarioRepository.findByIdusu(userId);
-
-            // Set the full name
-            getFullNameResponse.setFullName(usuario.getNombre() + " " + usuario.getApes());
+            // Set the full name variable of response object
+            getFullNameResponse.setFullName(userInfoModel.getName() + " " + userInfoModel.getLastName());
 
         }catch (Exception exc){
             // Log the exception
@@ -189,12 +116,16 @@ public class UserManagementServiceImpl implements UserManagementService {
 
         try{
 
-            // Get the user from database by user id
-            int userId = this.getUserIdOfCurrentUser();
-            Usuario usuario = this.usuarioRepository.findByIdusu(userId);
+            // Get the user info
+            UserInfoModel userInfoModel = this.userService.getUserInfo();
 
-            // Convert the "Usuario" entity from database to response object
-            getUserProfileResponse = this.usuarioConverter.convertUsuarioToGetUserProfileResponse(usuario);
+            // Set the variables of user profile response
+            getUserProfileResponse.setUsername(userInfoModel.getUsername());
+            getUserProfileResponse.setName(userInfoModel.getName());
+            getUserProfileResponse.setLastName(userInfoModel.getLastName());
+            getUserProfileResponse.setEmail(userInfoModel.getEmail());
+            getUserProfileResponse.setDni(userInfoModel.getDni());
+            getUserProfileResponse.setLanguageId(userInfoModel.getLanguageId());
 
         }catch(Exception exc){
             // Log the exception
@@ -220,22 +151,19 @@ public class UserManagementServiceImpl implements UserManagementService {
             String email = request.getEmail();
             int languageId = request.getLanguageId();
 
-            // Get the user id of current user
-            int userId = this.getUserIdOfCurrentUser();
+            // Create an User Info Model with the request data
+            UserInfoModel userInfoModel = new UserInfoModel();
+            userInfoModel.setName(name);
+            userInfoModel.setLastName(lastname);
+            userInfoModel.setDni(dni);
+            userInfoModel.setEmail(email);
+            userInfoModel.setLanguageId(languageId);
 
-            // Get the user entity from database
-            Usuario usuario = this.usuarioRepository.findByIdusu(userId);
+            // Update the user data in database
+            this.userService.updateUserData(userInfoModel);
 
-            // Update the user in database
-            usuario.setNombre(name);
-            usuario.setApes(lastname);
-            usuario.setDni(dni);
-            usuario.setEmail(email);
-            usuario.setIdioma(languageId);
-            this.usuarioRepository.save(usuario);
-
-            // Set the language by the language identifier
-            this.translationService.setLocale(languageId, httpRequest, httpResponse);
+            // Set the application language from current user language
+            this.userService.setLocaleByCurrentUser(httpRequest, httpResponse);
 
         }catch(Exception exc){
             // Log the exception
@@ -247,17 +175,5 @@ public class UserManagementServiceImpl implements UserManagementService {
 
         // Return the user profile response
         return updateUserProfileResponse;
-    }
-
-    public void setLocaleByCurrentUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
-        // Get the current user from database
-        int userId = this.getUserIdOfCurrentUser();
-        Usuario user = this.usuarioRepository.findByIdusu(userId);
-
-        // Get the language of current user
-        int languageId = user.getIdioma();
-
-        // Set the locale by the language of user
-        this.translationService.setLocale(languageId, httpServletRequest, httpServletResponse);
     }
 }

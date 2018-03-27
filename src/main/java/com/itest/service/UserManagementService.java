@@ -27,24 +27,17 @@ import com.itest.model.response.ChangePasswordResponse;
 import com.itest.model.response.GetFullNameResponse;
 import com.itest.model.response.GetUserProfileResponse;
 import com.itest.model.response.UpdateUserProfileResponse;
-import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface UserManagementService {
 
-    boolean isAuthorizedUser(Authentication auth);
+    ChangePasswordResponse changePassword(ChangePasswordRequest request);
 
-    int getUserIdOfCurrentUser();
-
-    ChangePasswordResponse changeUserPassword(ChangePasswordRequest request);
-
-    GetFullNameResponse getUserFullName();
+    GetFullNameResponse getFullName();
 
     GetUserProfileResponse getUserProfile();
 
     UpdateUserProfileResponse updateUserProfile(UpdateUserProfileRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse);
-
-    void setLocaleByCurrentUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
 }

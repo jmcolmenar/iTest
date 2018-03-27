@@ -27,10 +27,7 @@ import com.itest.model.request.GetExamsInfoRequest;
 import com.itest.model.response.GetCoursesResponse;
 import com.itest.model.response.GetExamToReviewResponse;
 import com.itest.model.response.GetExamsInfoResponse;
-import com.itest.service.LearnerExamService;
-import com.itest.service.LearnerGroupService;
-import com.itest.service.LearnerManagementService;
-import com.itest.service.UserManagementService;
+import com.itest.service.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +46,8 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
     private LearnerGroupService learnerGroupService;
 
     @Autowired
-    @Qualifier("userManagementServiceImpl")
-    private UserManagementService userManagementService;
+    @Qualifier("userServiceImpl")
+    private UserService userService;
 
     @Autowired
     @Qualifier("learnerExamServiceImpl")
@@ -63,7 +60,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
         try{
             // Get the current user identifier
-            int userId = this.userManagementService.getUserIdOfCurrentUser();
+            int userId = this.userService.getUserIdOfCurrentUser();
 
             // Get the courses list of user
             List<CourseModel> courseModelList = this.learnerGroupService.getCourseList(userId);
@@ -91,7 +88,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
         try{
             // Get the request variables and current user identifier
             int groupId = request.getGroupId();
-            int userId = this.userManagementService.getUserIdOfCurrentUser();
+            int userId = this.userService.getUserIdOfCurrentUser();
 
             // Get the subject from the group
             SubjectModel subjectModel = this.learnerGroupService.getSubjectFromGroup(groupId);
@@ -128,7 +125,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
         try{
             // Get the request variables and current user identifier
             int examId = request.getExamId();
-            int userId = this.userManagementService.getUserIdOfCurrentUser();
+            int userId = this.userService.getUserIdOfCurrentUser();
 
             // Get the done exam by the learner
             DoneExamInfoModel doneExam = this.learnerExamService.getDoneExam(examId, userId);

@@ -23,7 +23,7 @@ package com.itest.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itest.model.CurrentUserModel;
-import com.itest.service.UserManagementService;
+import com.itest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -43,8 +43,8 @@ import java.io.IOException;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
-    @Qualifier("userManagementServiceImpl")
-    UserManagementService userManagementService;
+    @Qualifier("userServiceImpl")
+    UserService userService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
@@ -55,11 +55,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         httpServletResponse.setContentType("application/json");
 
         // Check if the user is a valid user
-        boolean isValidUser = this.userManagementService.isAuthorizedUser(authentication);
+        boolean isValidUser = this.userService.isAuthorizedUser(authentication);
 
         // When the current user is authorized, the current locale of application is set
         if(isValidUser){
-            this.userManagementService.setLocaleByCurrentUser(httpServletRequest, httpServletResponse);
+            this.userService.setLocaleByCurrentUser(httpServletRequest, httpServletResponse);
         }
 
         // Return the current user in JSON format
