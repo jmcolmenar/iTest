@@ -42,7 +42,8 @@ app.service('sharedProperties', function () {
 app.config(['$routeProvider', function ($routeProvider){
     $routeProvider
         .when('/', {
-            templateUrl: '/learner/partial/courses'
+            templateUrl: '/learner/partial/courses',
+            controller: 'coursesCtrl'
         })
         .when('/changepassword', {
             templateUrl: '/user/partial/changePassword',
@@ -83,24 +84,6 @@ app.controller('mainCtrl', ['$scope', '$http', '$window', 'sharedProperties', fu
             // Set the full name with "Error" message
             $scope.fullName = 'Error...';
         });
-
-        // Request to get the courses list of user
-        $http.get('/api/learner/getCourses').success(function(response){
-            if(response.hasError){
-                // TODO: Show error modal
-
-                // Set an empty courses list
-                $scope.courseList = {};
-            }else{
-                // Set the variable with the courses
-                $scope.courseList = response.coursesList;
-            }
-        }).error(function(response){
-            // TODO: Show error modal
-
-            // Set an empty courses list
-            $scope.courseList = {};
-        });
     };
 
     // Call to "logout" get request to exit of application
@@ -116,6 +99,29 @@ app.controller('mainCtrl', ['$scope', '$http', '$window', 'sharedProperties', fu
     $scope.showExitConfirmation = function(){
         $("#exitConfirmationModal").modal("show");
     };
+
+}]);
+
+// Change password controller
+app.controller('coursesCtrl', ['$scope', '$http', 'sharedProperties', function($scope, $http, sharedProperties) {
+
+    // Request to get the courses list of user
+    $http.get('/api/learner/getCourses').success(function(response){
+        if(response.hasError){
+            // TODO: Show error modal
+
+            // Set an empty courses list
+            $scope.courseList = {};
+        }else{
+            // Set the variable with the courses
+            $scope.courseList = response.coursesList;
+        }
+    }).error(function(response){
+        // TODO: Show error modal
+
+        // Set an empty courses list
+        $scope.courseList = {};
+    });
 
     // Set the selected subject
     $scope.setSelectedSubject = function(subject){
