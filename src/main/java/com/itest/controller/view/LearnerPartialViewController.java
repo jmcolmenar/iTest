@@ -38,4 +38,9 @@ public class LearnerPartialViewController {
     public String getSubjectPartialView(){
         return "learner/subject";
     }
+
+    @GetMapping("/reviewExam")
+    public String getReviewExamPartialView(){
+        return "learner/review_exam";
+    }
 }

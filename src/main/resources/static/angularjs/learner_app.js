@@ -40,6 +40,10 @@ app.config(['$routeProvider', function ($routeProvider){
             templateUrl: '/learner/partial/subject',
             controller: 'subjectCtrl'
         })
+        .when('/reviewexam',{
+            templateUrl: '/learner/partial/reviewExam',
+            controller: 'reviewExamCtrl'
+        })
         .otherwise({
             redirectTo: '/'
         });
@@ -254,7 +258,7 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
 }]);
 
 // Subject management controller
-app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
+app.controller("subjectCtrl", ['$scope', '$http' , '$window', function($scope, $http, $window){
 
     // Prepare te request to get the exams by the Group Id of selected subject
     var getExamsInfoRequest = {
@@ -311,42 +315,58 @@ app.controller("subjectCtrl", ['$scope', '$http', function($scope, $http){
     // Function to set the current exam in order to show the extra info in the modal
     $scope.setCurrentExamExtraInfo = function (exam) {
         $scope.currentExamExtraInfo = exam;
-    }
+    };
+
+
+    // Function to shows the confirmation modal to go to the review exam
+    $scope.showGoToReviewExamModal = function (examId) {
+        // Set the exam identifier
+        $scope.currentExamIdToReview = examId;
+
+        // Show the confirmation modal
+        $("#confirmationModal").modal("show");
+    };
 
     // Function to go to exam review
-    $scope.goToExamReview = function (examId) {
+    $scope.goToExamReview = function () {
+        // The learner is redirected to the review exam page
+        $window.location.href = '#/reviewexam/';
+    };
 
-        // Prepare te request to get the exam to review
-        var getExamToReviewRequest = {
-            examId : examId
-        };
+}]);
 
-        // Get the exam to review of selected subject
-        $http.post('/api/learner/getExamToReview', getExamToReviewRequest, {
-            headers : {
-                "content-type" : "application/json"
-            }
-        }).success(function(response) {
-            if(response.hasError){
-                // TODO: Shows an error modal
+// Exam to review management controller
+app.controller("reviewExamCtrl", ['$scope', '$http', function($scope, $http){
 
-                // Set empty subject and exams info
-                $scope.subject = {};
-                $scope.doneExams = {};
-            }else{
-                // Set the list of done exams
-                $scope.subject = response.subject;
-                $scope.availableExamsList = response.availableExamsList;
-                $scope.nextExamsList = response.nextExamsList;
-                $scope.doneExamsList = response.doneExamsList;
-            }
-        }).error(function(response) {
+    // Prepare te request to get the exam to review
+    var getExamToReviewRequest = {
+        examId : $scope.currentExamIdToReview
+    };
+
+    // Get the exam to review of selected subject
+    $http.post('/api/learner/getExamToReview', getExamToReviewRequest, {
+        headers : {
+            "content-type" : "application/json"
+        }
+    }).success(function(response) {
+        if(response.hasError){
             // TODO: Shows an error modal
 
-            // Error retrieving the exams of selected subject
-            $scope.showRequestError = true;
-        });
+            // Set empty subject and exams info
+            $scope.subject = {};
+            $scope.doneExams = {};
+        }else{
+            // Set the list of done exams
+            $scope.subject = response.subject;
+            $scope.availableExamsList = response.availableExamsList;
+            $scope.nextExamsList = response.nextExamsList;
+            $scope.doneExamsList = response.doneExamsList;
+        }
+    }).error(function(response) {
+        // TODO: Shows an error modal
 
-    }
+        // Error retrieving the exams of selected subject
+        $scope.showRequestError = true;
+    });
 
 }]);

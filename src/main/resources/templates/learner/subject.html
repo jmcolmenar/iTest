@@ -94,7 +94,7 @@
                                 <td>{{doneExam.startDate}}</td>
                                 <td>{{doneExam.endDate}}</td>
                                 <td>{{doneExam.time}}</td>
-                                <td><button class="btn btn-primary btn-xs" ng-show="doneExam.availableReview" ng-click="goToExamReview(doneExam.examId)" th:text="#{subject.doneExam.reviewButton}"></button></td>
+                                <td><button class="btn btn-primary btn-xs" ng-show="doneExam.availableReview" ng-click="showGoToReviewExamModal(doneExam.examId)" th:text="#{subject.doneExam.reviewButton}"></button></td>
                             </tr>
                             </tbody>
                         </table>
@@ -150,4 +150,24 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal with confirmation message modal -->
+    <div class="modal fade" id="confirmationModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" th:text="#{modalConfirmationTitle}"></h2>
+                </div>
+                <div class="modal-body">
+                    <p>¿Desea comenzar la revisión?</p>
+                </div>
+                <div class="modal-footer-custom">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-right: 20px;" th:text="#{modalCancelButton}"></button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="goToExamReview()" th:text="#{modalOkButton}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

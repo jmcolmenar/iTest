@@ -40,7 +40,7 @@ body{
     margin-top: 0px;
 }
 
-#main-courses-div, #main-pass-div, #main-profile-div, #main-subject-div{
+#main-courses-div, #main-pass-div, #main-profile-div, #main-subject-div, #main-review-exam-div{
     border: 3px solid rgb(217, 32, 38);
     border-top: 16px solid rgb(217, 32, 38);
     box-shadow: rgba(255, 0, 0, 0.3) 3px 3px 3px 3px;
