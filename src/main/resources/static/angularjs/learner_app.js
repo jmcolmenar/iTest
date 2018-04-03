@@ -17,6 +17,27 @@ app.factory('currentUserProfile',['$http', '$q', function($http, $q) {
     }
 }]);
 
+// Service to access to the shared properties from all controllers
+app.service('sharedProperties', function () {
+    var currentGroupId = 0;
+    var currentExamId = 0;
+
+    return {
+        getCurrentGroupId: function () {
+            return currentGroupId;
+        },
+        setCurrentGroupId: function(value) {
+            currentGroupId = value;
+        },
+        getCurrentExamId: function () {
+            return currentExamId;
+        },
+        setCurrentExamId: function(value) {
+            currentExamId = value;
+        }
+    };
+});
+
 // Route provider configuration
 app.config(['$routeProvider', function ($routeProvider){
     $routeProvider
@@ -50,7 +71,7 @@ app.config(['$routeProvider', function ($routeProvider){
 }]);
 
 // Main controller
-app.controller('mainCtrl', ['$scope', '$http', '$window', function($scope, $http, $window){
+app.controller('mainCtrl', ['$scope', '$http', '$window', 'sharedProperties', function($scope, $http, $window, sharedProperties){
 
     // The function to executes when the page has been loaded
     $scope.init = function(){
@@ -99,7 +120,7 @@ app.controller('mainCtrl', ['$scope', '$http', '$window', function($scope, $http
     // Set the selected subject
     $scope.setSelectedSubject = function(subject){
         // Set the GroupId of selected subject to search the exams
-        $scope.selectedGroupId = subject.groupId;
+        sharedProperties.setCurrentGroupId(subject.groupId);
     };
 
 }]);
@@ -258,11 +279,11 @@ app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'currentProfile
 }]);
 
 // Subject management controller
-app.controller('subjectCtrl', ['$scope', '$http' , '$window', function($scope, $http, $window){
+app.controller('subjectCtrl', ['$scope', '$http' , '$window', 'sharedProperties', function($scope, $http, $window, sharedProperties){
 
     // Prepare te request to get the exams by the Group Id of selected subject
     var getExamsInfoRequest = {
-        groupId : $scope.selectedGroupId
+        groupId : sharedProperties.getCurrentGroupId()
     };
 
     // Get the done exams of selected subject
@@ -276,7 +297,9 @@ app.controller('subjectCtrl', ['$scope', '$http' , '$window', function($scope, $
 
             // Set empty subject and exams info
             $scope.subject = {};
-            $scope.doneExams = {};
+            $scope.availableExamsList = {};
+            $scope.nextExamsList = {};
+            $scope.doneExamsList = {};
         }else{
             // Set the list of done exams
             $scope.subject = response.subject;
@@ -321,7 +344,7 @@ app.controller('subjectCtrl', ['$scope', '$http' , '$window', function($scope, $
     // Function to shows the confirmation modal to go to the review exam
     $scope.showGoToReviewExamModal = function (examId) {
         // Set the exam identifier
-        $scope.currentExamIdToReview = examId;
+        sharedProperties.setCurrentExamId(examId);
 
         // Show the confirmation modal
         $("#confirmationModal").modal("show");
@@ -336,11 +359,11 @@ app.controller('subjectCtrl', ['$scope', '$http' , '$window', function($scope, $
 }]);
 
 // Exam to review management controller
-app.controller('reviewExamCtrl', ['$scope', '$http', function($scope, $http){
+app.controller('reviewExamCtrl', ['$scope', '$http', 'sharedProperties', function($scope, $http, sharedProperties){
 
     // Prepare te request to get the exam to review
     var getExamToReviewRequest = {
-        examId : $scope.currentExamIdToReview
+        examId : sharedProperties.getCurrentExamId()
     };
 
     // Get the exam to review of selected subject
@@ -351,16 +374,8 @@ app.controller('reviewExamCtrl', ['$scope', '$http', function($scope, $http){
     }).success(function(response) {
         if(response.hasError){
             // TODO: Shows an error modal
-
-            // Set empty subject and exams info
-            $scope.subject = {};
-            $scope.doneExams = {};
         }else{
-            // Set the list of done exams
-            $scope.subject = response.subject;
-            $scope.availableExamsList = response.availableExamsList;
-            $scope.nextExamsList = response.nextExamsList;
-            $scope.doneExamsList = response.doneExamsList;
+            // TODO: Get the response variables
         }
     }).error(function(response) {
         // TODO: Shows an error modal
