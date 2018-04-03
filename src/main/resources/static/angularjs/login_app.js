@@ -28,7 +28,7 @@ app.controller('loginCtrl', function($scope, $http, $window){
     $scope.login = function() {
         $http.post('login', $.param($scope.credentials), {
             headers : {
-                "content-type" : "application/x-www-form-urlencoded"
+                'content-type' : 'application/x-www-form-urlencoded'
             }
         }).success(function(data) {
             // Check if the logged user is a valid user (With the needed Roles)

@@ -3,10 +3,10 @@
  */
 
 // Angular JS application
-var app = angular.module("learnerApp",['ngRoute']);
+var app = angular.module('learnerApp',['ngRoute']);
 
 // Service to get the user profile
-app.factory("currentUserProfile",['$http', '$q', function($http, $q) {
+app.factory('currentUserProfile',['$http', '$q', function($http, $q) {
     return function() {
         var userProfileData = $http.get('/api/user/getUserProfile');
         return $q.all([userProfileData]).then(function(results){
@@ -50,7 +50,7 @@ app.config(['$routeProvider', function ($routeProvider){
 }]);
 
 // Main controller
-app.controller("mainCtrl", ['$scope', '$http', '$window', function($scope, $http, $window){
+app.controller('mainCtrl', ['$scope', '$http', '$window', function($scope, $http, $window){
 
     // The function to executes when the page has been loaded
     $scope.init = function(){
@@ -105,7 +105,7 @@ app.controller("mainCtrl", ['$scope', '$http', '$window', function($scope, $http
 }]);
 
 // Change password controller
-app.controller("changePassCtrl", ['$scope', '$http', function($scope, $http){
+app.controller('changePassCtrl', ['$scope', '$http', function($scope, $http){
 
     // The change password data
     $scope.changePasswordData = {};
@@ -132,7 +132,7 @@ app.controller("changePassCtrl", ['$scope', '$http', function($scope, $http){
             };
             $http.post('/api/user/changePassword', changePasswordRequest, {
                 headers : {
-                    "content-type" : "application/json"
+                    'content-type' : 'application/json'
                 }
             }).success(function(response) {
                 // Check if has an error in the change password process
@@ -167,7 +167,7 @@ app.controller("changePassCtrl", ['$scope', '$http', function($scope, $http){
 }]);
 
 // User profile controller
-app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile', function($scope, $http, $window, currentProfile) {
+app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'currentProfile', function($scope, $http, $window, currentProfile) {
     // The identifier of languages
     const SPANISH_ID = 0;
     const ENGLISH_ID = 1;
@@ -231,7 +231,7 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
         // Post request to update the user profile
         $http.post('/api/user/updateUserProfile', updateUserProfileRequest, {
             headers : {
-                "content-type" : "application/json"
+                'content-type' : 'application/json'
             }
         }).success(function(response) {
             if(response.hasError){
@@ -258,7 +258,7 @@ app.controller("userProfileCtrl", ['$scope', '$http', '$window', 'currentProfile
 }]);
 
 // Subject management controller
-app.controller("subjectCtrl", ['$scope', '$http' , '$window', function($scope, $http, $window){
+app.controller('subjectCtrl', ['$scope', '$http' , '$window', function($scope, $http, $window){
 
     // Prepare te request to get the exams by the Group Id of selected subject
     var getExamsInfoRequest = {
@@ -268,7 +268,7 @@ app.controller("subjectCtrl", ['$scope', '$http' , '$window', function($scope, $
     // Get the done exams of selected subject
     $http.post('/api/learner/getExamsInfo', getExamsInfoRequest, {
         headers : {
-            "content-type" : "application/json"
+            'content-type' : 'application/json'
         }
     }).success(function(response) {
         if(response.hasError){
@@ -336,7 +336,7 @@ app.controller("subjectCtrl", ['$scope', '$http' , '$window', function($scope, $
 }]);
 
 // Exam to review management controller
-app.controller("reviewExamCtrl", ['$scope', '$http', function($scope, $http){
+app.controller('reviewExamCtrl', ['$scope', '$http', function($scope, $http){
 
     // Prepare te request to get the exam to review
     var getExamToReviewRequest = {
@@ -346,7 +346,7 @@ app.controller("reviewExamCtrl", ['$scope', '$http', function($scope, $http){
     // Get the exam to review of selected subject
     $http.post('/api/learner/getExamToReview', getExamToReviewRequest, {
         headers : {
-            "content-type" : "application/json"
+            'content-type' : 'application/json'
         }
     }).success(function(response) {
         if(response.hasError){
