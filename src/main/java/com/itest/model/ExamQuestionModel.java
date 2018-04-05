@@ -31,6 +31,8 @@ public class ExamQuestionModel {
 
     String comment;
 
+    String score;
+
     List<ExamQuestionAnswerModel> answerList;
 
     public int getQuestionId() {
@@ -55,6 +57,14 @@ public class ExamQuestionModel {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
     }
 
     public List<ExamQuestionAnswerModel> getAnswerList() {

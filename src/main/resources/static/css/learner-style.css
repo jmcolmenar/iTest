@@ -158,6 +158,61 @@ body{
     margin-left: -25px;
 }
 
-.ul-no-indent {
-    padding-left: 0;
-}​
+.ul-no-indent{
+    padding-left: 0px;
+}
+
+ /* === REVIEW EXAM === */
+ #review-exam-title-div{
+     padding-top: 15px;
+     color: rgb(0, 0, 0);
+     padding-left: 30px;
+     border-bottom: 2px solid rgb(217, 32, 38);
+     background-color: rgba(255, 0, 0, 0.1);
+ }
+
+#review-exam-title-div h2{
+    margin-top: -5px;
+    margin-left: 5px;
+}
+#review-exam-title-div h4{
+    margin-left: 8px;
+}
+
+#review-exam-questions-div{
+    margin-top: -20px;
+    margin-bottom: 20px;
+}
+
+.review-exam-question-score{
+    margin-left: 15px;
+}
+
+.review-exam-answer{
+    margin-left: 10px;
+}
+
+.review-exam-question{
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border: 3px solid rgb(119, 119, 119);
+    box-shadow: rgba(119, 119, 119, 0.4) 3px 3px 3px 3px;
+    background: whitesmoke;
+    border-radius: 8px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+#review-exam-score{
+    text-align: center;
+}
+
+.review-exam-answer-right{
+    background: rgba(80, 203, 29, 0.65);
+}
+
+/*
+#review-exam-questions-top-div{
+    margin-top: 20px;
+    text-align: center;
+}*/

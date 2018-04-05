@@ -379,9 +379,19 @@ app.controller('reviewExamCtrl', ['$scope', '$http', 'sharedProperties', functio
         }
     }).success(function(response) {
         if(response.hasError){
+            // Set empty review information
+            $scope.examToReview = {};
+            $scope.examToReview.questionList = {};
+
             // TODO: Shows an error modal
         }else{
-            // TODO: Get the response variables
+            // Get the exam to review information from response
+            $scope.examToReview = {};
+            $scope.examToReview.subjectName = response.subjectName;
+            $scope.examToReview.examTitle = response.examTitle;
+            $scope.examToReview.score = response.score;
+            $scope.examToReview.maxScore = response.maxScore;
+            $scope.examToReview.questionList = response.questionList;
         }
     }).error(function(response) {
         // TODO: Shows an error modal

@@ -31,8 +31,6 @@ public class ExamQuestionAnswerModel {
 
     private boolean right;
 
-    private int value;
-
     public int getAsnwerId() {
         return asnwerId;
     }
@@ -63,13 +61,5 @@ public class ExamQuestionAnswerModel {
 
     public void setRight(boolean right) {
         this.right = right;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
     }
 }

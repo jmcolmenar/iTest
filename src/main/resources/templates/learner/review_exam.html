@@ -1,3 +1,40 @@
 <div id="main-review-exam-div" xmlns:th="http://www.thymeleaf.org">
+    <div id="review-exam-title-div">
+        <h2>{{examToReview.examTitle}}</h2>
+        <h4>{{examToReview.subjectName}}</h4>
+    </div>
+    <br/>
+    <div class="container-fluid" id="review-exam-questions-div">
+        <!--<div class="row" id="review-exam-questions-top-div">
+            <div class="col-xs-6">
+                <button class="btn btn-md" data-toggle="modal" data-target="#answerInfoModal">Leyenda <span class="glyphicon glyphicon-plus"></span></button>
+            </div>
+            <div class="col-xs-6">
+                <select class="form-control" style="width:auto;">
+                    <option ng-repeat="answerAux in question.answerList">Pregunta <span>{{$index + 1}}</span></option>
+                </select>
+            </div>
+        </div>-->
 
+        <div ng-repeat="question in examToReview.questionList">
+            <h3><strong>Pregunta {{$index + 1}}</strong> (ID: {{question.questionId}})<span class="label label-default review-exam-question-score">{{question.score}} Puntos</span></h3>
+            <div class="review-exam-question">
+                <h4>{{question.statement}}</h4>
+
+                <div class="checkbox checkbox-primary review-exam-answer{{(answer.right) ? ' review-exam-answer-right' : ''}}" ng-repeat="answer in question.answerList" >
+                    <input id="answer{{answer.asnwerId}}" ng-checked="answer.checked" type="checkbox" disabled=""/>
+                    <label for="answer{{answer.asnwerId}}">{{answer.text}}</label>
+                </div>
+
+                <h5><strong>Comentario del profesor:</strong></h5>
+                <div class="panel panel-default">
+                    <div class="panel-body">Esta pregunta resta puntos{{question.comment}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="review-exam-score">
+            <h2>Calificacion: <strong>{{examToReview.score}} / {{examToReview.maxScore}}</strong></h2>
+        </div>
+    </div>
 </div>

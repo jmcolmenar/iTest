@@ -54,13 +54,15 @@ public class LogExamenConverter {
                 examQuestionModel.setStatement(pregunta.getEnunciado());
                 examQuestionModel.setComment(pregunta.getComentario());
 
+                // TODO: Set the question score
+                examQuestionModel.setScore("0");
+
                 // Get the answer database object and fill the asnwer model
                 Respuesta respuesta = logExamen.getRespuestas();
                 ExamQuestionAnswerModel examQuestionAnswerModel = new ExamQuestionAnswerModel();
                 examQuestionAnswerModel.setAsnwerId(respuesta.getIdresp());
                 examQuestionAnswerModel.setText(respuesta.getTexto());
                 examQuestionAnswerModel.setRight(respuesta.getSolucion() == 1);
-                examQuestionAnswerModel.setValue(respuesta.getValor());
                 examQuestionAnswerModel.setChecked(logExamen.getMarcada() == 1);
 
                 // Check if the question has been added to the auxiliar map
