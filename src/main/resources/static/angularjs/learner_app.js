@@ -38,6 +38,20 @@ app.service('sharedProperties', function () {
     };
 });
 
+// Directive to execute a callback when finish to render "ng-repeat" directive
+app.directive('onFinishRender', function ($timeout) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+            if (scope.$last === true) {
+                $timeout(function () {
+                    scope.$emit(attr.onFinishRender);
+                });
+            }
+        }
+    }
+});
+
 // Route provider configuration
 app.config(['$routeProvider', function ($routeProvider){
     $routeProvider
@@ -99,6 +113,12 @@ app.controller('mainCtrl', ['$scope', '$http', '$window', 'sharedProperties', fu
     $scope.showExitConfirmation = function(){
         $("#exitConfirmationModal").modal("show");
     };
+
+    // This function is used to convert and draw the formulas using the AsciiMath library
+    $scope.$on('convertFormulas', function(ngRepeatFinishedEvent) {
+        // Translate the formulas through Ascii Math javascript library
+        asciimath.translate();
+    });
 
 }]);
 
