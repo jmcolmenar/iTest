@@ -157,6 +157,13 @@ public class LearnerExamServiceImpl implements LearnerExamService {
         return questionModelList;
     }
 
+    /**
+     * Method to calculate the question score based in current exam parameters
+     * @param question The question
+     * @param examId The identifier of current exam
+     * @param numberQuestionsOfCurrentExam The number of question in the current exam
+     * @return The score of the question
+     */
     private double getQuestionScore(ExamQuestionModel question, int examId, int numberQuestionsOfCurrentExam) {
         // The question score variable
         double questionScore = 0;
