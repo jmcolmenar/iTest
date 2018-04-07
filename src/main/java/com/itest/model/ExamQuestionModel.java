@@ -33,6 +33,10 @@ public class ExamQuestionModel {
 
     String score;
 
+    int numberCorrectAnswers;
+
+    boolean activeConfidenceLevel;
+
     List<ExamQuestionAnswerModel> answerList;
 
     public int getQuestionId() {
@@ -65,6 +69,22 @@ public class ExamQuestionModel {
 
     public void setScore(String score) {
         this.score = score;
+    }
+
+    public int getNumberCorrectAnswers() {
+        return numberCorrectAnswers;
+    }
+
+    public void setNumberCorrectAnswers(int numberCorrectAnswers) {
+        this.numberCorrectAnswers = numberCorrectAnswers;
+    }
+
+    public boolean isActiveConfidenceLevel() {
+        return activeConfidenceLevel;
+    }
+
+    public void setActiveConfidenceLevel(boolean activeConfidenceLevel) {
+        this.activeConfidenceLevel = activeConfidenceLevel;
     }
 
     public List<ExamQuestionAnswerModel> getAnswerList() {

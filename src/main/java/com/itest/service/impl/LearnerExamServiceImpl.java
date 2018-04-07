@@ -146,8 +146,135 @@ public class LearnerExamServiceImpl implements LearnerExamService {
         // Convert the database objects to model objects
         List<ExamQuestionModel> questionModelList = this.convertLogExamListToExamQuestionModelList(logExamList);
 
+        // Get the score for each question
+        for (ExamQuestionModel question : questionModelList) {
+            double score = this.getQuestionScore(question, examId, questionModelList.size());
+            String scoreAsString = this.formatterComponent.formatNumberWithTwoDecimals(score);
+            question.setScore(scoreAsString.equals("0.00") ? "0" : scoreAsString);
+        }
+
         // Return the question model list
         return questionModelList;
+    }
+
+    private double getQuestionScore(ExamQuestionModel question, int examId, int numberQuestionsOfCurrentExam) {
+        // The question score variable
+        double questionScore = 0;
+
+        // Get the current exam from database
+        Examen exam = this.examenRepository.findOne(examId);
+
+        // Exam information variables
+        boolean isPartialCorrection = exam.getCorrParcial() == 1;
+        double questionFailedPenalty = exam.getPPregFallada();
+        double questionNotAnsweredPenalty = exam.getPPregNoResp();
+        double answerFailedPenalty = exam.getPRespFallada();
+        boolean isConfidenceLevel = exam.getNivelConfianza() == 1;
+        double rewardConfidenceLevel = exam.getRNivelConfianza();
+        double penaltyConfidenceLevel = exam.getPNivelConfianza();
+
+        // Question information variables
+        double maxScorePerQuestion = (double)exam.getNotaMax() / (double)numberQuestionsOfCurrentExam;
+        double minQuestionScore = maxScorePerQuestion * exam.getCotaCalifPreg();
+        int numberCorrectAnswers = question.getNumberCorrectAnswers();
+        int numberCheckedCorrectAnswers = (int)question.getAnswerList().stream().filter(a -> a.isChecked() && a.isRight()).count();
+        int numberCheckedIncorrectAnswers = (int)question.getAnswerList().stream().filter(a -> a.isChecked() && !a.isRight()).count();
+
+        /* Start the question score calculation */
+
+        // Check if the question has any solution
+        if(numberCorrectAnswers == 0){
+
+            // Check if the learner has not answered
+            if(numberCheckedCorrectAnswers == 0 && numberCheckedIncorrectAnswers == 0){
+
+                // Max score for question when the learner has not answered
+                questionScore = maxScorePerQuestion;
+
+            }else{
+
+                // Apply the penalty for question failed
+                questionScore = -(maxScorePerQuestion * questionFailedPenalty);
+            }
+        }else{
+
+            // Check if the question has not answered
+            if(numberCheckedCorrectAnswers == 0 && numberCheckedIncorrectAnswers == 0){
+
+                // Apply the penalty for question not answer
+                questionScore = -(maxScorePerQuestion * questionNotAnsweredPenalty);
+
+            }else{
+
+                // Check if the exam has partial correction
+                if(isPartialCorrection){
+
+                    // Check if the learner has all answers right
+                    if(numberCheckedCorrectAnswers == numberCorrectAnswers && numberCheckedIncorrectAnswers == 0){
+
+                        // Set the max grade per question
+                        questionScore = maxScorePerQuestion;
+
+                    }else{
+
+                        // Increment the right answers
+                        questionScore += (maxScorePerQuestion / numberCorrectAnswers) * numberCheckedCorrectAnswers;
+
+                        // Substract the failed answers
+                        questionScore -= (maxScorePerQuestion * answerFailedPenalty) * numberCheckedIncorrectAnswers;
+
+                        // Check the question score is not less than minimum question score
+                        if(questionScore <  minQuestionScore){
+
+                            // The question score will be the minimum
+                            questionScore = minQuestionScore;
+                        }
+                    }
+
+                }else{
+
+                    // When the exam has no partial correction, the question will be only right when the learner has all answers right
+                    if(numberCheckedCorrectAnswers == numberCorrectAnswers && numberCheckedIncorrectAnswers == 0){
+
+                        // Set the max grade per question
+                        questionScore = maxScorePerQuestion;
+
+                    }else{
+
+                        // Apply the question failed penalty
+                        questionScore = -(maxScorePerQuestion * questionFailedPenalty);
+                    }
+                }
+            }
+        }
+
+        // Apply the confidence level criteria
+        if(isConfidenceLevel){
+
+            // Check if the learner has all answers right
+            if(numberCheckedCorrectAnswers == numberCorrectAnswers && numberCheckedIncorrectAnswers == 0){
+
+                // Apply the confidence level reward when the confidence level is active in the question
+                if(question.isActiveConfidenceLevel()) {
+                    questionScore += maxScorePerQuestion * rewardConfidenceLevel;
+                }
+
+            }else{
+
+                // Apply the confidence level penalty when the confidence level is active in the question
+                if(question.isActiveConfidenceLevel()){
+                    questionScore -= maxScorePerQuestion * penaltyConfidenceLevel;
+                }
+            }
+        }
+
+        // Check if the question score is negative zero to set as positive zero (In order to display in web page)
+        if(questionScore == -0.0){
+            questionScore = 0.0;
+        }
+
+        // Return the question score
+        return questionScore;
     }
 
     private List<ExamQuestionModel> convertLogExamListToExamQuestionModelList(List<LogExamen> logExamenList){
@@ -167,9 +294,8 @@ public class LearnerExamServiceImpl implements LearnerExamService {
                 examQuestionModel.setQuestionId(pregunta.getIdpreg());
                 examQuestionModel.setStatement(pregunta.getEnunciado());
                 examQuestionModel.setComment(pregunta.getComentario());
-
-                // TODO: Set the question score
-                examQuestionModel.setScore("0");
+                examQuestionModel.setNumberCorrectAnswers(pregunta.getNRespCorrectas());
+                examQuestionModel.setActiveConfidenceLevel(logExamen.getNivelConfianza() == 1);
 
                 // Get the answer database object and fill the asnwer model
                 Respuesta respuesta = logExamen.getRespuestas();

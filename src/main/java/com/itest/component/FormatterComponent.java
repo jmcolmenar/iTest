@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 @Component("formatterComponent")
 public class FormatterComponent {
@@ -39,15 +40,15 @@ public class FormatterComponent {
     }
 
     public String formatNumberWithTwoDecimals(double number){
-        return String.format("%.2f", number);
+        return String.format(Locale.US, "%.2f", number);
     }
 
     public String formatNumberWithTwoDecimals(float number){
-        return String.format("%.2f", number);
+        return String.format(Locale.US, "%.2f", number);
     }
 
     public String formatNumberWithTwoDecimals(BigDecimal number){
-        return String.format("%.2f", number);
+        return String.format(Locale.US, "%.2f", number);
     }
 
     public String formatMillisecondsToHoursMinutesAndSeconds(long milliseconds){
