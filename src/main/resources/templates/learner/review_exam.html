@@ -1,3 +1,5 @@
+<div class="navbar-fixed-top-empty-over"></div>
+
 <div id="main-review-exam-div" xmlns:th="http://www.thymeleaf.org">
     <div id="review-exam-title-div">
         <h2>{{examToReview.examTitle}}</h2>
@@ -18,18 +20,20 @@
 
         <!-- on-finish-render="convertFormulas" => Call to the AsciiMath library at the end of ng-repeat rendering -->
         <div ng-repeat="question in examToReview.questionList" on-finish-render="convertFormulas">
-            <h3><strong>Pregunta {{$index + 1}}</strong> (ID: {{question.questionId}})<span class="label label-default review-exam-question-score">{{question.score}} Puntos</span></h3>
+            <h3><strong>Pregunta {{$index + 1}}</strong> <span class="label label-default review-exam-question-score">{{question.score}} Puntos</span></h3>
             <div class="review-exam-question">
                 <h4>{{question.statement}}</h4>
 
-                <div class="checkbox checkbox-primary review-exam-answer{{(answer.right) ? ' review-exam-answer-right' : ''}}" ng-repeat="answer in question.answerList" >
-                    <input id="answer{{answer.asnwerId}}" ng-checked="answer.checked" type="checkbox" disabled=""/>
-                    <label for="answer{{answer.asnwerId}}">{{answer.text}}</label>
+                <div class="review-exam-answer{{(answer.right) ? ' review-exam-answer-right' : ''}}" ng-repeat="answer in question.answerList">
+                    <div class="checkbox checkbox-primary">
+                        <input id="answer{{answer.asnwerId}}" ng-checked="answer.checked" type="checkbox" disabled=""/>
+                        <label for="answer{{answer.asnwerId}}">{{answer.text}}</label>
+                    </div>
                 </div>
 
                 <h5><strong>Comentario del profesor:</strong></h5>
                 <div class="panel panel-default">
-                    <div class="panel-body">Esta pregunta resta puntos{{question.comment}}</div>
+                    <div class="panel-body">{{question.comment}}</div>
                 </div>
             </div>
         </div>
