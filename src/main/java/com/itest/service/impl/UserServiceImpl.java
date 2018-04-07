@@ -22,7 +22,6 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.service.impl;
 
 import com.itest.constant.UserRoleConstant;
-import com.itest.converter.UsuarioConverter;
 import com.itest.entity.Usuario;
 import com.itest.model.UserInfoModel;
 import com.itest.repository.UsuarioRepository;
@@ -46,10 +45,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     @Qualifier("usuarioRepository")
     private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    @Qualifier("usuarioConverter")
-    private UsuarioConverter usuarioConverter;
 
     @Autowired
     @Qualifier("translationServiceImpl")
@@ -176,7 +171,7 @@ public class UserServiceImpl implements UserService {
         Usuario usuario = this.usuarioRepository.findByIdusu(userId);
 
         // Convert the user database object to user model object
-        UserInfoModel userInfoModel = this.usuarioConverter.convertUsuarioToUserInfoModel(usuario);
+        UserInfoModel userInfoModel = this.convertUsuarioToUserInfoModel(usuario);
 
         // Return the user info model
         return userInfoModel;
@@ -203,4 +198,19 @@ public class UserServiceImpl implements UserService {
         this.usuarioRepository.save(usuario);
     }
 
+    private UserInfoModel convertUsuarioToUserInfoModel(Usuario usuario){
+        // Initialize the user info model
+        UserInfoModel userInfoModel = new UserInfoModel();
+
+        // Fill the user model from user database object
+        userInfoModel.setUsername(usuario.getUsuario());
+        userInfoModel.setName(usuario.getNombre());
+        userInfoModel.setLastName(usuario.getApes());
+        userInfoModel.setEmail(usuario.getEmail() != null ? usuario.getEmail() : "");
+        userInfoModel.setDni(usuario.getDni());
+        userInfoModel.setLanguageId(usuario.getIdioma());
+
+        // Return the user model
+        return userInfoModel;
+    }
 }

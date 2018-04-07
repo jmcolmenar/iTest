@@ -21,8 +21,6 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.impl;
 
-import com.itest.converter.GrupoConverter;
-import com.itest.converter.MatriculaConverter;
 import com.itest.entity.Grupo;
 import com.itest.entity.Matricula;
 import com.itest.model.CourseModel;
@@ -30,12 +28,12 @@ import com.itest.model.SubjectModel;
 import com.itest.repository.GrupoRepository;
 import com.itest.repository.MatriculaRepository;
 import com.itest.service.LearnerGroupService;
+import com.itest.service.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service("learnerGroupServiceImpl")
 public class LearnerGroupServiceImpl implements LearnerGroupService{
@@ -45,16 +43,12 @@ public class LearnerGroupServiceImpl implements LearnerGroupService{
     private MatriculaRepository matriculaRepository;
 
     @Autowired
-    @Qualifier("matriculaConverter")
-    private MatriculaConverter matriculaConverter;
-
-    @Autowired
     @Qualifier("grupoRepository")
     private GrupoRepository grupoRepository;
 
     @Autowired
-    @Qualifier("grupoConverter")
-    private GrupoConverter grupoConverter;
+    @Qualifier("translationServiceImpl")
+    private TranslationService translationService;
 
     /**
      * Get the courses list of the learner
@@ -66,7 +60,7 @@ public class LearnerGroupServiceImpl implements LearnerGroupService{
         List<Matricula> matriculaList = this.matriculaRepository.selectMatriculaListByUserId(learnerId);
 
         // Convert the Matricula objects list to Course model
-        List<CourseModel> courseModelList = this.matriculaConverter.convertMatriculaListToCourseModelList(matriculaList);
+        List<CourseModel> courseModelList = this.convertMatriculaListToCourseModelList(matriculaList);
 
         // Order the list by year (From highest to lowest)
         Collections.sort(courseModelList, (o1, o2) -> o2.getYear().compareTo(o1.getYear()));
@@ -85,10 +79,72 @@ public class LearnerGroupServiceImpl implements LearnerGroupService{
         Grupo group = this.grupoRepository.findOne(groupId);
 
         // Convert to the subject model
-        SubjectModel subjectModel = this.grupoConverter.convertGrupoToSubjectModel(group);
+        SubjectModel subjectModel = this.convertGrupoToSubjectModel(group);
 
         // Return the subject model
         return subjectModel;
     }
 
+    private List<CourseModel> convertMatriculaListToCourseModelList(List<Matricula> matriculaList){
+        // Initialize the list with the Course model objects
+        List<CourseModel> courseModelList = new ArrayList<>();
+
+        // Map  of year with subject list
+        Map<String, List<SubjectModel>> yearAndSubjectsMap = new HashMap<>();
+
+        // Through all matricula list
+        for (Matricula mat: matriculaList ) {
+            // Get year of group
+            String year = mat.getGrupos() != null ? mat.getGrupos().getAnio() : null;
+
+            // Check if there is a group with a year
+            if(year != null) {
+                // Check if the map contains the year
+                if(yearAndSubjectsMap.containsKey(year)){
+                    // Get the subject list
+                    List<SubjectModel> subjectList = yearAndSubjectsMap.get(year);
+
+                    // Add subject model to list
+                    SubjectModel subject = this.convertGrupoToSubjectModel(mat.getGrupos());
+                    subjectList.add(subject);
+                }else{
+                    // Initialize the subject list to this year
+                    List<SubjectModel> subjectList = new ArrayList<>();
+
+                    // Add the subject model to the list
+                    SubjectModel subject = this.convertGrupoToSubjectModel(mat.getGrupos());
+                    subjectList.add(subject);
+
+                    // Put the year and subject list in the map
+                    yearAndSubjectsMap.put(year, subjectList);
+                }
+            }
+        }
+
+        // Through all map entries to fill the course model list
+        for( Map.Entry<String, List<SubjectModel>> entry : yearAndSubjectsMap.entrySet()){
+            // Initialize a new course model object
+            CourseModel course = new CourseModel(entry.getKey(), entry.getValue());
+
+            // Add the course model to list
+            courseModelList.add(course);
+        }
+
+        return courseModelList;
+    }
+
+    private SubjectModel convertGrupoToSubjectModel(Grupo grupo){
+        // Initialize the subject model
+        SubjectModel subjectModel = new SubjectModel();
+
+        // Fill the subject model
+        subjectModel.setGroupId(grupo.getIdgrupo());
+        subjectModel.setSubjectId(grupo.getAsignaturas().getIdasig());
+        subjectModel.setYear(grupo.getAnio());
+        subjectModel.setSubjectName(grupo.getAsignaturas().getNombre());
+        subjectModel.setSubjectDescription(this.translationService.getMessage("coursesList.subjectGroup") + " " + grupo.getGrupo());
+
+        // Return the subject model
+        return subjectModel;
+    }
 }
