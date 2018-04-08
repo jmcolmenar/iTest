@@ -63,6 +63,14 @@ body{
     padding-right: 15px;
 }
 
+.ul-secondary-small-indent{
+    margin-left: -25px;
+}
+
+.ul-no-indent{
+    padding-left: 0px;
+}
+
 /* === USER PROFILE === */
 
 .btn-language{
@@ -164,22 +172,14 @@ body{
     background-color: rgba(255, 0, 0, 0.65);
 }
 
-.ul-secondary-small-indent{
-    margin-left: -25px;
+/* === REVIEW EXAM === */
+#review-exam-title-div{
+    padding-top: 15px;
+    color: rgb(0, 0, 0);
+    padding-left: 30px;
+    border-bottom: 2px solid rgb(217, 32, 38);
+    background-color: rgba(255, 0, 0, 0.1);
 }
-
-.ul-no-indent{
-    padding-left: 0px;
-}
-
- /* === REVIEW EXAM === */
- #review-exam-title-div{
-     padding-top: 15px;
-     color: rgb(0, 0, 0);
-     padding-left: 30px;
-     border-bottom: 2px solid rgb(217, 32, 38);
-     background-color: rgba(255, 0, 0, 0.1);
- }
 
 #review-exam-title-div h2{
     margin-top: -5px;
@@ -224,4 +224,20 @@ body{
 
 .review-exam-answer-right{
     background: rgba(80, 203, 29, 0.65);
+}
+
+.review-exam-go-back-button-div{
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.review-exam-question-explanation{
+    border: 3px solid rgb(119, 119, 119);
+    box-shadow: rgba(119, 119, 119, 0.4) 3px 3px 3px 3px;
+    background: whitesmoke;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding-right: 25px;
+    padding-left: 25px;
+    padding-top: 10px;
 }

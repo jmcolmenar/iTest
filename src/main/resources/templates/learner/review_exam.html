@@ -1,5 +1,32 @@
 <div class="navbar-fixed-top-empty-over"></div>
 
+<div class="review-exam-go-back-button-div">
+    <a href="#/subject/" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;&nbsp;Salir</a>
+</div>
+
+
+<div class="review-exam-question-explanation">
+    <ul class="ul-no-indent">
+        <li>Las respuestas contestadas por el alumno y las respuestas correctas se identificar según:</li>
+        <p>
+            <div class="review-exam-answer">
+                <div class="checkbox checkbox-primary">
+                    <input id="checkbox-test-checked" type="checkbox" disabled="" checked=""/>
+                    <label for="checkbox-test-checked">Respuesta contestada</label>
+                </div>
+            </div>
+            <div class="review-exam-answer review-exam-answer-right">
+                <div class="checkbox checkbox-primary">
+                    <input id="checkbox-test-right" type="checkbox" disabled=""/>
+                    <label for="checkbox-test-right">Respuesta correcta</label>
+                </div>
+            </div>
+        </p>
+        <li>La puntuación obtenida en cada pregunta se muestra al lado del título de la misma</li>
+        <li>Existen comentarios del profesor al final de algunas preguntas</li>
+    </ul>
+</div>
+
 <div id="main-review-exam-div" xmlns:th="http://www.thymeleaf.org">
     <div id="review-exam-title-div">
         <h2>{{examToReview.examTitle}}</h2>
@@ -7,17 +34,6 @@
     </div>
     <br/>
     <div class="container-fluid" id="review-exam-questions-div">
-        <!--<div class="row" id="review-exam-questions-top-div">
-            <div class="col-xs-6">
-                <button class="btn btn-md" data-toggle="modal" data-target="#answerInfoModal">Leyenda <span class="glyphicon glyphicon-plus"></span></button>
-            </div>
-            <div class="col-xs-6">
-                <select class="form-control" style="width:auto;">
-                    <option ng-repeat="answerAux in question.answerList">Pregunta <span>{{$index + 1}}</span></option>
-                </select>
-            </div>
-        </div>-->
-
         <!-- on-finish-render="convertFormulas" => Call to the AsciiMath library at the end of ng-repeat rendering -->
         <div ng-repeat="question in examToReview.questionList" on-finish-render="convertFormulas">
             <h3><strong>Pregunta {{$index + 1}}</strong> <span class="label label-default review-exam-question-score">{{question.score}} Puntos</span></h3>
@@ -42,4 +58,7 @@
             <h2>Calificacion: <strong>{{examToReview.score}} / {{examToReview.maxScore}}</strong></h2>
         </div>
     </div>
+</div>
+<div class="review-exam-go-back-button-div">
+    <a href="#/subject/" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;&nbsp;Salir</a>
 </div>
