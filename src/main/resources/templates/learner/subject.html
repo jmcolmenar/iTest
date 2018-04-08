@@ -1,9 +1,9 @@
 <div xmlns:th="http://www.thymeleaf.org">
-    <a href="#/" id="go-to-home-button" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-arrow-left"></i></a>
-    <button id="send-eamil-to-tutor-button" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;<span th:text="#{subject.sendMailToTeacher}"></span></button>
+    <a href="#/" id="go-to-home-button" type="button" class="btn btn-primary btn-lg btn-lg-mobile"><i class="glyphicon glyphicon-arrow-left"></i></a>
+    <button id="send-eamil-to-tutor-button" type="button" class="btn btn-primary btn-lg btn-lg-mobile"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;<span th:text="#{subject.sendMailToTeacher}"></span></button>
     <div id="main-subject-div" xmlns:th="http://www.thymeleaf.org">
         <div id="subject-title-div">
-            <h1>{{subject.year}}</h1>
+            <h1><span class="label label-danger">{{subject.year}}</span></h1>
             <h3>{{subject.subjectName}}</h3>
             <h5>{{subject.subjectDescription}}</h5>
         </div>

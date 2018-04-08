@@ -117,9 +117,14 @@ body{
     background-color: rgba(255, 0, 0, 0.1);
 }
 
+@media(max-width: 767px){
+    #subject-title-div{
+        padding-left: 15px;
+    }
+}
+
 #subject-title-div h1{
     margin-top: 0px;
-    border-bottom: 3px solid black;
     display: inline;
     padding-left: 5px;
     padding-right: 5px;
@@ -154,17 +159,14 @@ body{
     margin-bottom: 20px;
 }
 
-#go-to-home-button{
-    margin-right: 10px;
+@media(max-width: 767px) {
+    #send-eamil-to-tutor-button, #go-to-home-button{
+        margin-bottom: 10px;
+    }
 }
 
-/* For small devices (phones) the "back" and "Send email to tutor" buttons are small */
-@media(max-width: 350px){
-    #send-eamil-to-tutor-button, #go-to-home-button{
-        padding:6px 12px;
-        font-size:14px;
-        border-radius:4px
-    }
+#go-to-home-button{
+    margin-right: 10px;
 }
 
 .btn-exams-type:focus, .btn-exams-type:hover{
@@ -179,6 +181,12 @@ body{
     padding-left: 30px;
     border-bottom: 2px solid rgb(217, 32, 38);
     background-color: rgba(255, 0, 0, 0.1);
+}
+
+@media(max-width: 767px){
+    #review-exam-title-div{
+        padding-left: 15px;
+    }
 }
 
 #review-exam-title-div h2{
@@ -212,6 +220,13 @@ body{
     border-radius: 8px;
     padding-right: 20px;
     padding-left: 20px;
+}
+
+@media(max-width: 767px){
+    .review-exam-question{
+        padding-right: 5px;
+        padding-left: 5px;
+    }
 }
 
 .review-exam-question h5{
