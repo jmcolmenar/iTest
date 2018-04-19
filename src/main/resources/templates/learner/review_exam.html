@@ -1,64 +1,64 @@
-<div class="navbar-fixed-top-empty-over"></div>
-
-<div class="review-exam-go-back-button-div">
-    <a href="#/subject/" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;&nbsp;Salir</a>
-</div>
-
-
-<div class="review-exam-question-explanation">
-    <ul class="ul-no-indent">
-        <li>Las respuestas contestadas por el alumno y las respuestas correctas se identificar según:</li>
-        <p>
-            <div class="review-exam-answer">
-                <div class="checkbox checkbox-primary">
-                    <input id="checkbox-test-checked" type="checkbox" disabled="" checked=""/>
-                    <label for="checkbox-test-checked">Respuesta contestada</label>
-                </div>
-            </div>
-            <div class="review-exam-answer review-exam-answer-right">
-                <div class="checkbox checkbox-primary">
-                    <input id="checkbox-test-right" type="checkbox" disabled=""/>
-                    <label for="checkbox-test-right">Respuesta correcta</label>
-                </div>
-            </div>
-        </p>
-        <li>La puntuación obtenida en cada pregunta se muestra al lado del título de la misma</li>
-        <li>Existen comentarios del profesor al final de algunas preguntas</li>
-    </ul>
-</div>
-
-<div id="main-review-exam-div" xmlns:th="http://www.thymeleaf.org">
-    <div id="review-exam-title-div">
-        <h2>{{examToReview.examTitle}}</h2>
-        <h4>{{examToReview.subjectName}}</h4>
+<div xmlns:th="http://www.thymeleaf.org">
+    <div class="review-exam-go-back-button-div">
+        <a href="#/subject/" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;&nbsp;<span th:text="#{reviewExam.exit}"></span></a>
     </div>
-    <br/>
-    <div class="container-fluid" id="review-exam-questions-div">
-        <!-- on-finish-render="convertFormulas" => Call to the AsciiMath library at the end of ng-repeat rendering -->
-        <div ng-repeat="question in examToReview.questionList" on-finish-render="convertFormulas">
-            <h3><strong>Pregunta {{$index + 1}}</strong> <span class="label label-default review-exam-question-score">{{question.score}} Puntos</span></h3>
-            <div class="review-exam-question">
-                <h4>{{question.statement}}</h4>
 
-                <div class="review-exam-answer{{(answer.right) ? ' review-exam-answer-right' : ''}}" ng-repeat="answer in question.answerList">
+
+    <div class="review-exam-question-explanation">
+        <ul class="ul-no-indent">
+            <li th:text="#{reviewExam.explanation.item1}"></li>
+            <p>
+                <div class="review-exam-answer">
                     <div class="checkbox checkbox-primary">
-                        <input id="answer{{answer.asnwerId}}" ng-checked="answer.checked" type="checkbox" disabled=""/>
-                        <label for="answer{{answer.asnwerId}}">{{answer.text}}</label>
+                        <input id="checkbox-test-checked" type="checkbox" disabled="" checked=""/>
+                        <label for="checkbox-test-checked" th:text="#{reviewExam.explanation.checkedAnswer}"></label>
                     </div>
                 </div>
+                <div class="review-exam-answer review-exam-answer-right">
+                    <div class="checkbox checkbox-primary">
+                        <input id="checkbox-test-right" type="checkbox" disabled=""/>
+                        <label for="checkbox-test-right" th:text="#{reviewExam.explanation.rightAnswer}"></label>
+                    </div>
+                </div>
+            </p>
+            <li th:text="#{reviewExam.explanation.item2}"></li>
+            <li th:text="#{reviewExam.explanation.item3}"></li>
+        </ul>
+    </div>
 
-                <h5><strong>Comentario del profesor:</strong></h5>
-                <div class="panel panel-default">
-                    <div class="panel-body">{{question.comment}}</div>
+    <div id="main-review-exam-div">
+        <div id="review-exam-title-div">
+            <h2>{{examToReview.examTitle}}</h2>
+            <h4>{{examToReview.subjectName}}</h4>
+        </div>
+        <br/>
+        <div class="container-fluid" id="review-exam-questions-div">
+            <!-- on-finish-render="convertFormulas" => Call to the AsciiMath library at the end of ng-repeat rendering -->
+            <div ng-repeat="question in examToReview.questionList" on-finish-render="convertFormulas">
+                <h3><strong><span th:text="#{reviewExam.questionTitle.question}"></span>&nbsp;{{$index + 1}}</strong> <span class="label label-default review-exam-question-score">{{question.score}}&nbsp;<span th:text="#{reviewExam.questionTitle.points}"></span></span></h3>
+                <div class="review-exam-question">
+                    <h4>{{question.statement}}</h4>
+
+                    <div class="review-exam-answer{{(answer.right) ? ' review-exam-answer-right' : ''}}" ng-repeat="answer in question.answerList">
+                        <div class="checkbox checkbox-primary">
+                            <input id="answer{{answer.asnwerId}}" ng-checked="answer.checked" type="checkbox" disabled=""/>
+                            <label for="answer{{answer.asnwerId}}">{{answer.text}}</label>
+                        </div>
+                    </div>
+
+                    <h5><strong><span th:text="#{reviewExam.question.tutorComment}"></span></strong></h5>
+                    <div class="panel panel-default">
+                        <div class="panel-body">{{question.comment}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="review-exam-score">
-            <h2>Calificacion: <strong>{{examToReview.score}} / {{examToReview.maxScore}}</strong></h2>
+            <div id="review-exam-score">
+                <h2><span th:text="#{reviewExam.examScore}"></span>&nbsp;<strong>{{examToReview.score}}&nbsp;/&nbsp;{{examToReview.maxScore}}</strong></h2>
+            </div>
         </div>
     </div>
-</div>
-<div class="review-exam-go-back-button-div">
-    <a href="#/subject/" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;&nbsp;Salir</a>
+    <div class="review-exam-go-back-button-div">
+        <a href="#/subject/" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;&nbsp;<span th:text="#{reviewExam.exit}"></span></a>
+    </div>
 </div>

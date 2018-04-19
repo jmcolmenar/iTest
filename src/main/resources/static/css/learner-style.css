@@ -20,16 +20,6 @@ body{
 
 /* === COMMON PAGES === */
 
-/* Navbar empty over main navbar to avoid click on it */
-.navbar-fixed-top-empty-over{
-    position:fixed;
-    right:0;
-    left:0;
-    top:0;
-    height: 50px;
-    z-index:1035;
-}
-
 .modal-header, .modal-footer-custom{
     text-align: center;
 }
