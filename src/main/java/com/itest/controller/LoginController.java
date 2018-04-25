@@ -128,7 +128,7 @@ public class LoginController {
         if (roles.contains(UserRoleConstant.ROLE_LEARNER) || roles.contains(UserRoleConstant.ROLE_KID)) {
             // Redirects to learner index
             route = "/learner/";
-        }else if(roles.contains(UserRoleConstant.ROLE_TUTOR)){
+        }else if(roles.contains(UserRoleConstant.ROLE_TUTOR) || roles.contains(UserRoleConstant.ROLE_ADVANCED_TUTOR)){
             // Redirects to tutor index
             route = "/tutor/";
         }else if(roles.contains(UserRoleConstant.ROLE_ADMIN)){

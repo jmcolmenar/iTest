@@ -27,6 +27,7 @@ public class UserRoleConstant {
     public static final String ROLE_LEARNER = "LEARNER";
     public static final String ROLE_KID = "KID";
     public static final String ROLE_TUTOR = "TUTOR";
+    public static final String ROLE_ADVANCED_TUTOR = "TUTORAV";
     public static final String ROLE_ADMIN = "ADMIN";
 
 }

@@ -71,6 +71,7 @@ public class UserServiceImpl implements UserService {
             isAuthorized = roles.contains(UserRoleConstant.ROLE_LEARNER)
                     || roles.contains(UserRoleConstant.ROLE_KID)
                     || roles.contains(UserRoleConstant.ROLE_TUTOR)
+                    || roles.contains(UserRoleConstant.ROLE_ADVANCED_TUTOR)
                     || roles.contains(UserRoleConstant.ROLE_ADMIN);
         }
 
