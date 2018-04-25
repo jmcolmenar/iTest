@@ -23,13 +23,12 @@ package com.itest.repository;
 
 import com.itest.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.io.Serializable;
+import java.util.List;
 
 @Repository("usuarioRepository")
 public interface UsuarioRepository extends JpaRepository<Usuario, Serializable> {
@@ -39,4 +38,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Serializable> 
     @Query("select u.idusu from Usuario u where u.usuario = :username")
     int getUserIdByUsername(@Param("username") String username);
 
+    @Query(" select " +
+            "   u " +
+            "from " +
+            "   Usuario u " +
+            "where " +
+            "   :groupId in (select i.grupos.idgrupo from u.imparten i) " +
+            "   and (select count(p) from Permiso p where p.usuario = u.usuario and (p.permiso = 'TUTOR' or p.permiso = 'TUTORAV')) > 0")
+    List<Usuario> findTutorsByGroupId(@Param("groupId") int groupId);
 }

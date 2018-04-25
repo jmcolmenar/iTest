@@ -60,10 +60,6 @@ public class Usuario  {
 	@OneToMany(mappedBy="usuarios")
 	private List<Matricula> matriculas;
 
-	//bi-directional many-to-one association to Permiso
-	@OneToMany(mappedBy="usuarios")
-	private List<Permiso> permisos;
-
 	//bi-directional many-to-one association to Centro
 	@ManyToOne
 	@JoinColumn(name="centro", nullable=false)
@@ -252,28 +248,6 @@ public class Usuario  {
 		matricula.setUsuarios(null);
 
 		return matricula;
-	}
-
-	public List<Permiso> getPermisos() {
-		return this.permisos;
-	}
-
-	public void setPermisos(List<Permiso> permisos) {
-		this.permisos = permisos;
-	}
-
-	public Permiso addPermiso(Permiso permiso) {
-		getPermisos().add(permiso);
-		permiso.setUsuarios(this);
-
-		return permiso;
-	}
-
-	public Permiso removePermiso(Permiso permiso) {
-		getPermisos().remove(permiso);
-		permiso.setUsuarios(null);
-
-		return permiso;
 	}
 
 	public Centro getCentros() {

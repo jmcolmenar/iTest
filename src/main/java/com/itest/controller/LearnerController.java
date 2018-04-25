@@ -23,9 +23,11 @@ package com.itest.controller;
 
 import com.itest.model.request.GetExamToReviewRequest;
 import com.itest.model.request.GetExamsInfoRequest;
+import com.itest.model.request.GetTutorsToSendEmailRequest;
 import com.itest.model.response.GetCoursesResponse;
 import com.itest.model.response.GetExamToReviewResponse;
 import com.itest.model.response.GetExamsInfoResponse;
+import com.itest.model.response.GetTutorsToSendEmailResponse;
 import com.itest.service.LearnerManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -64,6 +66,16 @@ public class LearnerController {
 
         // Cal to the service to get the exam info to review
         GetExamToReviewResponse response = this.learnerManagementService.getExamToReview(request);
+
+        // Return the response
+        return response;
+    }
+
+    @PostMapping("/getTutorsToSendEmail")
+    public GetTutorsToSendEmailResponse getTutorsToSendEmailResponse(@RequestBody GetTutorsToSendEmailRequest request){
+
+        // Call to the service to get the tutors to send an email
+        GetTutorsToSendEmailResponse response = this.learnerManagementService.getTutorsToSendEmail(request);
 
         // Return the response
         return response;

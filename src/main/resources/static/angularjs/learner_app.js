@@ -382,6 +382,43 @@ app.controller('subjectCtrl', ['$scope', '$http' , '$window', 'sharedProperties'
         $window.location.href = '#/reviewexam/';
     };
 
+    $scope.getTutorsToSendEmail = function(){
+        // Prepare te request to get tutor list to send an email
+        var getTutorsToSendEmailRequest = {
+            groupId : $scope.subject.groupId
+        };
+
+        // Get the exam to review of selected subject
+        $http.post('/api/learner/getTutorsToSendEmail', getTutorsToSendEmailRequest, {
+            headers : {
+                'content-type' : 'application/json'
+            }
+        }).success(function(response) {
+            if(response.hasError){
+                // TODO: Shows an error modal
+
+            }else{
+                // Set the tutor info list in a variable
+                $scope.tutorsToSendEmail = response.tutorInfoList;
+
+                // Creates the scope variable of selected tutor
+                $scope.selectedTutor = {
+                    email : ''
+                };
+
+                // Selected the first tutor email in the list
+                if($scope.tutorsToSendEmail != null && $scope.tutorsToSendEmail.length > 0){
+                    $scope.selectedTutor.email = $scope.tutorsToSendEmail[0].email;
+                };
+
+                // Open the modal
+                $('#sendEmailModal').modal('show');
+            }
+        }).error(function(response) {
+            // TODO: Shows an error modal
+        });
+    };
+
 }]);
 
 // Exam to review management controller

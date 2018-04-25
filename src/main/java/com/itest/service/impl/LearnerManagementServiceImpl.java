@@ -24,9 +24,11 @@ package com.itest.service.impl;
 import com.itest.model.*;
 import com.itest.model.request.GetExamToReviewRequest;
 import com.itest.model.request.GetExamsInfoRequest;
+import com.itest.model.request.GetTutorsToSendEmailRequest;
 import com.itest.model.response.GetCoursesResponse;
 import com.itest.model.response.GetExamToReviewResponse;
 import com.itest.model.response.GetExamsInfoResponse;
+import com.itest.model.response.GetTutorsToSendEmailResponse;
 import com.itest.service.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -106,7 +108,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
         }catch(Exception exc){
             // Log the exception
-            LOG.debug("Error getting the done exams of user. Exception: " + exc.getMessage());
+            LOG.debug("Error getting the information of user exams. Exception: " + exc.getMessage());
 
             // Has an error retrieving the done exams by the user
             getExamsInfoResponse.setHasError(true);
@@ -154,6 +156,34 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
         // Return the response
         return getExamToReviewResponse;
+    }
+
+
+    public GetTutorsToSendEmailResponse getTutorsToSendEmail(GetTutorsToSendEmailRequest request){
+
+        // Initialize the response
+        GetTutorsToSendEmailResponse getTutorsResponse = new GetTutorsToSendEmailResponse();
+
+        try{
+
+            // Get the request variables
+            int groupId = request.getGroupId();
+
+            // Get the list of tutors to send an email from belongin to a group
+            List<TutorInfoToSendEmailModel> tutorList = this.learnerGroupService.getTutorsToSendEmailFromGroup(groupId);
+
+            // Set the tutor list of response object
+            getTutorsResponse.setTutorInfoList(tutorList);
+
+        }catch(Exception exc){
+            // Log the exception
+            LOG.debug("Error getting the tutors to send an email. Exception: " + exc.getMessage());
+
+            // Has an error retrieving the done exams by the user
+            getTutorsResponse.setHasError(true);
+        }
+
+        return getTutorsResponse;
     }
 
 }

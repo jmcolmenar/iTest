@@ -1,6 +1,6 @@
 <div xmlns:th="http://www.thymeleaf.org">
     <a href="#/" id="go-to-home-button" type="button" class="btn btn-primary btn-lg btn-lg-mobile"><i class="glyphicon glyphicon-arrow-left"></i></a>
-    <button id="send-eamil-to-tutor-button" type="button" class="btn btn-primary btn-lg btn-lg-mobile"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;<span th:text="#{subject.sendMailToTeacher}"></span></button>
+    <button id="send-eamil-to-tutor-button" type="button" class="btn btn-primary btn-lg btn-lg-mobile" ng-click="getTutorsToSendEmail()"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;<span th:text="#{subject.sendMailToTeacher}"></span></button>
     <div id="main-subject-div" xmlns:th="http://www.thymeleaf.org">
         <div id="subject-title-div">
             <h1><span class="label label-danger">{{subject.year}}</span></h1>
@@ -151,7 +151,7 @@
         </div>
     </div>
 
-    <!-- Modal with confirmation message modal -->
+    <!-- Modal with confirmation message modal to go to the review exam -->
     <div class="modal fade" id="confirmationModal" role="dialog">
         <div class="modal-dialog modal-sm">
             <!-- Modal content-->
@@ -165,6 +165,27 @@
                 <div class="modal-footer-custom">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-right: 20px;" th:text="#{modalCancelButton}"></button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="goToExamReview()" th:text="#{modalOkButton}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal with confirmation message modal to go to the review exam -->
+    <div class="modal fade" id="sendEmailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="radio radio-primary" ng-repeat="tutorInfo in tutorsToSendEmail">
+                        <input type="radio" ng-model="selectedTutor.email" name="tutorEmailRadio" id="tutorEmailRadio{{$index}}" value="{{tutorInfo.email}}"/><label for="tutorEmailRadio{{$index}}">{{tutorInfo.fullName}}</label>
+                    </div>
+                    <p><strong>Email:</strong>&nbsp;{{selectedTutor.email}}</p>
+                </div>
+                <div class="modal-footer-custom">
+                    <a type="button" href="mailto:{{selectedTutor.email}}" class="btn btn-primary btn-lg btn-lg-mobile"><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;<span th:text="#{subject.sendMailToTeacher}"></span></a>
                 </div>
             </div>
         </div>

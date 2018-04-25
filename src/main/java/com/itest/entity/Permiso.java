@@ -18,10 +18,8 @@ public class Permiso  {
 	@Column(nullable=false, length=16)
 	private String permiso;
 
-	//bi-directional many-to-one association to Usuario
-	@ManyToOne
-	@JoinColumn(name="usuario", nullable=false)
-	private Usuario usuarios;
+	@Column(nullable=false, length=20)
+	private String usuario;
 
 	public Permiso() {
 	}
@@ -42,12 +40,11 @@ public class Permiso  {
 		this.permiso = permiso;
 	}
 
-	public Usuario getUsuarios() {
-		return this.usuarios;
+	public String getUsuario() {
+		return usuario;
 	}
 
-	public void setUsuarios(Usuario usuarios) {
-		this.usuarios = usuarios;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
-
 }

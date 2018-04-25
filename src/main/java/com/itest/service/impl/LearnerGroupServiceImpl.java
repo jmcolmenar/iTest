@@ -23,10 +23,13 @@ package com.itest.service.impl;
 
 import com.itest.entity.Grupo;
 import com.itest.entity.Matricula;
+import com.itest.entity.Usuario;
 import com.itest.model.CourseModel;
 import com.itest.model.SubjectModel;
+import com.itest.model.TutorInfoToSendEmailModel;
 import com.itest.repository.GrupoRepository;
 import com.itest.repository.MatriculaRepository;
+import com.itest.repository.UsuarioRepository;
 import com.itest.service.LearnerGroupService;
 import com.itest.service.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +52,10 @@ public class LearnerGroupServiceImpl implements LearnerGroupService{
     @Autowired
     @Qualifier("translationServiceImpl")
     private TranslationService translationService;
+
+    @Autowired
+    @Qualifier("usuarioRepository")
+    private UsuarioRepository usuarioRepository;
 
     /**
      * Get the courses list of the learner
@@ -84,6 +91,39 @@ public class LearnerGroupServiceImpl implements LearnerGroupService{
         // Return the subject model
         return subjectModel;
     }
+
+    /**
+     * Get the tutors to send an email from a group
+     * @param groupId The group identifier
+     * @return The list of tutors
+     */
+    public List<TutorInfoToSendEmailModel> getTutorsToSendEmailFromGroup(int groupId){
+
+        // Get the tutors of the group from database
+        List<Usuario> tutorInfoListFromDatabase = this.usuarioRepository.findTutorsByGroupId(groupId);
+
+        // Create the list of tutor info to send an email
+        List<TutorInfoToSendEmailModel> tutorInfoModelList = new ArrayList<>();
+        if(tutorInfoListFromDatabase != null && tutorInfoListFromDatabase.size() > 0){
+
+            for (Usuario tutor : tutorInfoListFromDatabase) {
+
+                // Check the email is not empty
+                if(tutor.getEmail() != null && !tutor.getEmail().trim().isEmpty()){
+                    TutorInfoToSendEmailModel tutorInfoToSendEmailModel = new TutorInfoToSendEmailModel();
+                    tutorInfoToSendEmailModel.setFullName(tutor.getNombre() + " " + tutor.getApes());
+                    tutorInfoToSendEmailModel.setEmail(tutor.getEmail());
+
+                    // Add tutor info model to the list
+                    tutorInfoModelList.add(tutorInfoToSendEmailModel);
+                }
+            }
+        }
+
+        // return the tutor info list
+        return tutorInfoModelList;
+    }
+
 
     private List<CourseModel> convertMatriculaListToCourseModelList(List<Matricula> matriculaList){
         // Initialize the list with the Course model objects

@@ -19,35 +19,21 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service;
+package com.itest.model.response;
 
-import com.itest.model.CourseModel;
-import com.itest.model.SubjectModel;
 import com.itest.model.TutorInfoToSendEmailModel;
 
 import java.util.List;
 
-public interface LearnerGroupService {
+public class GetTutorsToSendEmailResponse extends Response{
 
-    /**
-     * Get the list of courses of the learner
-     * @param learnerId The learner identifier
-     * @return The course model list
-     */
-    List<CourseModel> getCourseList(int learnerId);
+    private List<TutorInfoToSendEmailModel> tutorInfoList;
 
-    /**
-     * Get the subject corresponding to a group
-     * @param groupId The group identifier
-     * @return The subject model
-     */
-    SubjectModel getSubjectFromGroup(int groupId);
+    public List<TutorInfoToSendEmailModel> getTutorInfoList() {
+        return tutorInfoList;
+    }
 
-    /**
-     * Get the tutors to send an email from a group
-     * @param groupId The group identifier
-     * @return The list of tutors
-     */
-    List<TutorInfoToSendEmailModel> getTutorsToSendEmailFromGroup(int groupId);
-
+    public void setTutorInfoList(List<TutorInfoToSendEmailModel> tutorInfoList) {
+        this.tutorInfoList = tutorInfoList;
+    }
 }
