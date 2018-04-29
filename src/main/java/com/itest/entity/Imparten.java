@@ -12,6 +12,7 @@ import javax.persistence.*;
 public class Imparten  {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
 	private int idimp;
 

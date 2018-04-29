@@ -14,6 +14,7 @@ import java.util.List;
 public class Examen  {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
 	private int idexam;
 

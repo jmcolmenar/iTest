@@ -13,6 +13,7 @@ import java.util.List;
 public class Respuesta  {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
 	private int idresp;
 

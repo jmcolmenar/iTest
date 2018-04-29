@@ -12,6 +12,7 @@ import javax.persistence.*;
 public class Matricula  {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
 	private int idmat;
 

@@ -13,6 +13,7 @@ import java.util.Date;
 public class RecuperacionPassword  {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
 	private int idrec;
 

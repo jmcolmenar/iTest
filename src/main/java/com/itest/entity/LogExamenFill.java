@@ -14,6 +14,7 @@ import java.util.Date;
 public class LogExamenFill  {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
 	private int idlogexamsfill;
 

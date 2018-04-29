@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 public class Conexion  {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
 	private int id;
 
