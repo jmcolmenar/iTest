@@ -23,7 +23,6 @@ package com.itest.service.impl;
 
 import com.itest.constant.QuestionVisibilityConstant;
 import com.itest.entity.*;
-import com.itest.model.ExamQuestionModel;
 import com.itest.model.NewExamModel;
 import com.itest.model.NewExamQuestionAnswerModel;
 import com.itest.model.NewExamQuestionModel;
@@ -34,6 +33,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -87,46 +87,31 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
      * This method is executed insida a transaction. If the method launch an exception the transaction will be rollback
      * @param learnerId The learner identifier
      * @param examId The exam identifier
+     * @param ip The ip of the learner
      * @return The generated exam for user
      */
     @Transactional(rollbackFor = Exception.class)
-    public NewExamModel generateNewExamForLearner(int learnerId, int examId){
+    public NewExamModel generateNewExamForLearner(int learnerId, int examId, String ip){
 
         // Initialize the new exam model object
         NewExamModel newExamModel = new NewExamModel();
 
-        // Get the exam
+        // Get the exam and learner from database
         Examen exam = this.examenRepository.findOne(examId);
+        Usuario learner = this.usuarioRepository.findOne(learnerId);
 
         // Insert a new empty score for the exam
-        this.insertNewEmptyScoreForExam(learnerId, exam);
+        Date startDate = new Date(System.currentTimeMillis());
+        this.insertEmptyScoreForNewExam(learner, exam, startDate, ip);
 
         // Get the list of new exam question model
-        List<NewExamQuestionModel> examQuestionModelList = this.getQuestionsForNewExam(exam,learnerId);
+        List<NewExamQuestionModel> examQuestionModelList = this.getQuestionsForNewExam(exam);
 
         // Set the question list to the exam model
         newExamModel.setQuestionList(examQuestionModelList);
 
-        // Update the field of database from question and answers indicating the question and answer has been used in an exam
-        examQuestionModelList.forEach(question -> {
-
-            // Update field of question
-            Pregunta pregunta = this.preguntaRepository.findOne(question.getQuestionId());
-            pregunta.setUsedInExam((byte) 1);
-            this.preguntaRepository.save(pregunta);
-
-            // Update field of all answers of question
-            question.getAnswerList().forEach(answer -> {
-
-                // Update field of answer
-                Respuesta respuesta = this.respuestaRepository.findOne(answer.getAsnwerId());
-                respuesta.setUsedInExamQuestion((byte) 1);
-                this.respuestaRepository.save(respuesta);
-
-                // TODO: Insert a new log exam register in database
-            });
-
-        });
+        // Update the questions and anser in as "used in an exam" in database and for each answer create a new log exam in database
+        this.updateQuestionsAndAnswersAsUsedAndAddLogForEachAnswer(examQuestionModelList, exam, learner, startDate);
 
         // Return the new exam model
         return newExamModel;
@@ -135,18 +120,14 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
     /**
      * Get the questions for the new exam
      * @param exam The new exam database object
-     * @param learnerId The learner identifier
      * @return The question list for the new exam
      */
-    private List<NewExamQuestionModel> getQuestionsForNewExam(Examen exam, int learnerId){
+    private List<NewExamQuestionModel> getQuestionsForNewExam(Examen exam){
 
         // Get the exam details
         int examGroupId = exam.getGrupos().getIdgrupo();
         int examInstitutionId = exam.getGrupos().getCentros().getIdcentro();
         int examVisibility = exam.getVisibilidad();
-
-        // Insert a new empty score for the exam
-        this.insertNewEmptyScoreForExam(learnerId, exam);
 
         // Initialize the list of new exam question model
         List<NewExamQuestionModel> examQuestionModelList = new ArrayList<>();
@@ -164,7 +145,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
             List<Pregunta> questionsList = examTheme.getTemas().getPreguntas();
 
             // Add random questions of the exam until the maximum number of questions
-            Random randomizer = new Random(learnerId * exam.getIdexam());
+            Random randomizer = new Random();
             int addedQuestionsCounter = 0;
             while(addedQuestionsCounter < numberQuestions){
 
@@ -222,9 +203,6 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
                         // Remove the answer of the remaining asnwers list
                         remainingAsnwers.remove(answer);
                     }
-
-                    // Add question to the added question list for the exam
-                    examQuestionModelList.add(questionModel);
                 }
 
                 // Remove the question from the list
@@ -237,45 +215,94 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
     }
 
     /**
-     * Insert a new score for the exam with the minimum details
-     * @param userId The user identifier
+     * Insert an empty score for the new exam
+     * @param learner The learner database object
      * @param exam The exam entity
      */
-    private void insertNewEmptyScoreForExam(int userId, Examen exam){
+    private void insertEmptyScoreForNewExam(Usuario learner, Examen exam, Date startDate, String ip){
 
         // Create the calificacion entity
         Calificacion calificacion = new Calificacion();
-        calificacion.setFechaIni(new Date(System.currentTimeMillis()));
-        calificacion.setFechaFin(null);
-        calificacion.setNota(null);
+        calificacion.setFechaIni(startDate);
+        calificacion.setFechaFin(new Date(0));
+        calificacion.setNota(new BigDecimal(0));
         calificacion.setTiempo(0);
-        calificacion.setIp("IP"); //TODO
-        calificacion.setUsuarios(this.usuarioRepository.findOne(userId));
+        calificacion.setIp(ip);
+        calificacion.setUsuarios(learner);
         calificacion.setExamenes(exam);
 
         // Insert in database
         calificacionRepository.save(calificacion);
     }
 
-    private NewExamQuestionModel convertPreguntaToNewExamQuestionModel(Pregunta pregunta){
+    /**
+     * Update all questions and answers as "used in an exam" in database
+     * Furthermore, for each answer is created a new log exam in database (without checked the answer)
+     * @param examQuestionModelList The question model list
+     * @param exam The exam database object
+     * @param learner The learner database object
+     * @param startDateExam The start date of the exam
+     */
+    private void updateQuestionsAndAnswersAsUsedAndAddLogForEachAnswer(List<NewExamQuestionModel> examQuestionModelList, Examen exam, Usuario learner, Date startDateExam){
+
+        // Update all questions and answers
+        for(NewExamQuestionModel questionModel : examQuestionModelList){
+
+            // Update field of question
+            Pregunta question = this.preguntaRepository.findOne(questionModel.getQuestionId());
+            question.setUsedInExam((byte) 1);
+            this.preguntaRepository.save(question);
+
+            for(NewExamQuestionAnswerModel answerModel : questionModel.getAnswerList()){
+
+                // Update field of answer
+                Respuesta answer = this.respuestaRepository.findOne(answerModel.getAsnwerId());
+                answer.setUsedInExamQuestion((byte) 1);
+                this.respuestaRepository.save(answer);
+
+                // For each answer create a log exam entity in database (Without checked the answer)
+                LogExamen logExam = new LogExamen();
+                logExam.setExamenes(exam);
+                logExam.setUsuarios(learner);
+                logExam.setPreguntas(question);
+                logExam.setRespuestas(answer);
+                logExam.setMarcada((byte)0);
+                logExam.setPuntos(new BigDecimal(0));
+                logExam.setHoraResp(startDateExam);
+                this.logExamenRepository.save(logExam);
+            }
+        }
+    }
+
+    /**
+     * Convert a question database object to question model object
+     * @param question The question database object
+     * @return The question model object
+     */
+    private NewExamQuestionModel convertPreguntaToNewExamQuestionModel(Pregunta question){
 
         // Initialize and fill the model object
         NewExamQuestionModel newExamQuestionModel = new NewExamQuestionModel();
-        newExamQuestionModel.setQuestionId(pregunta.getIdpreg());
-        newExamQuestionModel.setStatement(pregunta.getEnunciado());
-        newExamQuestionModel.setComment(pregunta.getComentario());
-        newExamQuestionModel.setNumberCorrectAnswers(pregunta.getNRespCorrectas());
+        newExamQuestionModel.setQuestionId(question.getIdpreg());
+        newExamQuestionModel.setStatement(question.getEnunciado());
+        newExamQuestionModel.setComment(question.getComentario());
+        newExamQuestionModel.setNumberCorrectAnswers(question.getNRespCorrectas());
 
         // Return the model object
         return newExamQuestionModel;
     }
 
-    private NewExamQuestionAnswerModel convertRespuestaToNewExamQuestionAnswerModel(Respuesta respuesta){
+    /**
+     * Convert a answer database object to question model object
+     * @param answer The answer database object
+     * @return The answer model object
+     */
+    private NewExamQuestionAnswerModel convertRespuestaToNewExamQuestionAnswerModel(Respuesta answer){
 
         // Initialize and fill the model object
         NewExamQuestionAnswerModel newExamQuestionAnswerModel = new NewExamQuestionAnswerModel();
-        newExamQuestionAnswerModel.setAsnwerId(respuesta.getIdresp());
-        newExamQuestionAnswerModel.setText(respuesta.getTexto());
+        newExamQuestionAnswerModel.setAsnwerId(answer.getIdresp());
+        newExamQuestionAnswerModel.setText(answer.getTexto());
         newExamQuestionAnswerModel.setChecked(false);
 
         // Return the model object

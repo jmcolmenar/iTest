@@ -31,6 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/learner/")
 public class LearnerController {
@@ -80,7 +82,12 @@ public class LearnerController {
     }
 
     @PostMapping("/getNewExam")
-    public GetNewExamResponse getNewExam(@RequestBody GetNewExamRequest request){
+    public GetNewExamResponse getNewExam(@RequestBody GetNewExamRequest request, HttpServletRequest httpRequest){
+
+        // Check if the request is not null to set the ip
+        if(request != null){
+            request.setIp(httpRequest.getRemoteAddr());
+        }
 
         // Call to the service to get a new exam to perfom
         GetNewExamResponse response = this.learnerManagementService.getNewExam(request);

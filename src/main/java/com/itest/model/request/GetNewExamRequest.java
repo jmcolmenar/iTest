@@ -25,11 +25,21 @@ public class GetNewExamRequest {
 
     private int examId;
 
+    private String ip;
+
     public int getExamId() {
         return examId;
     }
 
     public void setExamId(int examId) {
         this.examId = examId;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

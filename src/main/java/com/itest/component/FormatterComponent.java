@@ -34,9 +34,16 @@ public class FormatterComponent {
 
 
     public String formatDateToString(Date date){
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String dateString;
 
-        return df.format(date);
+        if(date != null) {
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            dateString = df.format(date);
+        }else{
+            dateString = "NULL";
+        }
+
+        return dateString;
     }
 
     public String formatNumberWithTwoDecimals(double number){
@@ -48,13 +55,21 @@ public class FormatterComponent {
     }
 
     public String formatNumberWithTwoDecimals(BigDecimal number){
-        return String.format(Locale.US, "%.2f", number);
+        String numberString;
+
+        if(number != null){
+            numberString = String.format(Locale.US, "%.2f", number);
+        }else{
+            numberString = "NULL";
+        }
+
+        return numberString;
     }
 
     public String formatMillisecondsToHoursMinutesAndSeconds(long milliseconds){
-        int seconds = (int) (milliseconds / 1000) % 60 ;
-        int minutes = (int) ((milliseconds / (1000*60)) % 60);
-        int hours = (int) ((milliseconds / (1000*60*60)) % 24);
+            int seconds = (int) (milliseconds / 1000) % 60 ;
+            int minutes = (int) ((milliseconds / (1000*60)) % 60);
+            int hours = (int) ((milliseconds / (1000*60*60)) % 24);
 
         // Format => H:MM:SS
         return hours + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds);

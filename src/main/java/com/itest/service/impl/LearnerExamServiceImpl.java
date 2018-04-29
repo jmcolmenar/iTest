@@ -355,7 +355,11 @@ public class LearnerExamServiceImpl implements LearnerExamService {
         doneExam.setScore(this.formatterComponent.formatNumberWithTwoDecimals(calificacion.getNota()));
         doneExam.setStartDate(this.formatterComponent.formatDateToString(calificacion.getFechaIni()));
         doneExam.setEndDate(this.formatterComponent.formatDateToString(calificacion.getFechaFin()));
-        doneExam.setTime(this.formatterComponent.formatMillisecondsToHoursMinutesAndSeconds(calificacion.getFechaFin().getTime() - calificacion.getFechaIni().getTime()));
+        if(calificacion.getFechaFin().getTime() >= calificacion.getFechaIni().getTime()){
+            doneExam.setTime(this.formatterComponent.formatMillisecondsToHoursMinutesAndSeconds(calificacion.getFechaFin().getTime() - calificacion.getFechaIni().getTime()));
+        }else{
+            doneExam.setTime(this.formatterComponent.formatMillisecondsToHoursMinutesAndSeconds(0));
+        }
 
         // Check if the review is available
         Date now = new Date();

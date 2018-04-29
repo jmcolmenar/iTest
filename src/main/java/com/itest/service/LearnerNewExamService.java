@@ -37,8 +37,9 @@ public interface LearnerNewExamService {
      * Generate a new exam to perform by the learner
      * @param learnerId The learner identifier
      * @param examId The exam identifier
+     * @param ip The ip of the learner
      * @return The generated exam for learner
      */
-    NewExamModel generateNewExamForLearner(int learnerId, int examId);
+    NewExamModel generateNewExamForLearner(int learnerId, int examId, String ip);
 
 }

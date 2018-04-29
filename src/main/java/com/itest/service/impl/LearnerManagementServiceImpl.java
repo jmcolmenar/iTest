@@ -199,6 +199,8 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
         try{
             // Get the request variables
             examId = request.getExamId();
+            String ip = request.getIp();
+
 
             // Check there is no an already done exam by the learner with the same exam identifier
             learnerId = this.userService.getUserIdOfCurrentUser();
@@ -214,7 +216,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
             if(!getNewExamResponse.isHasError()){
 
                 // Generate the new exam
-                NewExamModel newExamModel = this.learnerNewExamService.generateNewExamForLearner(learnerId, examId);
+                NewExamModel newExamModel = this.learnerNewExamService.generateNewExamForLearner(learnerId, examId, ip);
 
                 // Set the generated exam to response
                 getNewExamResponse.setNewExam(newExamModel);
