@@ -24,7 +24,7 @@ public class Grupo  {
 	private String grupo;
 
 	@Column(name="tipo_alumno")
-	private byte tipoAlumno;
+	private int tipoAlumno;
 
 	//bi-directional many-to-one association to Examen
 	@OneToMany(mappedBy="grupos")
@@ -83,11 +83,11 @@ public class Grupo  {
 		this.grupo = grupo;
 	}
 
-	public byte getTipoAlumno() {
+	public int getTipoAlumno() {
 		return this.tipoAlumno;
 	}
 
-	public void setTipoAlumno(byte tipoAlumno) {
+	public void setTipoAlumno(int tipoAlumno) {
 		this.tipoAlumno = tipoAlumno;
 	}
 

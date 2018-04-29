@@ -23,17 +23,17 @@ public class ExtraPregunta  {
 	private String ancho;
 
 	@Column(name="geogebra_type", nullable=false)
-	private byte geogebraType;
+	private int geogebraType;
 
 	@Column(nullable=false, length=40)
 	private String nombre;
 
-	private byte orden;
+	private int orden;
 
 	@Column(nullable=false, length=100)
 	private String ruta;
 
-	private byte tipo;
+	private int tipo;
 
 	//bi-directional many-to-one association to Pregunta
 	@ManyToOne
@@ -67,11 +67,11 @@ public class ExtraPregunta  {
 		this.ancho = ancho;
 	}
 
-	public byte getGeogebraType() {
+	public int getGeogebraType() {
 		return this.geogebraType;
 	}
 
-	public void setGeogebraType(byte geogebraType) {
+	public void setGeogebraType(int geogebraType) {
 		this.geogebraType = geogebraType;
 	}
 
@@ -83,11 +83,11 @@ public class ExtraPregunta  {
 		this.nombre = nombre;
 	}
 
-	public byte getOrden() {
+	public int getOrden() {
 		return this.orden;
 	}
 
-	public void setOrden(byte orden) {
+	public void setOrden(int orden) {
 		this.orden = orden;
 	}
 
@@ -99,11 +99,11 @@ public class ExtraPregunta  {
 		this.ruta = ruta;
 	}
 
-	public byte getTipo() {
+	public int getTipo() {
 		return this.tipo;
 	}
 
-	public void setTipo(byte tipo) {
+	public void setTipo(int tipo) {
 		this.tipo = tipo;
 	}
 

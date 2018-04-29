@@ -18,20 +18,20 @@ public class Respuesta  {
 	private int idresp;
 
 	@Column(nullable=false)
-	private byte activa;
+	private int activa;
 
 	@Column(nullable=false)
-	private byte solucion;
+	private int solucion;
 
 	@Lob
 	@Column(nullable=false)
 	private String texto;
 
 	@Column(name="used_in_exam_question", nullable=false)
-	private byte usedInExamQuestion;
+	private int usedInExamQuestion;
 
 	@Column(nullable=false)
-	private byte valor;
+	private int valor;
 
 	//bi-directional many-to-one association to ExtraRespuesta
 	@OneToMany(mappedBy="respuestas")
@@ -57,19 +57,19 @@ public class Respuesta  {
 		this.idresp = idresp;
 	}
 
-	public byte getActiva() {
+	public int getActiva() {
 		return this.activa;
 	}
 
-	public void setActiva(byte activa) {
+	public void setActiva(int activa) {
 		this.activa = activa;
 	}
 
-	public byte getSolucion() {
+	public int getSolucion() {
 		return this.solucion;
 	}
 
-	public void setSolucion(byte solucion) {
+	public void setSolucion(int solucion) {
 		this.solucion = solucion;
 	}
 
@@ -81,19 +81,19 @@ public class Respuesta  {
 		this.texto = texto;
 	}
 
-	public byte getUsedInExamQuestion() {
+	public int getUsedInExamQuestion() {
 		return this.usedInExamQuestion;
 	}
 
-	public void setUsedInExamQuestion(byte usedInExamQuestion) {
+	public void setUsedInExamQuestion(int usedInExamQuestion) {
 		this.usedInExamQuestion = usedInExamQuestion;
 	}
 
-	public byte getValor() {
+	public int getValor() {
 		return this.valor;
 	}
 
-	public void setValor(byte valor) {
+	public void setValor(int valor) {
 		this.valor = valor;
 	}
 

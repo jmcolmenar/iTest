@@ -23,10 +23,10 @@ public class LogExamen  {
 	private Date horaResp;
 
 	@Column(nullable=false)
-	private byte marcada;
+	private int marcada;
 
 	@Column(name="nivel_confianza", nullable=false)
-	private byte nivelConfianza;
+	private int nivelConfianza;
 
 	@Column(precision=10, scale=2)
 	private BigDecimal puntos;
@@ -70,19 +70,19 @@ public class LogExamen  {
 		this.horaResp = horaResp;
 	}
 
-	public byte getMarcada() {
+	public int getMarcada() {
 		return this.marcada;
 	}
 
-	public void setMarcada(byte marcada) {
+	public void setMarcada(int marcada) {
 		this.marcada = marcada;
 	}
 
-	public byte getNivelConfianza() {
+	public int getNivelConfianza() {
 		return this.nivelConfianza;
 	}
 
-	public void setNivelConfianza(byte nivelConfianza) {
+	public void setNivelConfianza(int nivelConfianza) {
 		this.nivelConfianza = nivelConfianza;
 	}
 

@@ -18,7 +18,7 @@ public class Topico  {
 	private int idtopic;
 
 	@Column(nullable=false)
-	private byte orden;
+	private int orden;
 
 	@Column(nullable=false, length=60)
 	private String topic;
@@ -43,11 +43,11 @@ public class Topico  {
 		this.idtopic = idtopic;
 	}
 
-	public byte getOrden() {
+	public int getOrden() {
 		return this.orden;
 	}
 
-	public void setOrden(byte orden) {
+	public void setOrden(int orden) {
 		this.orden = orden;
 	}
 

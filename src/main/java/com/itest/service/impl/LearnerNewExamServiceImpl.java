@@ -250,14 +250,14 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
 
             // Update field of question
             Pregunta question = this.preguntaRepository.findOne(questionModel.getQuestionId());
-            question.setUsedInExam((byte) 1);
+            question.setUsedInExam(1);
             this.preguntaRepository.save(question);
 
             for(NewExamQuestionAnswerModel answerModel : questionModel.getAnswerList()){
 
                 // Update field of answer
                 Respuesta answer = this.respuestaRepository.findOne(answerModel.getAsnwerId());
-                answer.setUsedInExamQuestion((byte) 1);
+                answer.setUsedInExamQuestion(1);
                 this.respuestaRepository.save(answer);
 
                 // For each answer create a log exam entity in database (Without checked the answer)
@@ -266,7 +266,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
                 logExam.setUsuarios(learner);
                 logExam.setPreguntas(question);
                 logExam.setRespuestas(answer);
-                logExam.setMarcada((byte)0);
+                logExam.setMarcada(0);
                 logExam.setPuntos(new BigDecimal(0));
                 logExam.setHoraResp(startDateExam);
                 this.logExamenRepository.save(logExam);

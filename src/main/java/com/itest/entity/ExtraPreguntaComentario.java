@@ -25,12 +25,12 @@ public class ExtraPreguntaComentario  {
 	@Column(nullable=false, length=40)
 	private String nombre;
 
-	private byte orden;
+	private int orden;
 
 	@Column(nullable=false, length=100)
 	private String ruta;
 
-	private byte tipo;
+	private int tipo;
 
 	//bi-directional many-to-one association to Pregunta
 	@ManyToOne
@@ -72,11 +72,11 @@ public class ExtraPreguntaComentario  {
 		this.nombre = nombre;
 	}
 
-	public byte getOrden() {
+	public int getOrden() {
 		return this.orden;
 	}
 
-	public void setOrden(byte orden) {
+	public void setOrden(int orden) {
 		this.orden = orden;
 	}
 
@@ -88,11 +88,11 @@ public class ExtraPreguntaComentario  {
 		this.ruta = ruta;
 	}
 
-	public byte getTipo() {
+	public int getTipo() {
 		return this.tipo;
 	}
 
-	public void setTipo(byte tipo) {
+	public void setTipo(int tipo) {
 		this.tipo = tipo;
 	}
 

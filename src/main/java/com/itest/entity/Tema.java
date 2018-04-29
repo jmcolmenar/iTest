@@ -18,7 +18,7 @@ public class Tema  {
 	private int idtema;
 
 	@Column(nullable=false)
-	private byte orden;
+	private int orden;
 
 	@Column(nullable=false, length=60)
 	private String tema;
@@ -47,11 +47,11 @@ public class Tema  {
 		this.idtema = idtema;
 	}
 
-	public byte getOrden() {
+	public int getOrden() {
 		return this.orden;
 	}
 
-	public void setOrden(byte orden) {
+	public void setOrden(int orden) {
 		this.orden = orden;
 	}
 

@@ -17,16 +17,16 @@ public class TemaExamen  {
 	private int idtemaexam;
 
 	@Column(name="dificultad_max", nullable=false)
-	private byte dificultadMax;
+	private int dificultadMax;
 
 	@Column(name="dificultad_min", nullable=false)
-	private byte dificultadMin;
+	private int dificultadMin;
 
 	@Column(name="n_pregs", nullable=false)
-	private byte nPregs;
+	private int nPregs;
 
 	@Column(name="n_resp_x_preg")
-	private byte nRespXPreg;
+	private int nRespXPreg;
 
 	@Column(name="tipo_pregs", nullable=false)
 	private int tipoPregs;
@@ -52,35 +52,35 @@ public class TemaExamen  {
 		this.idtemaexam = idtemaexam;
 	}
 
-	public byte getDificultadMax() {
+	public int getDificultadMax() {
 		return this.dificultadMax;
 	}
 
-	public void setDificultadMax(byte dificultadMax) {
+	public void setDificultadMax(int dificultadMax) {
 		this.dificultadMax = dificultadMax;
 	}
 
-	public byte getDificultadMin() {
+	public int getDificultadMin() {
 		return this.dificultadMin;
 	}
 
-	public void setDificultadMin(byte dificultadMin) {
+	public void setDificultadMin(int dificultadMin) {
 		this.dificultadMin = dificultadMin;
 	}
 
-	public byte getNPregs() {
+	public int getNPregs() {
 		return this.nPregs;
 	}
 
-	public void setNPregs(byte nPregs) {
+	public void setNPregs(int nPregs) {
 		this.nPregs = nPregs;
 	}
 
-	public byte getNRespXPreg() {
+	public int getNRespXPreg() {
 		return this.nRespXPreg;
 	}
 
-	public void setNRespXPreg(byte nRespXPreg) {
+	public void setNRespXPreg(int nRespXPreg) {
 		this.nRespXPreg = nRespXPreg;
 	}
 

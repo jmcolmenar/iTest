@@ -29,7 +29,7 @@ public class LogExamenFill  {
 	private Date horaResp;
 
 	@Column(name="nivel_confianza", nullable=false)
-	private byte nivelConfianza;
+	private int nivelConfianza;
 
 	@Column(nullable=false)
 	private int preg;
@@ -75,11 +75,11 @@ public class LogExamenFill  {
 		this.horaResp = horaResp;
 	}
 
-	public byte getNivelConfianza() {
+	public int getNivelConfianza() {
 		return this.nivelConfianza;
 	}
 
-	public void setNivelConfianza(byte nivelConfianza) {
+	public void setNivelConfianza(int nivelConfianza) {
 		this.nivelConfianza = nivelConfianza;
 	}
 

@@ -18,32 +18,32 @@ public class Pregunta  {
 	private int idpreg;
 
 	@Column(nullable=false)
-	private byte activa;
+	private int activa;
 
 	@Lob
 	private String comentario;
 
 	@Column(nullable=false)
-	private byte dificultad;
+	private int dificultad;
 
 	@Lob
 	@Column(nullable=false)
 	private String enunciado;
 
 	@Column(name="n_resp_correctas", nullable=false)
-	private byte nRespCorrectas;
+	private int nRespCorrectas;
 
 	@Column(nullable=false)
-	private byte tipo;
+	private int tipo;
 
 	@Column(length=60)
 	private String titulo;
 
 	@Column(name="used_in_exam", nullable=false)
-	private byte usedInExam;
+	private int usedInExam;
 
 	@Column(nullable=false)
-	private byte visibilidad;
+	private int visibilidad;
 
 	//bi-directional many-to-one association to ExtraPregunta
 	@OneToMany(mappedBy="preguntas")
@@ -87,11 +87,11 @@ public class Pregunta  {
 		this.idpreg = idpreg;
 	}
 
-	public byte getActiva() {
+	public int getActiva() {
 		return this.activa;
 	}
 
-	public void setActiva(byte activa) {
+	public void setActiva(int activa) {
 		this.activa = activa;
 	}
 
@@ -103,11 +103,11 @@ public class Pregunta  {
 		this.comentario = comentario;
 	}
 
-	public byte getDificultad() {
+	public int getDificultad() {
 		return this.dificultad;
 	}
 
-	public void setDificultad(byte dificultad) {
+	public void setDificultad(int dificultad) {
 		this.dificultad = dificultad;
 	}
 
@@ -119,19 +119,19 @@ public class Pregunta  {
 		this.enunciado = enunciado;
 	}
 
-	public byte getNRespCorrectas() {
+	public int getNRespCorrectas() {
 		return this.nRespCorrectas;
 	}
 
-	public void setNRespCorrectas(byte nRespCorrectas) {
+	public void setNRespCorrectas(int nRespCorrectas) {
 		this.nRespCorrectas = nRespCorrectas;
 	}
 
-	public byte getTipo() {
+	public int getTipo() {
 		return this.tipo;
 	}
 
-	public void setTipo(byte tipo) {
+	public void setTipo(int tipo) {
 		this.tipo = tipo;
 	}
 
@@ -143,19 +143,19 @@ public class Pregunta  {
 		this.titulo = titulo;
 	}
 
-	public byte getUsedInExam() {
+	public int getUsedInExam() {
 		return this.usedInExam;
 	}
 
-	public void setUsedInExam(byte usedInExam) {
+	public void setUsedInExam(int usedInExam) {
 		this.usedInExam = usedInExam;
 	}
 
-	public byte getVisibilidad() {
+	public int getVisibilidad() {
 		return this.visibilidad;
 	}
 
-	public void setVisibilidad(byte visibilidad) {
+	public void setVisibilidad(int visibilidad) {
 		this.visibilidad = visibilidad;
 	}
 

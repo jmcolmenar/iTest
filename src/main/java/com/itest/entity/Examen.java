@@ -14,18 +14,17 @@ import java.util.List;
 public class Examen  {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
 	private int idexam;
 
 	@Column(name="corr_parcial", nullable=false)
-	private byte corrParcial;
+	private int corrParcial;
 
 	@Column(name="cota_calif_preg", nullable=false)
 	private double cotaCalifPreg;
 
 	@Column(name="distrib_pregs", nullable=false)
-	private byte distribPregs;
+	private int distribPregs;
 
 	@Column(nullable=false)
 	private int duracion;
@@ -47,10 +46,10 @@ public class Examen  {
 	private Date fechaIniRev;
 
 	@Column(name="muestra_num_corr", nullable=false)
-	private byte muestraNumCorr;
+	private int muestraNumCorr;
 
 	@Column(name = "nivelconfianza", nullable=false)
-	private byte nivelConfianza;
+	private int nivelConfianza;
 
 	@Column(name="nota_max", nullable=false)
 	private float notaMax;
@@ -67,25 +66,25 @@ public class Examen  {
 	@Column(name="p_resp_fallada", nullable=false)
 	private double pRespFallada;
 
-	private byte personalizado;
+	private int personalizado;
 
 	@Column(name="peso_exam")
-	private byte pesoExam;
+	private int pesoExam;
 
 	@Column(nullable=false)
-	private byte publicado;
+	private int publicado;
 
 	@Column(name="r_nivel_confianza", nullable=false)
 	private double rNivelConfianza;
 
 	@Column(name="rev_activa", nullable=false)
-	private byte revActiva;
+	private int revActiva;
 
 	@Column(length=60)
 	private String titulo;
 
 	@Column(nullable=false)
-	private byte visibilidad;
+	private int visibilidad;
 
 	//bi-directional many-to-one association to Calificacion
 	@OneToMany(mappedBy="examenes")
@@ -119,11 +118,11 @@ public class Examen  {
 		this.idexam = idexam;
 	}
 
-	public byte getCorrParcial() {
+	public int getCorrParcial() {
 		return this.corrParcial;
 	}
 
-	public void setCorrParcial(byte corrParcial) {
+	public void setCorrParcial(int corrParcial) {
 		this.corrParcial = corrParcial;
 	}
 
@@ -135,11 +134,11 @@ public class Examen  {
 		this.cotaCalifPreg = cotaCalifPreg;
 	}
 
-	public byte getDistribPregs() {
+	public int getDistribPregs() {
 		return this.distribPregs;
 	}
 
-	public void setDistribPregs(byte distribPregs) {
+	public void setDistribPregs(int distribPregs) {
 		this.distribPregs = distribPregs;
 	}
 
@@ -183,19 +182,19 @@ public class Examen  {
 		this.fechaIniRev = fechaIniRev;
 	}
 
-	public byte getMuestraNumCorr() {
+	public int getMuestraNumCorr() {
 		return this.muestraNumCorr;
 	}
 
-	public void setMuestraNumCorr(byte muestraNumCorr) {
+	public void setMuestraNumCorr(int muestraNumCorr) {
 		this.muestraNumCorr = muestraNumCorr;
 	}
 
-	public byte getNivelConfianza() {
+	public int getNivelConfianza() {
 		return this.nivelConfianza;
 	}
 
-	public void setNivelConfianza(byte nivelConfianza) {
+	public void setNivelConfianza(int nivelConfianza) {
 		this.nivelConfianza = nivelConfianza;
 	}
 
@@ -239,27 +238,27 @@ public class Examen  {
 		this.pRespFallada = pRespFallada;
 	}
 
-	public byte getPersonalizado() {
+	public int getPersonalizado() {
 		return this.personalizado;
 	}
 
-	public void setPersonalizado(byte personalizado) {
+	public void setPersonalizado(int personalizado) {
 		this.personalizado = personalizado;
 	}
 
-	public byte getPesoExam() {
+	public int getPesoExam() {
 		return this.pesoExam;
 	}
 
-	public void setPesoExam(byte pesoExam) {
+	public void setPesoExam(int pesoExam) {
 		this.pesoExam = pesoExam;
 	}
 
-	public byte getPublicado() {
+	public int getPublicado() {
 		return this.publicado;
 	}
 
-	public void setPublicado(byte publicado) {
+	public void setPublicado(int publicado) {
 		this.publicado = publicado;
 	}
 
@@ -271,11 +270,11 @@ public class Examen  {
 		this.rNivelConfianza = rNivelConfianza;
 	}
 
-	public byte getRevActiva() {
+	public int getRevActiva() {
 		return this.revActiva;
 	}
 
-	public void setRevActiva(byte revActiva) {
+	public void setRevActiva(int revActiva) {
 		this.revActiva = revActiva;
 	}
 
@@ -287,11 +286,11 @@ public class Examen  {
 		this.titulo = titulo;
 	}
 
-	public byte getVisibilidad() {
+	public int getVisibilidad() {
 		return this.visibilidad;
 	}
 
-	public void setVisibilidad(byte visibilidad) {
+	public void setVisibilidad(int visibilidad) {
 		this.visibilidad = visibilidad;
 	}
 
