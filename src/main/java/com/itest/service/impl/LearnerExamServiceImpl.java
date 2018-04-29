@@ -146,9 +146,12 @@ public class LearnerExamServiceImpl implements LearnerExamService {
         // Convert the database objects to model objects
         List<ExamQuestionModel> questionModelList = this.convertLogExamListToExamQuestionModelList(logExamList);
 
+        // Get the current exam from database
+        Examen exam = this.examenRepository.findOne(examId);
+
         // Get the score for each question
         for (ExamQuestionModel question : questionModelList) {
-            double score = this.getQuestionScore(question, examId, questionModelList.size());
+            double score = this.getQuestionScore(question, exam, questionModelList.size());
             String scoreAsString = this.formatterComponent.formatNumberWithTwoDecimals(score);
             question.setScore(scoreAsString.equals("0.00") ? "0" : scoreAsString);
         }
@@ -160,16 +163,13 @@ public class LearnerExamServiceImpl implements LearnerExamService {
     /**
      * Method to calculate the question score based in current exam parameters
      * @param question The question
-     * @param examId The identifier of current exam
+     * @param exam The current exam database object
      * @param numberQuestionsOfCurrentExam The number of question in the current exam
      * @return The score of the question
      */
-    private double getQuestionScore(ExamQuestionModel question, int examId, int numberQuestionsOfCurrentExam) {
+    private double getQuestionScore(ExamQuestionModel question, Examen exam, int numberQuestionsOfCurrentExam) {
         // The question score variable
         double questionScore = 0;
-
-        // Get the current exam from database
-        Examen exam = this.examenRepository.findOne(examId);
 
         // Exam information variables
         boolean isPartialCorrection = exam.getCorrParcial() == 1;

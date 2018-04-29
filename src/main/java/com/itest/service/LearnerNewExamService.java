@@ -21,21 +21,24 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service;
 
-import com.itest.model.request.GetExamToReviewRequest;
-import com.itest.model.request.GetExamsInfoRequest;
-import com.itest.model.request.GetNewExamRequest;
-import com.itest.model.request.GetTutorsToSendEmailRequest;
-import com.itest.model.response.*;
+import com.itest.model.NewExamModel;
 
-public interface LearnerManagementService {
+public interface LearnerNewExamService {
 
-    GetCoursesResponse getCourseList();
+    /**
+     * Check if the exam is already done by the learner
+     * @param learnerId The learner identifier
+     * @param examId The exam identifier
+     * @return Whether the exam is already done or not
+     */
+    boolean isExamAlreadyDonde(int learnerId, int examId);
 
-    GetExamsInfoResponse getExamsInfo(GetExamsInfoRequest request);
+    /**
+     * Generate a new exam to perform by the learner
+     * @param learnerId The learner identifier
+     * @param examId The exam identifier
+     * @return The generated exam for learner
+     */
+    NewExamModel generateNewExamForLearner(int learnerId, int examId);
 
-    GetExamToReviewResponse getExamToReview(GetExamToReviewRequest request);
-
-    GetTutorsToSendEmailResponse getTutorsToSendEmail(GetTutorsToSendEmailRequest request);
-
-    GetNewExamResponse getNewExam(GetNewExamRequest request);
 }

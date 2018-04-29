@@ -19,23 +19,14 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service;
+package com.itest.constant;
 
-import com.itest.model.request.GetExamToReviewRequest;
-import com.itest.model.request.GetExamsInfoRequest;
-import com.itest.model.request.GetNewExamRequest;
-import com.itest.model.request.GetTutorsToSendEmailRequest;
-import com.itest.model.response.*;
+public class QuestionVisibilityConstant {
 
-public interface LearnerManagementService {
+    // The questions are visible by the group
+    public static final int GROUP = 0;
 
-    GetCoursesResponse getCourseList();
+    // The questions are visible by the institution
+    public static final int INSTITUTION = 1;
 
-    GetExamsInfoResponse getExamsInfo(GetExamsInfoRequest request);
-
-    GetExamToReviewResponse getExamToReview(GetExamToReviewRequest request);
-
-    GetTutorsToSendEmailResponse getTutorsToSendEmail(GetTutorsToSendEmailRequest request);
-
-    GetNewExamResponse getNewExam(GetNewExamRequest request);
 }

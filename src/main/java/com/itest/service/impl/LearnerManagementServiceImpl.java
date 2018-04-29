@@ -24,11 +24,9 @@ package com.itest.service.impl;
 import com.itest.model.*;
 import com.itest.model.request.GetExamToReviewRequest;
 import com.itest.model.request.GetExamsInfoRequest;
+import com.itest.model.request.GetNewExamRequest;
 import com.itest.model.request.GetTutorsToSendEmailRequest;
-import com.itest.model.response.GetCoursesResponse;
-import com.itest.model.response.GetExamToReviewResponse;
-import com.itest.model.response.GetExamsInfoResponse;
-import com.itest.model.response.GetTutorsToSendEmailResponse;
+import com.itest.model.response.*;
 import com.itest.service.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,6 +52,10 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
     @Autowired
     @Qualifier("learnerExamServiceImpl")
     private LearnerExamService learnerExamService;
+
+    @Autowired
+    @Qualifier("learnerNewExamServiceImpl")
+    private LearnerNewExamService learnerNewExamService;
 
     public GetCoursesResponse getCourseList() {
 
@@ -165,7 +167,6 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
         GetTutorsToSendEmailResponse getTutorsResponse = new GetTutorsToSendEmailResponse();
 
         try{
-
             // Get the request variables
             int groupId = request.getGroupId();
 
@@ -184,6 +185,51 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
         }
 
         return getTutorsResponse;
+    }
+
+    public GetNewExamResponse getNewExam(GetNewExamRequest request){
+
+        // Initialize the response
+        GetNewExamResponse getNewExamResponse = new GetNewExamResponse();
+
+        // Initialize the private variables
+        int learnerId = 0;
+        int examId = 0;
+
+        try{
+            // Get the request variables
+            examId = request.getExamId();
+
+            // Check there is no an already done exam by the learner with the same exam identifier
+            learnerId = this.userService.getUserIdOfCurrentUser();
+            boolean isExamAlreadyDone = this.learnerNewExamService.isExamAlreadyDonde(learnerId, examId);
+            if(isExamAlreadyDone){
+
+                // Set the error when the exam has already done by the user
+                getNewExamResponse.setHasError(true);
+                getNewExamResponse.setErrorMessage("The exam is already done"); // TODO: Translate the error
+            }
+
+            // Generate the new exam if has not an error
+            if(!getNewExamResponse.isHasError()){
+
+                // Generate the new exam
+                NewExamModel newExamModel = this.learnerNewExamService.generateNewExamForLearner(learnerId, examId);
+
+                // Set the generated exam to response
+                getNewExamResponse.setNewExam(newExamModel);
+            }
+
+        }catch (Exception exc){
+            // Log the exception
+            LOG.debug("Error getting the new exam to perform by learner. LearnerId:" + learnerId + " , ExamId:" + examId +" . Exception: " + exc.getMessage());
+
+            // Has an error getting the new exam to perform by learner
+            getNewExamResponse.setHasError(true);
+        }
+
+        // Return the response
+        return getNewExamResponse;
     }
 
 }
