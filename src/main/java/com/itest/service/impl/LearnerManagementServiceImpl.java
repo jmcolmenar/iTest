@@ -210,10 +210,8 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
                 // Set the error when the exam has already done by the user
                 getNewExamResponse.setHasError(true);
                 getNewExamResponse.setErrorMessage("The exam is already done"); // TODO: Translate the error
-            }
 
-            // Generate the new exam if has not an error
-            if(!getNewExamResponse.isHasError()){
+            }else{
 
                 // Generate the new exam
                 NewExamModel newExamModel = this.learnerNewExamService.generateNewExamForLearner(learnerId, examId, ip);

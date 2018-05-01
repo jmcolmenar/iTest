@@ -38,7 +38,7 @@
                                 <td>{{availableExam.startDate}}</td>
                                 <td>{{availableExam.endDate}}</td>
                                 <td><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#extraInfoExamModal" ng-click="setCurrentExamExtraInfo(availableExam)"><span class="glyphicon glyphicon-plus"></span>&nbsp;<span th:text="#{subject.examInfo.moreDetails}"></span></button></td>
-                                <td><button class="btn btn-primary btn-xs" th:text="#{subject.available.startExamButton}"></button></td>
+                                <td><button class="btn btn-primary btn-xs" ng-click="showGoToNewExam(availableExam.examId)" th:text="#{subject.available.startExamButton}"></button></td>
                             </tr>
                             </tbody>
                         </table>
@@ -152,19 +152,32 @@
     </div>
 
     <!-- Modal with confirmation message modal to go to the review exam -->
-    <div class="modal fade" id="confirmationModal" role="dialog">
+    <div class="modal fade" id="goToReviewConfirmationModal" role="dialog">
         <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" th:text="#{modalConfirmationTitle}"></h2>
-                </div>
                 <div class="modal-body">
                     <p th:text="#{suject.goToRevisionModal}"></p>
                 </div>
                 <div class="modal-footer-custom">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-right: 20px;" th:text="#{modalCancelButton}"></button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="goToExamReview()" th:text="#{modalOkButton}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal with confirmation message modal to perform a new exam -->
+    <div class="modal fade" id="goToNewExamConfirmationModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>¿Desea comenzar el examen?</p>
+                </div>
+                <div class="modal-footer-custom">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-right: 20px;" th:text="#{modalCancelButton}"></button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="startExam()" th:text="#{modalOkButton}"></button>
                 </div>
             </div>
         </div>

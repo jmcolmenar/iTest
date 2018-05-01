@@ -25,7 +25,27 @@ import java.util.List;
 
 public class NewExamModel {
 
+    private String subjectName;
+
+    private String examTitle;
+
     private List<NewExamQuestionModel> questionList;
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public String getExamTitle() {
+        return examTitle;
+    }
+
+    public void setExamTitle(String examTitle) {
+        this.examTitle = examTitle;
+    }
 
     public List<NewExamQuestionModel> getQuestionList() {
         return questionList;

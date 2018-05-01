@@ -27,6 +27,7 @@ import com.itest.model.NewExamModel;
 import com.itest.model.NewExamQuestionAnswerModel;
 import com.itest.model.NewExamQuestionModel;
 import com.itest.repository.*;
+import com.itest.service.LearnerExamService;
 import com.itest.service.LearnerNewExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,6 +40,10 @@ import java.util.stream.Collectors;
 
 @Service("learnerNewExamServiceImpl")
 public class LearnerNewExamServiceImpl implements LearnerNewExamService {
+
+    @Autowired
+    @Qualifier("learnerExamServiceImpl")
+    private LearnerExamService learnerExamService;
 
     @Autowired
     @Qualifier("examenRepository")
@@ -76,7 +81,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         Examen exam = this.examenRepository.findDoneExamByUserIdAndExamId(learnerId, examId);
 
         // Check if there is a done exam by user in database
-        boolean isExamAlreadyDonde = exam != null && exam.getFechaFin() != null;
+        boolean isExamAlreadyDonde = exam != null;
 
         // Return the boolean indicating whether the exam is already done or not
         return isExamAlreadyDonde;
@@ -103,6 +108,10 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         // Insert a new empty score for the exam
         Date startDate = new Date(System.currentTimeMillis());
         this.insertEmptyScoreForNewExam(learner, exam, startDate, ip);
+
+        // Set the exam details
+        newExamModel.setExamTitle(exam.getTitulo());
+        newExamModel.setSubjectName(this.learnerExamService.getSubjectNameFromExam(examId));
 
         // Get the list of new exam question model
         List<NewExamQuestionModel> examQuestionModelList = this.getQuestionsForNewExam(exam);

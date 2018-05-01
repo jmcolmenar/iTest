@@ -40,7 +40,7 @@ body{
     margin-top: 0px;
 }
 
-#main-courses-div, #main-pass-div, #main-profile-div, #main-subject-div, #main-review-exam-div{
+#main-courses-div, #main-pass-div, #main-profile-div, #main-subject-div, #main-exam-div{
     border: 3px solid rgb(217, 32, 38);
     border-top: 16px solid rgb(217, 32, 38);
     box-shadow: rgba(255, 0, 0, 0.3) 3px 3px 3px 3px;
@@ -164,8 +164,8 @@ body{
     background-color: rgba(255, 0, 0, 0.65);
 }
 
-/* === REVIEW EXAM === */
-#review-exam-title-div{
+/* === REVIEW AND NEW EXAM === */
+#exam-title-div{
     padding-top: 15px;
     color: rgb(0, 0, 0);
     padding-left: 30px;
@@ -174,34 +174,30 @@ body{
 }
 
 @media(max-width: 767px){
-    #review-exam-title-div{
+    #exam-title-div{
         padding-left: 15px;
     }
 }
 
-#review-exam-title-div h2{
+#exam-title-div h2{
     margin-top: -5px;
     margin-left: 5px;
 }
-#review-exam-title-div h4{
+#exam-title-div h4{
     margin-left: 8px;
 }
 
-#review-exam-questions-div{
+#exam-questions-div{
     margin-top: -20px;
     margin-bottom: 20px;
 }
 
-.review-exam-question-score{
-    margin-left: 15px;
-}
-
-.review-exam-answer{
+.exam-answer{
     margin-left: 5px;
     padding-left: 5px;
 }
 
-.review-exam-question{
+.exam-question{
     margin-top: 15px;
     margin-bottom: 20px;
     border: 3px solid rgb(119, 119, 119);
@@ -213,14 +209,19 @@ body{
 }
 
 @media(max-width: 767px){
-    .review-exam-question{
+    .exam-question{
         padding-right: 5px;
         padding-left: 5px;
     }
 }
 
-.review-exam-question h5{
+.exam-question h5{
     margin-bottom: 0px;
+}
+
+/* === REVIEW EXAM === */
+.review-exam-question-score{
+    margin-left: 15px;
 }
 
 #review-exam-score{
@@ -246,3 +247,5 @@ body{
     padding-left: 25px;
     padding-top: 10px;
 }
+
+/* === NEW EXAM === */

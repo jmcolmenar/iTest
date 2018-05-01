@@ -9,6 +9,7 @@ var app = angular.module('learnerApp',['ngRoute']);
 app.service('sharedProperties', function () {
     var currentGroupId = 0;
     var currentExamId = 0;
+    var newExamInfo = null;
 
     return {
         getCurrentGroupId: function () {
@@ -22,6 +23,12 @@ app.service('sharedProperties', function () {
         },
         setCurrentExamId: function(value) {
             currentExamId = value;
+        },
+        getNewExamInfo: function () {
+            return newExamInfo;
+        },
+        setNewExamInfo: function(value) {
+            newExamInfo = value;
         }
     };
 });
@@ -116,6 +123,10 @@ app.config(['$routeProvider', function ($routeProvider){
         .when('/reviewexam',{
             templateUrl: '/learner/partial/reviewExam',
             controller: 'reviewExamCtrl'
+        })
+        .when('/newexam',{
+            templateUrl: '/learner/partial/newExam',
+            controller: 'newExamCtrl'
         })
         .otherwise({
             redirectTo: '/'
@@ -327,7 +338,7 @@ app.controller('subjectCtrl', ['$scope', '$http' , '$window', 'sharedProperties'
         sharedProperties.setCurrentExamId(examId);
 
         // Show the confirmation modal
-        $("#confirmationModal").modal("show");
+        $("#goToReviewConfirmationModal").modal("show");
     };
 
     // Function to go to exam review
@@ -365,16 +376,33 @@ app.controller('subjectCtrl', ['$scope', '$http' , '$window', 'sharedProperties'
             true);
     };
 
+    // Function to open confirmation modal to perform a new exam
+    $scope.showGoToNewExam = function (examId) {
+
+        // Set the id of new exam to perform
+        $scope.newExamId = examId;
+
+        // Open the confirmation modal
+        $('#goToNewExamConfirmationModal').modal('show');
+    };
+
+
     // Get the new exam to perform from the server
-    $scope.startExam = function(examId){
+    $scope.startExam = function(){
         // Prepare te request to get tutor list to send an email
         var getNewExamRequest = {
-            examId : examId
+            examId : $scope.newExamId
         };
 
         // Call to the server to get the list of tutor to send an email
-        serverCaller.httpPost(getTutorsToSendEmailRequest, '/api/learner/getNewExam',
-            function (response) {},
+        serverCaller.httpPost(getNewExamRequest, '/api/learner/getNewExam',
+            function (response) {
+                // Set the new exam info in the shared properties
+                sharedProperties.setNewExamInfo(response.newExam);
+
+                // Go to the new exam page
+                $window.location.href = '#/newexam/';
+            },
             function (response) {},
             true);
     };
@@ -407,4 +435,19 @@ app.controller('reviewExamCtrl', ['$scope', '$http', 'sharedProperties', 'server
             $scope.examToReview.questionList = {};
         },
         true);
+}]);
+
+// New exam management controller
+app.controller('newExamCtrl', ['$scope', '$http', '$window', 'sharedProperties', 'serverCaller', function($scope, $http, $window, sharedProperties, serverCaller){
+
+    // Get the new exam info and set empty exam in shared properties
+    $scope.newExam = sharedProperties.getNewExamInfo();
+    sharedProperties.setNewExamInfo(null);
+
+    // Check if there is a new exam to perform
+    if(!$scope.newExam){
+        // Go to the error page
+        $window.location.href = '/error/';
+    }
+
 }]);
