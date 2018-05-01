@@ -140,18 +140,21 @@ app.config(['$routeProvider', function ($routeProvider){
 }]);
 
 // Main controller
-app.controller('mainCtrl', ['$scope', '$http', '$window', 'sharedProperties', function($scope, $http, $window, sharedProperties){
+app.controller('mainCtrl', ['$scope', '$http', '$window', 'serverCaller', function($scope, $http, $window, serverCaller){
 
     // The function to executes when the page has been loaded
     $scope.init = function(){
-        // Request to get the full name of user
-        $http.get('/api/user/getFullName').success(function(response){
-            // Set the full name of user
-            $scope.fullName = response.fullName;
-        }).error(function(response){
-            // Set the full name with "Error" message
-            $scope.fullName = 'Error...';
-        });
+        // Call to the server to get the full name of user
+        serverCaller.httpPost({}, '/api/user/getFullName',
+            function (response) {
+                // Set the full name of user
+                $scope.fullName = response.fullName;
+            },
+            function (response) {
+                // Set the full name with "Error" message
+                $scope.fullName = 'Error...';
+            },
+            true);
     };
 
     // Function to redirect to learner home page

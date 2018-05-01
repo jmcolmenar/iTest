@@ -43,7 +43,7 @@ public class UserController {
     @Qualifier("userManagementServiceImpl")
     private UserManagementService userManagementService;
 
-    @GetMapping("/getFullName")
+    @PostMapping("/getFullName")
     public GetFullNameResponse getFullName(){
 
         // Call to the service to get the full name of current user
