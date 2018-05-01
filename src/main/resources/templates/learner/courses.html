@@ -7,7 +7,7 @@
         <div class="col-xs-12 col-sm-8 col-sm-offset-2">
             <div ng-repeat="course in courseList" class="course-class">
                 <button type="button" class="btn btn-danger btn-lg btn-course" data-toggle="collapse" data-target="#{{course.year}}">{{course.year}}&nbsp;&nbsp;<span class="caret"></span></button>
-                <div id="{{course.year}}" class="collapse {{($first) ? 'in' : ''}}">
+                <div id="{{course.year}}" class="collapse" ng-class="{in: $first}">
                     <br/>
                     <div class="list-group" ng-repeat="subject in course.subjectList">
                         <a href="#/subject" class="list-group-item" ng-click="setSelectedSubject(subject)">

@@ -39,7 +39,7 @@
                 <div class="review-exam-question">
                     <h4>{{question.statement}}</h4>
 
-                    <div class="review-exam-answer{{(answer.right) ? ' review-exam-answer-right' : ''}}" ng-repeat="answer in question.answerList">
+                    <div class="review-exam-answer" ng-class="{'review-exam-answer-right': answer.right}" ng-repeat="answer in question.answerList">
                         <div class="checkbox checkbox-primary">
                             <input id="answer{{answer.asnwerId}}" ng-checked="answer.checked" type="checkbox" disabled=""/>
                             <label for="answer{{answer.asnwerId}}">{{answer.text}}</label>
