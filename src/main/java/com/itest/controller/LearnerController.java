@@ -41,7 +41,7 @@ public class LearnerController {
     @Qualifier("learnerManagementServiceImpl")
     private LearnerManagementService learnerManagementService;
 
-    @GetMapping("/getCourses")
+    @PostMapping("/getCourses")
     public GetCoursesResponse getCourses(){
 
         // Call to the service to get the course list of current user

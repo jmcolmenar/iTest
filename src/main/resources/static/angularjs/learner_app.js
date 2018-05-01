@@ -183,25 +183,19 @@ app.controller('mainCtrl', ['$scope', '$http', '$window', 'sharedProperties', fu
 }]);
 
 // Change password controller
-app.controller('coursesCtrl', ['$scope', '$http', 'sharedProperties', function($scope, $http, sharedProperties) {
+app.controller('coursesCtrl', ['$scope', '$http', 'sharedProperties', 'serverCaller', function($scope, $http, sharedProperties, serverCaller) {
 
-    // Request to get the courses list of user
-    $http.get('/api/learner/getCourses').success(function(response){
-        if(response.hasError){
-            // TODO: Show error modal
-
-            // Set an empty courses list
-            $scope.courseList = {};
-        }else{
+    // Call to the server to get the courses list of user
+    serverCaller.httpPost({}, '/api/learner/getCourses',
+        function (response) {
             // Set the variable with the courses
             $scope.courseList = response.coursesList;
-        }
-    }).error(function(response){
-        // TODO: Show error modal
-
-        // Set an empty courses list
-        $scope.courseList = {};
-    });
+        },
+        function (response) {
+            // Set an empty courses list
+            $scope.courseList = {};
+        },
+        true);
 
     // Set the selected subject
     $scope.setSelectedSubject = function(subject){
