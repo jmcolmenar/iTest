@@ -304,32 +304,22 @@ app.controller('subjectCtrl', ['$scope', '$http' , '$window', 'sharedProperties'
         },
         true);
 
-    // Function to active the clicked button and deactive the others
-    $scope.clickExamsButton = function($event){
-        $("#available-exams-button").removeClass("active");
-        $("#next-exams-button").removeClass("active");
-        $("#done-exams-button").removeClass("active");
-
-        var clickedButton = $event.currentTarget;
-        $("#"+clickedButton.id).addClass("active");
+    // Variables and functions to show the exam category
+    $scope.selectedCategory = 0;
+    $scope.availableExamsCategory = 0;
+    $scope.nextExamsCategory = 1;
+    $scope.doneExamsCategory = 2;
+    $scope.isSelectedCategory = function (category){
+        return $scope.selectedCategory == category;
     };
-
-    // Functions to check the activated button
-    $scope.isAvailableExamsButtonActived = function(){
-        return $("#available-exams-button").hasClass("active");
-    };
-    $scope.isNextExamsButtonActived = function(){
-        return $("#next-exams-button").hasClass("active");
-    };
-    $scope.isDoneExamsButtonActived = function(){
-        return $("#done-exams-button").hasClass("active");
+    $scope.setSelectedCategory = function(category){
+        $scope.selectedCategory = category;
     };
 
     // Function to set the current exam in order to show the extra info in the modal
     $scope.setCurrentExamExtraInfo = function (exam) {
         $scope.currentExamExtraInfo = exam;
     };
-
 
     // Function to shows the confirmation modal to go to the review exam
     $scope.showGoToReviewExamModal = function (examId) {

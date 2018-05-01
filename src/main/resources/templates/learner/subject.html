@@ -13,11 +13,11 @@
                 <h2 th:text="#{subject.examList}"></h2>
                 <p th:text="#{subject.examListDescription}"></p>
                 <div id="exams-button-group" class="btn-group btn-group-justified">
-                    <a id="available-exams-button" type="button" class="btn btn-danger btn-exams-type active" ng-click="clickExamsButton($event)" th:text="#{subject.availableExamTab}"></a>
-                    <a id="next-exams-button" type="button" class="btn btn-danger btn-exams-type" ng-click="clickExamsButton($event)" th:text="#{subject.nextExamTab}"></a>
-                    <a id="done-exams-button" type="button" class="btn btn-danger btn-exams-type" ng-click="clickExamsButton($event)" th:text="#{subject.doneExamTab}"></a>
+                    <a id="available-exams-button" type="button" class="btn btn-danger btn-exams-type" ng-class="{active: isSelectedCategory(availableExamsCategory)}" ng-click="setSelectedCategory(availableExamsCategory)" th:text="#{subject.availableExamTab}"></a>
+                    <a id="next-exams-button" type="button" class="btn btn-danger btn-exams-type" ng-class="{active: isSelectedCategory(nextExamsCategory)}" ng-click="setSelectedCategory(nextExamsCategory)" th:text="#{subject.nextExamTab}"></a>
+                    <a id="done-exams-button" type="button" class="btn btn-danger btn-exams-type" ng-class="{active: isSelectedCategory(doneExamsCategory)}" ng-click="setSelectedCategory(doneExamsCategory)" th:text="#{subject.doneExamTab}"></a>
                 </div>
-                <div id="available-exams-div" ng-show="isAvailableExamsButtonActived()">
+                <div id="available-exams-div" ng-show="isSelectedCategory(availableExamsCategory)">
                     <p ng-hide="availableExamsList.length > 0" th:text="#{subject.emptyExamList}"></p>
                     <div class="table-responsive" ng-show="availableExamsList.length > 0">
                         <table class="table table-striped">
@@ -44,7 +44,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="next-exams-div" ng-show="isNextExamsButtonActived()">
+                <div id="next-exams-div" ng-show="isSelectedCategory(nextExamsCategory)">
                     <p ng-hide="nextExamsList.length > 0" th:text="#{subject.emptyExamList}"></p>
                     <div class="table-responsive" ng-show="nextExamsList.length > 0">
                         <table class="table table-striped">
@@ -69,7 +69,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="done-exams-div" ng-show="isDoneExamsButtonActived()">
+                <div id="done-exams-div" ng-show="isSelectedCategory(doneExamsCategory)">
                     <p ng-hide="doneExamsList.length > 0" th:text="#{subject.emptyExamList}"></p>
                     <div class="table-responsive" ng-show="doneExamsList.length > 0">
                         <table class="table table-striped">
