@@ -165,6 +165,9 @@ public class UserManagementServiceImpl implements UserManagementService {
             // Set the application language from current user language
             this.userService.setLocaleByCurrentUser(httpRequest, httpResponse);
 
+            // Set the success message updating the user profile
+            updateUserProfileResponse.setSuccessMessage(this.translationService.getMessage("userProfile.updateProfileSuccessfully"));
+
         }catch(Exception exc){
             // Log the exception
             LOG.error("Error updating the user profile. Exception: " + exc.getMessage());

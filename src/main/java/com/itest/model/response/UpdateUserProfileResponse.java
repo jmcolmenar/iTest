@@ -22,4 +22,14 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.model.response;
 
 public class UpdateUserProfileResponse extends Response {
+
+    private String successMessage;
+
+    public String getSuccessMessage() {
+        return successMessage;
+    }
+
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
+    }
 }

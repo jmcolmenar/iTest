@@ -154,6 +154,12 @@ app.controller('mainCtrl', ['$scope', '$http', '$window', 'sharedProperties', fu
         });
     };
 
+    // Function to redirect to learner home page
+    $scope.goToLearnerIndexPage = function () {
+        // The learner is redirected to the home page
+        $window.location.href = '/learner/'
+    };
+
     // Call to "logout" get request to exit of application
     $scope.exitApplication = function(){
         // Hide confirmation modal
@@ -268,7 +274,7 @@ app.controller('changePassCtrl', ['$scope', '$http', function($scope, $http){
 }]);
 
 // User profile controller
-app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'currentProfile', function($scope, $http, $window, currentProfile) {
+app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'currentProfile', 'serverCaller' , function($scope, $http, $window, currentProfile, serverCaller) {
     // The identifier of languages
     const SPANISH_ID = 0;
     const ENGLISH_ID = 1;
@@ -304,12 +310,6 @@ app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'currentProfile
         $("#confirmationModal").modal("show");
     };
 
-    // Function to redirect to home page
-    $scope.goToIndexPage = function () {
-        // The learner is redirected to the home page
-        $window.location.href = '/learner/'
-    };
-
     // Set the user profile data to shows in the form
     $scope.profile = {};
     $scope.profile.user = currentProfile.userProfileData.username;
@@ -329,32 +329,17 @@ app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'currentProfile
             languageId : getLanguageIdFromButtons()
         };
 
-        // Post request to update the user profile
-        $http.post('/api/user/updateUserProfile', updateUserProfileRequest, {
-            headers : {
-                'content-type' : 'application/json'
-            }
-        }).success(function(response) {
-            if(response.hasError){
-                // Hide confirmation modal
-                $("#confirmationModal").modal("hide");
-
-                // Shows the error modal
-                $("#errorModal").modal("show");
-            }else{
-                // Hide confirmation modal
-                $("#confirmationModal").modal("hide");
-
+        // Call to the server to to update the user profile
+        serverCaller.httpPost(updateUserProfileRequest, '/api/user/updateUserProfile',
+            function (response) {
                 // Shows the static modal with successful message
                 $("#successfullyModal").modal({backdrop: "static"});
-            }
-        }).error(function(response) {
-            // Hide confirmation modal
-            $("#confirmationModal").modal("hide");
 
-            // Shows the error modal
-            $("#errorModal").modal("show");
-        })
+                // Set the translated success message
+                $scope.successMessageUpdatingProfile = response.successMessage;
+            },
+            function (response) {},
+            true);
     };
 }]);
 
