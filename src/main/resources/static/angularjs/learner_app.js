@@ -38,6 +38,60 @@ app.service('sharedProperties', function () {
     };
 });
 
+// Service to call to the server and manage the response
+app.service('serverCaller', function ($http) {
+    return{
+        // Http post call
+        httpPost: function(request, url, succesfullResponse, errorResponse, showErrorModal){
+            // Function to check if the error model must be shown
+            var checkShowErrorModel = function(showErrorModal, response){
+                // Check if shows the error modal
+                if(showErrorModal){
+                    // Check if the server return an error message
+                    if(response && response.errorMessage){
+                        // Show the message from the server
+                        $("#genericErrorFromServer").text(response.errorMessage).show();
+                        $("#genericErrorFromPage").hide();
+                    }else{
+                        // Show the generic message in the page
+                        $("#genericErrorFromServer").hide();
+                        $("#genericErrorFromPage").show();
+                    }
+
+                    // Show error modal
+                    $("#genericErrorModal").modal("show");
+                }
+            };
+
+            // Call post to the server
+            $http.post(url, request, {
+                headers : {
+                    'content-type' : 'application/json'
+                }
+            }).success(function(response) {
+                // Check if the call return an error
+                if(response.hasError){
+
+                    // Execute the error callback
+                    errorResponse(response);
+
+                    // Check if shows an error modal
+                    checkShowErrorModel(showErrorModal, response);
+                }else{
+                    // Execute the succes callback
+                    succesfullResponse(response);
+                }
+            }).error(function(response) {
+                // Execute the error calling to server callback
+                errorResponse(response);
+
+                // Check if shows an error modal
+                checkShowErrorModel(showErrorModal, response);
+            })
+        }
+    }
+});
+
 // Directive to execute a callback when finish to render "ng-repeat" directive
 app.directive('onFinishRender', function ($timeout) {
     return {
@@ -305,40 +359,30 @@ app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'currentProfile
 }]);
 
 // Subject management controller
-app.controller('subjectCtrl', ['$scope', '$http' , '$window', 'sharedProperties', function($scope, $http, $window, sharedProperties){
+app.controller('subjectCtrl', ['$scope', '$http' , '$window', 'sharedProperties', 'serverCaller', function($scope, $http, $window, sharedProperties, serverCaller){
 
     // Prepare te request to get the exams by the Group Id of selected subject
     var getExamsInfoRequest = {
         groupId : sharedProperties.getCurrentGroupId()
     };
 
-    // Get the done exams of selected subject
-    $http.post('/api/learner/getExamsInfo', getExamsInfoRequest, {
-        headers : {
-            'content-type' : 'application/json'
-        }
-    }).success(function(response) {
-        if(response.hasError){
-            // TODO: Shows an error modal
-
-            // Set empty subject and exams info
-            $scope.subject = {};
-            $scope.availableExamsList = {};
-            $scope.nextExamsList = {};
-            $scope.doneExamsList = {};
-        }else{
+    // Call to the server to get the exams info
+    serverCaller.httpPost(getExamsInfoRequest, '/api/learner/getExamsInfo',
+        function (response) {
             // Set the list of done exams
             $scope.subject = response.subject;
             $scope.availableExamsList = response.availableExamsList;
             $scope.nextExamsList = response.nextExamsList;
             $scope.doneExamsList = response.doneExamsList;
-        }
-    }).error(function(response) {
-        // TODO: Shows an error modal
-
-        // Error retrieving the exams of selected subject
-        $scope.showRequestError = true;
-    });
+        },
+        function (response) {
+            // Set empty subject and exams info
+            $scope.subject = {};
+            $scope.availableExamsList = {};
+            $scope.nextExamsList = {};
+            $scope.doneExamsList = {};
+        },
+        true);
 
     // Function to active the clicked button and deactive the others
     $scope.clickExamsButton = function($event){
@@ -388,16 +432,9 @@ app.controller('subjectCtrl', ['$scope', '$http' , '$window', 'sharedProperties'
             groupId : $scope.subject.groupId
         };
 
-        // Get the exam to review of selected subject
-        $http.post('/api/learner/getTutorsToSendEmail', getTutorsToSendEmailRequest, {
-            headers : {
-                'content-type' : 'application/json'
-            }
-        }).success(function(response) {
-            if(response.hasError){
-                // TODO: Shows an error modal
-
-            }else{
+        // Call to the server to get the list of tutor to send an email
+        serverCaller.httpPost(getTutorsToSendEmailRequest, '/api/learner/getTutorsToSendEmail',
+            function (response) {
                 // Set the tutor info list in a variable
                 $scope.tutorsToSendEmail = response.tutorInfoList;
 
@@ -409,39 +446,43 @@ app.controller('subjectCtrl', ['$scope', '$http' , '$window', 'sharedProperties'
                 // Selected the first tutor email in the list
                 if($scope.tutorsToSendEmail != null && $scope.tutorsToSendEmail.length > 0){
                     $scope.selectedTutor.email = $scope.tutorsToSendEmail[0].email;
-                };
+                }
 
-                // Open the modal
+                // Open the modal with the list of tutors
                 $('#sendEmailModal').modal('show');
-            }
-        }).error(function(response) {
-            // TODO: Shows an error modal
-        });
+            },
+            function (response) {},
+            true);
+    };
+
+    // Get the new exam to perform from the server
+    $scope.startExam = function(examId){
+        // Prepare te request to get tutor list to send an email
+        var getNewExamRequest = {
+            examId : examId
+        };
+
+        // Call to the server to get the list of tutor to send an email
+        serverCaller.httpPost(getTutorsToSendEmailRequest, '/api/learner/getNewExam',
+            function (response) {},
+            function (response) {},
+            true);
     };
 
 }]);
 
 // Exam to review management controller
-app.controller('reviewExamCtrl', ['$scope', '$http', 'sharedProperties', function($scope, $http, sharedProperties){
+app.controller('reviewExamCtrl', ['$scope', '$http', 'sharedProperties', 'serverCaller', function($scope, $http, sharedProperties, serverCaller){
 
     // Prepare te request to get the exam to review
     var getExamToReviewRequest = {
         examId : sharedProperties.getCurrentExamId()
     };
 
-    // Get the exam to review of selected subject
-    $http.post('/api/learner/getExamToReview', getExamToReviewRequest, {
-        headers : {
-            'content-type' : 'application/json'
-        }
-    }).success(function(response) {
-        if(response.hasError){
-            // Set empty review information
-            $scope.examToReview = {};
-            $scope.examToReview.questionList = {};
 
-            // TODO: Shows an error modal
-        }else{
+    // Call to the server to get the exam to review of selected subject
+    serverCaller.httpPost(getExamToReviewRequest, '/api/learner/getExamToReview',
+        function (response) {
             // Get the exam to review information from response
             $scope.examToReview = {};
             $scope.examToReview.subjectName = response.subjectName;
@@ -449,12 +490,11 @@ app.controller('reviewExamCtrl', ['$scope', '$http', 'sharedProperties', functio
             $scope.examToReview.score = response.score;
             $scope.examToReview.maxScore = response.maxScore;
             $scope.examToReview.questionList = response.questionList;
-        }
-    }).error(function(response) {
-        // TODO: Shows an error modal
-
-        // Error retrieving the exams of selected subject
-        $scope.showRequestError = true;
-    });
-
+        },
+        function (response) {
+            // Set empty review information
+            $scope.examToReview = {};
+            $scope.examToReview.questionList = {};
+        },
+        true);
 }]);

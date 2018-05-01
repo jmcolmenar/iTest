@@ -25,7 +25,7 @@ public class Response {
 
     private boolean hasError;
 
-    private String ErrorMessage;
+    private String errorMessage;
 
     public boolean isHasError() {
         return hasError;
@@ -36,10 +36,10 @@ public class Response {
     }
 
     public String getErrorMessage() {
-        return ErrorMessage;
+        return errorMessage;
     }
 
     public void setErrorMessage(String errorMessage) {
-        ErrorMessage = errorMessage;
+        errorMessage = errorMessage;
     }
 }
