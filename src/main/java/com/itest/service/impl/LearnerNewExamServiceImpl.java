@@ -112,6 +112,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         // Set the exam details
         newExamModel.setExamTitle(exam.getTitulo());
         newExamModel.setSubjectName(this.learnerExamService.getSubjectNameFromExam(examId));
+        newExamModel.setShowNumberRightAnswers(exam.getMuestraNumCorr() == 1);
 
         // Get the list of new exam question model
         List<NewExamQuestionModel> examQuestionModelList = this.getQuestionsForNewExam(exam);
@@ -212,12 +213,18 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
                         // Remove the answer of the remaining asnwers list
                         remainingAsnwers.remove(answer);
                     }
+
+                    // Shuffle the answers
+                    Collections.shuffle(questionModel.getAnswerList());
                 }
 
                 // Remove the question from the list
                 questionsList.remove(question);
             }
         }
+
+        // shuffle the questions
+        Collections.shuffle(examQuestionModelList);
 
         // Return the question list of the new exam
         return examQuestionModelList;
@@ -294,7 +301,6 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         NewExamQuestionModel newExamQuestionModel = new NewExamQuestionModel();
         newExamQuestionModel.setQuestionId(question.getIdpreg());
         newExamQuestionModel.setStatement(question.getEnunciado());
-        newExamQuestionModel.setComment(question.getComentario());
         newExamQuestionModel.setNumberCorrectAnswers(question.getNRespCorrectas());
 
         // Return the model object

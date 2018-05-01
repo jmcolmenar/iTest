@@ -29,6 +29,8 @@ public class NewExamModel {
 
     private String examTitle;
 
+    private boolean showNumberRightAnswers;
+
     private List<NewExamQuestionModel> questionList;
 
     public String getSubjectName() {
@@ -45,6 +47,14 @@ public class NewExamModel {
 
     public void setExamTitle(String examTitle) {
         this.examTitle = examTitle;
+    }
+
+    public boolean isShowNumberRightAnswers() {
+        return showNumberRightAnswers;
+    }
+
+    public void setShowNumberRightAnswers(boolean showNumberRightAnswers) {
+        this.showNumberRightAnswers = showNumberRightAnswers;
     }
 
     public List<NewExamQuestionModel> getQuestionList() {

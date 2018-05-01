@@ -29,8 +29,6 @@ public class NewExamQuestionModel {
 
     String statement;
 
-    String comment;
-
     int numberCorrectAnswers;
 
     List<NewExamQuestionAnswerModel> answerList;
@@ -49,14 +47,6 @@ public class NewExamQuestionModel {
 
     public void setStatement(String statement) {
         this.statement = statement;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public int getNumberCorrectAnswers() {
