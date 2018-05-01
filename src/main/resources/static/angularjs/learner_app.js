@@ -5,18 +5,6 @@
 // Angular JS application
 var app = angular.module('learnerApp',['ngRoute']);
 
-// Service to get the user profile
-app.factory('currentUserProfile',['$http', '$q', function($http, $q) {
-    return function() {
-        var userProfileData = $http.get('/api/user/getUserProfile');
-        return $q.all([userProfileData]).then(function(results){
-            return {
-                userProfileData: results[0].data
-            };
-        });
-    }
-}]);
-
 // Service to access to the shared properties from all controllers
 app.service('sharedProperties', function () {
     var currentGroupId = 0;
@@ -119,12 +107,7 @@ app.config(['$routeProvider', function ($routeProvider){
         })
         .when('/userprofile',{
             templateUrl: '/user/partial/userProfile',
-            controller: 'userProfileCtrl',
-            resolve: {
-                currentProfile : ['currentUserProfile', function (currentUserProfile) {
-                    return currentUserProfile();
-                }]
-            }
+            controller: 'userProfileCtrl'
         })
         .when('/subject',{
             templateUrl: '/learner/partial/subject',
@@ -245,17 +228,33 @@ app.controller('changePassCtrl', ['$scope', '$http', 'serverCaller', function($s
 }]);
 
 // User profile controller
-app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'currentProfile', 'serverCaller' , function($scope, $http, $window, currentProfile, serverCaller) {
+app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'serverCaller' , function($scope, $http, $window, serverCaller) {
+
+    // Call to the server to get user profile data
+    serverCaller.httpPost({}, '/api/user/getUserProfile',
+        function (response) {
+            // Set the user profile data from the server
+            $scope.profile = {};
+            $scope.profile.user = response.username;
+            $scope.profile.name = response.name;
+            $scope.profile.lastname = response.lastName;
+            $scope.profile.email = response.email;
+            $scope.profile.dni = response.dni;
+            $scope.profile.languageId = response.languageId;
+
+            // Select the language button with the current language of user
+            if($scope.profile.languageId == SPANISH_ID){
+                $("#spanishButton").addClass("active");
+            }else if ($scope.profile.languageId == ENGLISH_ID){
+                $("#englishButton").addClass("active");
+            }
+        },
+        function (response) {},
+        true);
+
     // The identifier of languages
     const SPANISH_ID = 0;
     const ENGLISH_ID = 1;
-
-    // Select the language button with the current language of user
-    if(currentProfile.userProfileData.languageId == SPANISH_ID){
-        $("#spanishButton").addClass("active");
-    }else if (currentProfile.userProfileData.languageId == ENGLISH_ID){
-        $("#englishButton").addClass("active");
-    }
 
     // Function to set the language buttons state
     $scope.setButtonState = function (event) {
@@ -280,14 +279,6 @@ app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'currentProfile
     $scope.showConfirmationModal = function () {
         $("#confirmationModal").modal("show");
     };
-
-    // Set the user profile data to shows in the form
-    $scope.profile = {};
-    $scope.profile.user = currentProfile.userProfileData.username;
-    $scope.profile.name = currentProfile.userProfileData.name;
-    $scope.profile.lastname = currentProfile.userProfileData.lastName;
-    $scope.profile.email = currentProfile.userProfileData.email;
-    $scope.profile.dni = currentProfile.userProfileData.dni;
 
     // Function to update the user profile
     $scope.updateUserProfile = function () {

@@ -63,7 +63,7 @@ public class UserController {
         return changePasswordModel;
     }
 
-    @GetMapping("/getUserProfile")
+    @PostMapping("/getUserProfile")
     public GetUserProfileResponse getUserProfile(){
 
         // Call to the service to get the user profile
