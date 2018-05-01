@@ -229,6 +229,9 @@ app.controller('changePassCtrl', ['$scope', '$http', 'serverCaller', function($s
 
 // User profile controller
 app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'serverCaller' , function($scope, $http, $window, serverCaller) {
+    // The language identifiers
+    $scope.spanishId = 0;
+    $scope.englishId = 1;
 
     // Call to the server to get user profile data
     serverCaller.httpPost({}, '/api/user/getUserProfile',
@@ -241,43 +244,13 @@ app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'serverCaller' 
             $scope.profile.email = response.email;
             $scope.profile.dni = response.dni;
             $scope.profile.languageId = response.languageId;
-
-            // Select the language button with the current language of user
-            if($scope.profile.languageId == SPANISH_ID){
-                $("#spanishButton").addClass("active");
-            }else if ($scope.profile.languageId == ENGLISH_ID){
-                $("#englishButton").addClass("active");
-            }
         },
         function (response) {},
         true);
 
-    // The identifier of languages
-    const SPANISH_ID = 0;
-    const ENGLISH_ID = 1;
-
-    // Function to set the language buttons state
-    $scope.setButtonState = function (event) {
-        $("#spanishButton").removeClass("active");
-        $("#englishButton").removeClass("active");
-
-        var clickedButton = event.currentTarget;
-
-        $("#" + clickedButton.id).addClass("active");
-    };
-
-    // Function to get the identifier of selected language button
-    var getLanguageIdFromButtons = function () {
-        if($("#spanishButton").hasClass("active")){
-            return SPANISH_ID;
-        }else if($("#englishButton").hasClass("active")){
-            return ENGLISH_ID;
-        }
-    };
-
-    // Function to shows the confirmation modal
+    // Function to shows the confirmation modal to update user profile
     $scope.showConfirmationModal = function () {
-        $("#confirmationModal").modal("show");
+        $("#updateProfileConfirmationModal").modal("show");
     };
 
     // Function to update the user profile
@@ -288,7 +261,7 @@ app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'serverCaller' 
             lastName : $scope.profile.lastname,
             email : $scope.profile.email,
             dni : $scope.profile.dni,
-            languageId : getLanguageIdFromButtons()
+            languageId : $scope.profile.languageId
         };
 
         // Call to the server to to update the user profile

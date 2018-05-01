@@ -9,10 +9,10 @@
                 <div class="form-group">
                     <label for="language" th:text="#{userProfile.language}"></label>
                     <div id="language">
-                        <button id="spanishButton" type="button" class="btn btn-sm btn-language" ng-click="setButtonState($event)">
+                        <button id="spanishButton" type="button" class="btn btn-sm btn-language" ng-class="{active: profile.languageId == spanishId}" ng-click="profile.languageId = spanishId">
                             <span class="lang-sm" lang="es"></span> <span th:text="#{userProfile.language.spanish}"></span>
                         </button>
-                        <button id="englishButton" type="button" class="btn btn-sm btn-language" ng-click="setButtonState($event)">
+                        <button id="englishButton" type="button" class="btn btn-sm btn-language" ng-class="{active: profile.languageId == englishId}" ng-click="profile.languageId = englishId">
                             <span class="lang-sm" lang="en"></span> <span th:text="#{userProfile.language.english}"></span>
                         </button>
                     </div>
@@ -52,7 +52,7 @@
 
 
     <!-- Modal with confirmation message modal -->
-    <div class="modal fade" id="confirmationModal" role="dialog">
+    <div class="modal fade" id="updateProfileConfirmationModal" role="dialog">
         <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
