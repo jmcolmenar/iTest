@@ -212,7 +212,7 @@ app.controller('coursesCtrl', ['$scope', '$http', 'sharedProperties', function($
 }]);
 
 // Change password controller
-app.controller('changePassCtrl', ['$scope', '$http', function($scope, $http){
+app.controller('changePassCtrl', ['$scope', '$http', 'serverCaller', function($scope, $http, serverCaller){
 
     // The change password data
     $scope.changePasswordData = {};
@@ -226,51 +226,25 @@ app.controller('changePassCtrl', ['$scope', '$http', function($scope, $http){
 
         // Check the all fields are not null or empty
         if(!$scope.changePasswordData.oldPassword || !$scope.changePasswordData.newPassword || !$scope.changePasswordData.repeatPassword){
-            // Show the empty field error
-            $scope.showEmptyFieldsError = true;
-
-            // Show the modal with the error
-            $("#errorModal").modal("show");
+            // Show the modal with the error when any field is empty
+            $("#errorEmptyFieldModal").modal("show");
         }else{
+            // Prepare the request
             var changePasswordRequest = {
                 oldPassword : $scope.changePasswordData.oldPassword,
                 newPassword : $scope.changePasswordData.newPassword,
-                repeatPassword : $scope.changePasswordData.repeatPassword,
+                repeatPassword : $scope.changePasswordData.repeatPassword
             };
-            $http.post('/api/user/changePassword', changePasswordRequest, {
-                headers : {
-                    'content-type' : 'application/json'
-                }
-            }).success(function(response) {
-                // Check if has an error in the change password process
-                if(response.hasError){
-                    // Shows the error message in the change password process
-                    $scope.showProcessError = true;
-                    $scope.processErrorMessage = response.errorMessage;
-
-                    // Show the modal with the error
-                    $("#errorModal").modal("show");
-                }else{
+            // Call to the server to chage the user password
+            serverCaller.httpPost(changePasswordRequest, '/api/user/changePassword',
+                function (response) {
                     // Shows the model with iformation message when the password has been changed successfully
-                    $("#successfullyModal").modal("show");
-                }
-
-                // Clear the change password fields
-                $scope.changePasswordData = {};
-
-            }).error(function(response) {
-                // Error changing the password, shows the error message
-                $scope.showRequestError = true;
-
-                // Show the modal with the error
-                $("#errorModal").modal("show");
-
-                // Clear the change password fields
-                $scope.changePasswordData = {};
-            })
+                    $("#successfullyChangePasswordModal").modal("show");
+                },
+                function (response) {},
+                true);
         }
     };
-
 }]);
 
 // User profile controller

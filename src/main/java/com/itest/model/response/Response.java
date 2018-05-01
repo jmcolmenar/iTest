@@ -36,10 +36,10 @@ public class Response {
     }
 
     public String getErrorMessage() {
-        return errorMessage;
+        return this.errorMessage;
     }
 
     public void setErrorMessage(String errorMessage) {
-        errorMessage = errorMessage;
+        this.errorMessage = errorMessage;
     }
 }
