@@ -1,5 +1,15 @@
 <div xmlns:th="http://www.thymeleaf.org">
 
+    <div class="new-exam-top-div">
+        <div class="new-exam-top-righ-middle-div">
+            <span><strong>{{remainingTime}}</strong></span>
+        </div>
+    </div>
+
+    <div class="new-exam-finish-button-div">
+        <button href="#/subject/" type="button" class="btn btn-primary btn-lg">Finalizar Exámen</button>
+    </div>
+
     <div id="main-exam-div">
         <div id="exam-title-div">
             <h2>{{newExam.examTitle}}</h2>
@@ -22,6 +32,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="new-exam-finish-button-div">
+        <button href="#/subject/" type="button" class="btn btn-primary btn-lg">Finalizar Exámen</button>
     </div>
 
     <!-- Modal with warning message for number of right answers -->

@@ -438,7 +438,45 @@ app.controller('reviewExamCtrl', ['$scope', '$http', 'sharedProperties', 'server
 }]);
 
 // New exam management controller
-app.controller('newExamCtrl', ['$scope', '$http', '$window', 'sharedProperties', 'serverCaller', function($scope, $http, $window, sharedProperties, serverCaller){
+app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'sharedProperties', 'serverCaller', function($scope, $http, $window, $interval, sharedProperties, serverCaller){
+
+    // Function to convert a date in milliseconds to string
+    var convertDateToString = function(date){
+        // Time calculations for days, hours, minutes and seconds
+        var hours = Math.floor((date % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((date % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((date % (1000 * 60)) / 1000);
+
+        // Form the string and return
+        return (hours < 10 ? '0' : '') + hours + ":" + (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    };
+
+    // Function to start the remaining time in the countdown timer
+    $scope.startCountdownTimer = function(){
+
+        // Create an interval
+        var finishTime = new Date().getTime() + ($scope.newExam.examTime * 60 * 1000) + 1000;
+        $scope.timeExamInterval = $interval(function() {
+
+            // Get todays date and time and get the date diffence
+            var now = new Date().getTime();
+            var remaining = finishTime - now;
+
+            // Set the variable with the remaining time
+            $scope.remainingTime = convertDateToString(remaining);
+
+            // If the count down is finished, execute the finish exam function
+            if (remaining < 0) {
+                // Clear the interval
+                $interval.cancel($scope.timeExamInterval);
+
+                $scope.remainingTime = convertDateToString(0);
+
+                // TODO: Finish the exam
+                $('#numberRighAnswersModal').modal('show');
+            }
+        }, 200);
+    };
 
     // Get the new exam info and set empty exam in shared properties
     $scope.newExam = sharedProperties.getNewExamInfo();
@@ -448,6 +486,10 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', 'sharedProperties',
     if(!$scope.newExam){
         // Go to the error page
         $window.location.href = '/error/';
+    }else{
+        // Start the coundown timer
+        $scope.remainingTime = convertDateToString($scope.newExam.examTime * 60 * 1000);
+        $scope.startCountdownTimer();
     }
 
     // Function to check if the CheckBox can be changed due to the maximum number of right answers
@@ -470,6 +512,6 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', 'sharedProperties',
             }
 
         }
-    }
+    };
 
 }]);

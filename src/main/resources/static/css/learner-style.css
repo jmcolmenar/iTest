@@ -260,3 +260,35 @@ body{
 }
 
 /* === NEW EXAM === */
+.new-exam-finish-button-div{
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.new-exam-top-div{
+    position:fixed;
+    right:0;
+    left:0;
+    top:0;
+    height: 50px;
+    z-index:1035;
+}
+
+.new-exam-top-righ-middle-div{
+    display:table;
+    text-align:right;
+    float: right;
+    width: 50%;
+    height: 100%;
+    background: #222;
+}
+
+.new-exam-top-righ-middle-div span{
+    display:table-cell;
+    vertical-align:middle;
+    color: white;
+    font-size: 30px;
+    padding-right: 60px;
+}
+
+/* TODO: Media queries .new-exam-top-righ-middle-div span{padding-right}*/
