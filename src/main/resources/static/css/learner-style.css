@@ -20,12 +20,23 @@ body{
 
 /* === COMMON PAGES === */
 
-.modal-header, .modal-footer-custom{
+.modal-header, .modal-footer-custom, .modal-body{
     text-align: center;
 }
 
+.modal-body-witout-center{
+    text-align: left !important;
+}
 .modal-content{
-    padding:10px;
+    padding:5px;
+}
+
+.modal-content h2{
+    margin-top:-5px;
+}
+
+.modal-footer-custom{
+    padding-bottom: 10px;
 }
 
 .main-title-div{

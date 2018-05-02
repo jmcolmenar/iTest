@@ -56,10 +56,8 @@
         <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" th:text="#{modalConfirmationTitle}"></h2>
-                </div>
                 <div class="modal-body">
+                    <h2><span class="glyphicon glyphicon-question-sign"></span></h2>
                     <p th:text="#{userProfile.confirmationMessage}"></p>
                 </div>
                 <div class="modal-footer-custom">
@@ -75,10 +73,8 @@
         <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" th:text="#{modalInformationTitle}"></h2>
-                </div>
                 <div class="modal-body">
+                    <h2><span class="glyphicon glyphicon-ok-sign"></span></h2>
                     <p>{{successMessageUpdatingProfile}}</p>
                 </div>
                 <div class="modal-footer-custom">

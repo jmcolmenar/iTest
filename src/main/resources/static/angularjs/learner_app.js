@@ -450,4 +450,26 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', 'sharedProperties',
         $window.location.href = '/error/';
     }
 
+    // Function to check if the CheckBox can be changed due to the maximum number of right answers
+    $scope.checkChangedAnswer = function (question, answer) {
+        // Check if the exam shows the number of right answers
+        if($scope.newExam.showNumberRightAnswers){
+
+            // Get the number of checked answers
+            var checkedAnswersCounter = 0;
+            question.answerList.forEach(function(answerItem) {
+                checkedAnswersCounter += answerItem.checked ? 1 : 0;
+            });
+
+            if(checkedAnswersCounter > question.numberCorrectAnswers){
+                // Show warning modal to indicate that no more answers can be checked
+                $('#numberRighAnswersModal').modal('show');
+
+                // Set the asnwer as not checked
+                answer.checked = false;
+            }
+
+        }
+    }
+
 }]);

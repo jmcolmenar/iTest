@@ -81,10 +81,8 @@
             <div class="modal-dialog modal-sm">
                 <!-- Modal content-->
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 class="modal-title" th:text="#{modalConfirmationTitle}"></h2>
-                    </div>
                     <div class="modal-body">
+                        <h2><span class="glyphicon glyphicon-question-sign"></span></h2>
                         <p th:text="#{exitConfirmation}"></p>
                     </div>
                     <div class="modal-footer-custom">
@@ -101,15 +99,13 @@
             <div class="modal-dialog modal-sm">
                 <!-- Modal content-->
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 class="modal-title" th:text="#{modalErrorTitle}"></h2>
-                    </div>
                     <div class="modal-body">
+                        <h2><span class="glyphicon glyphicon-exclamation-sign"></span></h2>
                         <p id="genericErrorFromServer"></p>
                         <p id="genericErrorFromPage">Error contactando con el servidor...</p>
                     </div>
                     <div class="modal-footer-custom">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal" th:text="#{modalOkButton}"></button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" th:text="#{modalOkButton}"></button>
                     </div>
                 </div>
             </div>

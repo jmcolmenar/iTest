@@ -112,7 +112,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h3 class="modal-title">{{currentExamExtraInfo.examName}}</h3>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body modal-body-witout-center">
                     <ul class="ul-no-indent">
                         <!-- Basic information -->
                         <li><p><b th:text="#{subject.examExtraInfo.startDateTime}"></b> {{currentExamExtraInfo.startDate}}</p></li>
@@ -157,6 +157,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-body">
+                    <h2><span class="glyphicon glyphicon-question-sign"></span></h2>
                     <p th:text="#{suject.goToRevisionModal}"></p>
                 </div>
                 <div class="modal-footer-custom">
@@ -173,6 +174,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-body">
+                    <h2><span class="glyphicon glyphicon-question-sign"></span></h2>
                     <p>¿Desea comenzar el examen?</p>
                 </div>
                 <div class="modal-footer-custom">
@@ -183,7 +185,7 @@
         </div>
     </div>
 
-    <!-- Modal with confirmation message modal to go to the review exam -->
+    <!-- Modal with list of tutors to send an email  -->
     <div class="modal fade" id="sendEmailModal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
