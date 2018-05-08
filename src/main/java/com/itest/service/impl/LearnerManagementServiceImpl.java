@@ -204,14 +204,24 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
             // Check there is no an already done exam by the learner with the same exam identifier
             learnerId = this.userService.getUserIdOfCurrentUser();
-            boolean isExamAlreadyDone = this.learnerNewExamService.isExamAlreadyDonde(learnerId, examId);
-            if(isExamAlreadyDone){
+            if(this.learnerNewExamService.isExamAlreadyDonde(learnerId, examId)){
 
                 // Set the error when the exam has already done by the user
                 getNewExamResponse.setHasError(true);
                 getNewExamResponse.setErrorMessage("The exam is already done"); // TODO: Translate the error
+            }
 
-            }else{
+            // Check if the exam must be finished
+            if(this.learnerNewExamService.examMustBeFinished(examId)){
+                // TODO: Finish the exam without answer any question
+
+                // Set the error because the exam must be finished
+                getNewExamResponse.setHasError(true);
+                getNewExamResponse.setErrorMessage("The exam is not available because it must be finished due to end date"); // TODO: Translate the error
+            }
+
+            // Get the exam to perform if there are no errors
+            if(!getNewExamResponse.isHasError()){
 
                 // Generate the new exam
                 NewExamModel newExamModel = this.learnerNewExamService.generateNewExamForLearner(learnerId, examId, ip);

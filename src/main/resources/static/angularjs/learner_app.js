@@ -469,11 +469,10 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
             if (remaining < 0) {
                 // Clear the interval
                 $interval.cancel($scope.timeExamInterval);
-
                 $scope.remainingTime = convertDateToString(0);
 
-                // TODO: Finish the exam
-                $('#numberRighAnswersModal').modal('show');
+                // Finish the exam
+                $scope.endExam(false);
             }
         }, 200);
     };
@@ -513,5 +512,29 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
 
         }
     };
+
+    // Function to end the exam
+    $scope.endExam = function(checkAllQuestionAnswered){
+        var callServerToEndExam = true;
+        if(checkAllQuestionAnswered){
+            // Check if all questions are answered
+            var allQuestionsAreAnswered = false;
+            $scope.newExam.questionList.forEach(function (question) {
+                checkedAnswers = question.answerList.filter(function(answer){ return answer.checked; });
+                allQuestionsAreAnswered = allQuestionsAreAnswered || checkedAnswers.length > 0;
+            });
+
+            // Show error modal when all questions are not answered
+            if(!allQuestionsAreAnswered){
+                callServerToEndExam = false;
+                $("#allQuestionsNotAnsweredModal").modal("show");
+            }
+        }
+
+        // Check if call to the server to end the exam
+        if(callServerToEndExam){
+            // TODO: Call to the server to send the exam to correct it
+        }
+    }
 
 }]);

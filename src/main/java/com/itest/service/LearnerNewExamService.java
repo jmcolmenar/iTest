@@ -34,6 +34,13 @@ public interface LearnerNewExamService {
     boolean isExamAlreadyDonde(int learnerId, int examId);
 
     /**
+     * Check if the exam must be finised due to the exam end date is before than now
+     * @param examId The exam identifier
+     * @return Whether the exam must be finished or not
+     */
+    boolean examMustBeFinished(int examId);
+
+    /**
      * Generate a new exam to perform by the learner
      * @param learnerId The learner identifier
      * @param examId The exam identifier

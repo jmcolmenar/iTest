@@ -33,6 +33,8 @@ public class NewExamModel {
 
     private boolean showNumberRightAnswers;
 
+    private boolean activeConfidenceLevel;
+
     private List<NewExamQuestionModel> questionList;
 
     public String getSubjectName() {
@@ -65,6 +67,14 @@ public class NewExamModel {
 
     public void setShowNumberRightAnswers(boolean showNumberRightAnswers) {
         this.showNumberRightAnswers = showNumberRightAnswers;
+    }
+
+    public boolean isActiveConfidenceLevel() {
+        return activeConfidenceLevel;
+    }
+
+    public void setActiveConfidenceLevel(boolean activeConfidenceLevel) {
+        this.activeConfidenceLevel = activeConfidenceLevel;
     }
 
     public List<NewExamQuestionModel> getQuestionList() {

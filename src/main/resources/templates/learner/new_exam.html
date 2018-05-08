@@ -7,7 +7,7 @@
     </div>
 
     <div class="new-exam-finish-button-div">
-        <button href="#/subject/" type="button" class="btn btn-primary btn-lg">Finalizar Exámen</button>
+        <button href="#/subject/" type="button" ng-click="endExam(true)" class="btn btn-primary btn-lg">Finalizar Exámen</button>
     </div>
 
     <div id="main-exam-div">
@@ -24,9 +24,16 @@
                     <h4>{{question.statement}}</h4>
 
                     <div class="exam-answer" ng-repeat="answer in question.answerList">
-                        <div class="checkbox checkbox-primary">
+                        <div class="checkbox checkbox-ltr checkbox-primary">
                             <input id="answer{{answer.asnwerId}}" ng-model="answer.checked" ng-change="checkChangedAnswer(question, answer)" type="checkbox"/>
                             <label for="answer{{answer.asnwerId}}">{{answer.text}}</label>
+                        </div>
+                    </div>
+
+                    <div ng-show="newExam.activeConfidenceLevel" class="confidence-level-checkbox">
+                        <div class="checkbox checkbox-rtl">
+                            <input id="questionConfLevel{{question.questionId}}" ng-model="question.activeConfidenceLevel" type="checkbox"/>
+                            <label for="questionConfLevel{{question.questionId}}">Estoy seguro de mi respuesta</label>
                         </div>
                     </div>
                 </div>
@@ -35,7 +42,7 @@
     </div>
 
     <div class="new-exam-finish-button-div">
-        <button href="#/subject/" type="button" class="btn btn-primary btn-lg">Finalizar Exámen</button>
+        <button href="#/subject/" type="button" ng-click="endExam(true)" class="btn btn-primary btn-lg">Finalizar Exámen</button>
     </div>
 
     <!-- Modal with warning message for number of right answers -->
@@ -45,10 +52,27 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <h2><span class="glyphicon glyphicon-alert" aria-hidden="true"></span></h2>
-                    <p id="genericErrorFromPage">Por favor, marque menos respuestas</p>
+                    <p>Por favor, marque menos respuestas</p>
                 </div>
                 <div class="modal-footer-custom">
                     <button type="button" class="btn btn-primary" data-dismiss="modal" th:text="#{modalOkButton}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal to finsih the exam when all questions are not answered -->
+    <div class="modal fade" id="allQuestionsNotAnsweredModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h2><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></h2>
+                    <p id="genericErrorFromPage">No todas las respuestas han sido contestadas. ¿Seguro que desea finalizar el exámen?</p>
+                </div>
+                <div class="modal-footer-custom">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-right: 20px;" th:text="#{modalCancelButton}"></button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="endExam(false)" th:text="#{modalOkButton}"></button>
                 </div>
             </div>
         </div>

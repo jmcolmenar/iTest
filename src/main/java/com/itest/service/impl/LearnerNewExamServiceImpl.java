@@ -88,6 +88,23 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
     }
 
     /**
+     * Check if the exam must be finised due to the exam end date is before than now
+     * @param examId The exam identifier
+     * @return Whether the exam must be finished or not
+     */
+    public boolean examMustBeFinished(int examId){
+
+        // Find the exam
+        Examen exam = this.examenRepository.findOne(examId);
+
+        // Check if the exam end date is before than now
+        boolean examMustBeFinished = exam != null && exam.getFechaFin() != null && exam.getFechaFin().getTime() <= System.currentTimeMillis();
+
+        // Return the boolean indicating whether the exam must be finished or not
+        return examMustBeFinished;
+    }
+
+    /**
      * Generate a new exam to perform by the learner
      * This method is executed insida a transaction. If the method launch an exception the transaction will be rollback
      * @param learnerId The learner identifier
@@ -114,6 +131,14 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         newExamModel.setSubjectName(this.learnerExamService.getSubjectNameFromExam(examId));
         newExamModel.setShowNumberRightAnswers(exam.getMuestraNumCorr() == 1);
         newExamModel.setExamTime(exam.getDuracion());
+        newExamModel.setActiveConfidenceLevel(exam.getNivelConfianza() == 1);
+
+        // Check if the exam time must be lower than configured exam duration (Because the exam end time is before end of exam duration)
+        double remainingTimeToEndInSeconds = (exam.getFechaFin().getTime() - System.currentTimeMillis()) / 1000.0;
+        if(remainingTimeToEndInSeconds < exam.getDuracion() * 60.0){
+            // Set the exam time to the remaning time to finish (Round to up the remaining time in minutes)
+            newExamModel.setExamTime((int)Math.ceil(remainingTimeToEndInSeconds / 60.0));
+        }
 
         // Get the list of new exam question model
         List<NewExamQuestionModel> examQuestionModelList = this.getQuestionsForNewExam(exam);
@@ -121,7 +146,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         // Set the question list to the exam model
         newExamModel.setQuestionList(examQuestionModelList);
 
-        // Update the questions and anser in as "used in an exam" in database and for each answer create a new log exam in database
+        // Update the questions and anser in as "used in an exam" in database and for each answer create a new log exam in database (With empty score)
         this.updateQuestionsAndAnswersAsUsedAndAddLogForEachAnswer(examQuestionModelList, exam, learner, startDate);
 
         // Return the new exam model

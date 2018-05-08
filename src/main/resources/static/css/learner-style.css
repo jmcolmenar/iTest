@@ -291,4 +291,10 @@ body{
     padding-right: 60px;
 }
 
+.confidence-level-checkbox{
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 25px;
+}
+
 /* TODO: Media queries .new-exam-top-righ-middle-div span{padding-right}*/

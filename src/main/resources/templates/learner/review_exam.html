@@ -9,13 +9,13 @@
             <li th:text="#{reviewExam.explanation.item1}"></li>
             <p>
                 <div class="exam-answer">
-                    <div class="checkbox checkbox-primary">
+                    <div class="checkbox checkbox-ltr checkbox-primary">
                         <input id="checkbox-test-checked" type="checkbox" disabled="" checked=""/>
                         <label for="checkbox-test-checked" th:text="#{reviewExam.explanation.checkedAnswer}"></label>
                     </div>
                 </div>
                 <div class="exam-answer review-exam-answer-right">
-                    <div class="checkbox checkbox-primary">
+                    <div class="checkbox checkbox-ltr checkbox-primary">
                         <input id="checkbox-test-right" type="checkbox" disabled=""/>
                         <label for="checkbox-test-right" th:text="#{reviewExam.explanation.rightAnswer}"></label>
                     </div>
@@ -40,7 +40,7 @@
                     <h4>{{question.statement}}</h4>
 
                     <div class="exam-answer" ng-class="{'review-exam-answer-right': answer.right}" ng-repeat="answer in question.answerList">
-                        <div class="checkbox checkbox-primary">
+                        <div class="checkbox checkbox-ltr checkbox-primary">
                             <input id="answer{{answer.asnwerId}}" ng-checked="answer.checked" type="checkbox" disabled=""/>
                             <label for="answer{{answer.asnwerId}}">{{answer.text}}</label>
                         </div>
