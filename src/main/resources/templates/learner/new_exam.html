@@ -1,7 +1,13 @@
 <div xmlns:th="http://www.thymeleaf.org">
 
-    <div class="new-exam-top-div">
-        <div class="new-exam-top-righ-middle-div">
+    <!-- Div to lock the navbar and hide the user menu -->
+    <div class="new-exam-lock-navbar-div">
+        <div class="new-exam-lock-navbar-middle-right-div"></div>
+    </div>
+
+    <!-- Div to show the clock with the countdown timer -->
+    <div class="new-exam-top-clock-div">
+        <div class="new-exam-top-clock-div-inner">
             <span><strong>{{remainingTime}}</strong></span>
         </div>
     </div>

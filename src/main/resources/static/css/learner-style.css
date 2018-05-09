@@ -265,7 +265,7 @@ body{
     text-align: center;
 }
 
-.new-exam-top-div{
+.new-exam-lock-navbar-div{
     position:fixed;
     right:0;
     left:0;
@@ -274,7 +274,7 @@ body{
     z-index:1035;
 }
 
-.new-exam-top-righ-middle-div{
+.new-exam-lock-navbar-middle-right-div{
     display:table;
     text-align:right;
     float: right;
@@ -283,12 +283,58 @@ body{
     background: #222;
 }
 
-.new-exam-top-righ-middle-div span{
+.new-exam-top-clock-div{
+    position:fixed;
+    right:0;
+    left:0;
+    top:0;
+    height: 50px;
+    z-index:1040;
+    text-align: right;
+}
+
+.new-exam-top-clock-div-inner{
+    display: table;
+    text-align:right;
+    height: 50px;
+    margin: 0 auto;
+}
+
+.new-exam-top-clock-div-inner span{
     display:table-cell;
     vertical-align:middle;
     color: white;
     font-size: 30px;
-    padding-right: 60px;
+    padding-right: 15px;
+    padding-top: 5px;
+}
+
+@media (max-width: 350px){
+    .new-exam-top-clock-div-inner span{
+        font-size: 25px;
+    }
+}
+
+@media (max-width: 767px) {
+    .new-exam-top-clock-div-inner {
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .new-exam-top-clock-div-inner {
+        width: 750px;
+    }
+}
+@media (min-width: 992px) {
+    .new-exam-top-clock-div-inner {
+        width: 970px;
+    }
+}
+@media (min-width: 1200px) {
+    .new-exam-top-clock-div-inner {
+        width: 1170px;
+    }
 }
 
 .confidence-level-checkbox{
