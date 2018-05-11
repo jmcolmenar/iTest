@@ -19,23 +19,15 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.model;
+package com.itest.model.request;
+
+import com.itest.model.NewExamQuestionModel;
 
 import java.util.List;
 
-public class NewExamModel {
+public class EndExamRequest {
 
     private int examId;
-
-    private String subjectName;
-
-    private String examTitle;
-
-    private int examTime;
-
-    private boolean showNumberRightAnswers;
-
-    private boolean activeConfidenceLevel;
 
     private List<NewExamQuestionModel> questionList;
 
@@ -45,46 +37,6 @@ public class NewExamModel {
 
     public void setExamId(int examId) {
         this.examId = examId;
-    }
-
-    public String getSubjectName() {
-        return subjectName;
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
-    public String getExamTitle() {
-        return examTitle;
-    }
-
-    public void setExamTitle(String examTitle) {
-        this.examTitle = examTitle;
-    }
-
-    public int getExamTime() {
-        return examTime;
-    }
-
-    public void setExamTime(int examTime) {
-        this.examTime = examTime;
-    }
-
-    public boolean isShowNumberRightAnswers() {
-        return showNumberRightAnswers;
-    }
-
-    public void setShowNumberRightAnswers(boolean showNumberRightAnswers) {
-        this.showNumberRightAnswers = showNumberRightAnswers;
-    }
-
-    public boolean isActiveConfidenceLevel() {
-        return activeConfidenceLevel;
-    }
-
-    public void setActiveConfidenceLevel(boolean activeConfidenceLevel) {
-        this.activeConfidenceLevel = activeConfidenceLevel;
     }
 
     public List<NewExamQuestionModel> getQuestionList() {

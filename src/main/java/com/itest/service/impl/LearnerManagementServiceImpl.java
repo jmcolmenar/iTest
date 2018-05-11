@@ -22,10 +22,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.service.impl;
 
 import com.itest.model.*;
-import com.itest.model.request.GetExamToReviewRequest;
-import com.itest.model.request.GetExamsInfoRequest;
-import com.itest.model.request.GetNewExamRequest;
-import com.itest.model.request.GetTutorsToSendEmailRequest;
+import com.itest.model.request.*;
 import com.itest.model.response.*;
 import com.itest.service.*;
 import org.apache.commons.logging.Log;
@@ -240,6 +237,33 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
         // Return the response
         return getNewExamResponse;
+    }
+
+    public EndExamResponse endExam(EndExamRequest request){
+        // Initialize the response
+        EndExamResponse endExamResponse = new EndExamResponse();
+
+        // Initialize the private variables
+        int learnerId = 0;
+        int examId = 0;
+
+        try{
+
+            // TODO: Update the questions in database
+
+            // TODO: Calculates the exam score
+
+
+        }catch (Exception exc){
+            // Log the exception
+            LOG.debug("Error ending the exam. LearnerId:" + learnerId + " , ExamId:" + examId +" . Exception: " + exc.getMessage());
+
+            // Has an error ending the exam
+            endExamResponse.setHasError(true);
+        }
+
+        // Return the response
+        return endExamResponse;
     }
 
 }

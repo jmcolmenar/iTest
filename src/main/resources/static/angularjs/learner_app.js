@@ -389,12 +389,12 @@ app.controller('subjectCtrl', ['$scope', '$http' , '$window', 'sharedProperties'
 
     // Get the new exam to perform from the server
     $scope.startExam = function(){
-        // Prepare te request to get tutor list to send an email
+        // Prepare te request to get the new exam to perform
         var getNewExamRequest = {
             examId : $scope.newExamId
         };
 
-        // Call to the server to get the list of tutor to send an email
+        // Call to the server to get the new exam to perform
         serverCaller.httpPost(getNewExamRequest, '/api/learner/getNewExam',
             function (response) {
                 // Set the new exam info in the shared properties
@@ -526,14 +526,29 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
 
             // Show error modal when all questions are not answered
             if(!allQuestionsAreAnswered){
-                callServerToEndExam = false;
                 $("#allQuestionsNotAnsweredModal").modal("show");
+
+                // It will not call to the server because there are questions not answered
+                callServerToEndExam = false;
             }
         }
 
         // Check if call to the server to end the exam
         if(callServerToEndExam){
             // TODO: Call to the server to send the exam to correct it
+            // Prepare te request to end the exam
+            var endExamRequest = {
+                examId : $scope.newExam.examId,
+                questionList : $scope.newExam.questionList
+            };
+
+            // Call to the server to end the exam
+            serverCaller.httpPost(endExamRequest, '/api/learner/endExam',
+                function (response) {
+                    // TODO: Go to the exam score page
+                },
+                function (response) {},
+                true);
         }
     }
 

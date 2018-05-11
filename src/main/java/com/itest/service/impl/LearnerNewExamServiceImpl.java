@@ -128,6 +128,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
 
         // Set the exam details
         newExamModel.setExamTitle(exam.getTitulo());
+        newExamModel.setExamId(examId);
         newExamModel.setSubjectName(this.learnerExamService.getSubjectNameFromExam(examId));
         newExamModel.setShowNumberRightAnswers(exam.getMuestraNumCorr() == 1);
         newExamModel.setExamTime(exam.getDuracion());
