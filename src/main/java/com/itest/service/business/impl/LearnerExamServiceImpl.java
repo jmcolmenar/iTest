@@ -134,7 +134,7 @@ public class LearnerExamServiceImpl implements LearnerExamService {
         Examen exam = this.examenRepository.findOne(examId);
 
         // Return the subject name
-        return exam.getGrupos().getAsignaturas().getNombre();
+        return exam.getGrupo().getAsignatura().getNombre();
     }
 
     /**
@@ -167,8 +167,8 @@ public class LearnerExamServiceImpl implements LearnerExamService {
 
         // Get the asnwers of question answered by the user in order to get the number of correct and incorrect answers
         List<LogExamen> logExamList = this.logExamenRepository.findByExamIdAndUserIdAndQuestionId(examId, learnerId, questionId);
-        int numberCheckedCorrectAnswers = (int)logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuestas().getSolucion() == 1).count();
-        int numberCheckedIncorrectAnswers = (int)logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuestas().getSolucion() == 1).count();
+        int numberCheckedCorrectAnswers = (int)logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuesta().getSolucion() == 1).count();
+        int numberCheckedIncorrectAnswers = (int)logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuesta().getSolucion() == 1).count();
 
         // Check if the learner has ckeched the confidence level in the question
         Optional<LogExamen> firstAnswer = logExamList.stream().findFirst(); // All answers of question has the "nivel_confianza" field set as the same
@@ -284,7 +284,7 @@ public class LearnerExamServiceImpl implements LearnerExamService {
         doneExam.setMaxScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
 
         // Get the "Calificacion" object corresponding to the user (It should not be null and only one)
-        Calificacion calificacion = exam.getCalifs().stream().findFirst().get();
+        Calificacion calificacion = exam.getCalificaciones().stream().findFirst().get();
         doneExam.setScore(this.formatterComponent.formatNumberWithTwoDecimals(calificacion.getNota()));
         doneExam.setStartDate(this.formatterComponent.formatDateToString(calificacion.getFechaIni()));
         doneExam.setEndDate(this.formatterComponent.formatDateToString(calificacion.getFechaFin()));
@@ -357,7 +357,7 @@ public class LearnerExamServiceImpl implements LearnerExamService {
                 examExtraInfo.setStartReviewDate(this.formatterComponent.formatDateToString(exam.getFechaIniRev()));
                 examExtraInfo.setEndReviewDate(this.formatterComponent.formatDateToString(exam.getFechaFinRev()));
                 examExtraInfo.setExamTime(exam.getDuracion());
-                examExtraInfo.setQuestionsNumber(exam.getTemasExam().stream().mapToInt(TemaExamen::getNPregs).sum());
+                examExtraInfo.setQuestionsNumber(exam.getTemasExamenes().stream().mapToInt(TemaExamen::getNPregs).sum());
                 examExtraInfo.setShowRightAnswersNumber(exam.getMuestraNumCorr() == 1);
 
                 // Set partial correction

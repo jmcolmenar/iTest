@@ -34,22 +34,22 @@ public class LogExamen  {
 	//bi-directional many-to-one association to Examen
 	@ManyToOne
 	@JoinColumn(name="exam", nullable=false)
-	private Examen examenes;
+	private Examen examen;
 
 	//bi-directional many-to-one association to Pregunta
 	@ManyToOne
 	@JoinColumn(name="preg", nullable=false)
-	private Pregunta preguntas;
+	private Pregunta pregunta;
 
 	//bi-directional many-to-one association to Respuesta
 	@ManyToOne
 	@JoinColumn(name="resp", nullable=false)
-	private Respuesta respuestas;
+	private Respuesta respuesta;
 
 	//bi-directional many-to-one association to Usuario
 	@ManyToOne
 	@JoinColumn(name="alu", nullable=false)
-	private Usuario usuarios;
+	private Usuario usuario;
 
 	public LogExamen() {
 	}
@@ -94,36 +94,36 @@ public class LogExamen  {
 		this.puntos = puntos;
 	}
 
-	public Examen getExamenes() {
-		return this.examenes;
+	public Examen getExamen() {
+		return this.examen;
 	}
 
-	public void setExamenes(Examen examenes) {
-		this.examenes = examenes;
+	public void setExamen(Examen examenes) {
+		this.examen = examenes;
 	}
 
-	public Pregunta getPreguntas() {
-		return this.preguntas;
+	public Pregunta getPregunta() {
+		return this.pregunta;
 	}
 
-	public void setPreguntas(Pregunta preguntas) {
-		this.preguntas = preguntas;
+	public void setPregunta(Pregunta preguntas) {
+		this.pregunta = preguntas;
 	}
 
-	public Respuesta getRespuestas() {
-		return this.respuestas;
+	public Respuesta getRespuesta() {
+		return this.respuesta;
 	}
 
-	public void setRespuestas(Respuesta respuestas) {
-		this.respuestas = respuestas;
+	public void setRespuesta(Respuesta respuestas) {
+		this.respuesta = respuestas;
 	}
 
-	public Usuario getUsuarios() {
-		return this.usuarios;
+	public Usuario getUsuario() {
+		return this.usuario;
 	}
 
-	public void setUsuarios(Usuario usuarios) {
-		this.usuarios = usuarios;
+	public void setUsuario(Usuario usuarios) {
+		this.usuario = usuarios;
 	}
 
 }

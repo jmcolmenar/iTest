@@ -43,7 +43,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Serializable> 
             "from " +
             "   Usuario u " +
             "where " +
-            "   :groupId in (select i.grupos.idgrupo from u.imparten i) " +
+            "   :groupId in (select i.grupo.idgrupo from u.imparten i) " +
             "   and (select count(p) from Permiso p where p.usuario = u.usuario and (p.permiso = 'TUTOR' or p.permiso = 'TUTORAV')) > 0")
     List<Usuario> findTutorsByGroupId(@Param("groupId") int groupId);
 }

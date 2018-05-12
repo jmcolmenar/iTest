@@ -135,7 +135,7 @@ public class LearnerGroupServiceImpl implements LearnerGroupService{
         // Through all matricula list
         for (Matricula mat: matriculaList ) {
             // Get year of group
-            String year = mat.getGrupos() != null ? mat.getGrupos().getAnio() : null;
+            String year = mat.getGrupo() != null ? mat.getGrupo().getAnio() : null;
 
             // Check if there is a group with a year
             if(year != null) {
@@ -145,14 +145,14 @@ public class LearnerGroupServiceImpl implements LearnerGroupService{
                     List<SubjectModel> subjectList = yearAndSubjectsMap.get(year);
 
                     // Add subject model to list
-                    SubjectModel subject = this.convertGrupoToSubjectModel(mat.getGrupos());
+                    SubjectModel subject = this.convertGrupoToSubjectModel(mat.getGrupo());
                     subjectList.add(subject);
                 }else{
                     // Initialize the subject list to this year
                     List<SubjectModel> subjectList = new ArrayList<>();
 
                     // Add the subject model to the list
-                    SubjectModel subject = this.convertGrupoToSubjectModel(mat.getGrupos());
+                    SubjectModel subject = this.convertGrupoToSubjectModel(mat.getGrupo());
                     subjectList.add(subject);
 
                     // Put the year and subject list in the map
@@ -179,9 +179,9 @@ public class LearnerGroupServiceImpl implements LearnerGroupService{
 
         // Fill the subject model
         subjectModel.setGroupId(grupo.getIdgrupo());
-        subjectModel.setSubjectId(grupo.getAsignaturas().getIdasig());
+        subjectModel.setSubjectId(grupo.getAsignatura().getIdasig());
         subjectModel.setYear(grupo.getAnio());
-        subjectModel.setSubjectName(grupo.getAsignaturas().getNombre());
+        subjectModel.setSubjectName(grupo.getAsignatura().getNombre());
         subjectModel.setSubjectDescription(this.translationService.getMessage("coursesList.subjectGroup") + " " + grupo.getGrupo());
 
         // Return the subject model

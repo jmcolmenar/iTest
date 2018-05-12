@@ -38,13 +38,13 @@ public interface ExamenRepository extends JpaRepository<Examen, Serializable> {
             "from " +
             "   Examen ex " +
             "where " +
-            "   :userid not in (select excal.usuarios.idusu from ex.califs excal) " +
-            "   and ex.grupos.idgrupo = :groupid " +
+            "   :userid not in (select excal.usuario.idusu from ex.calificaciones excal) " +
+            "   and ex.grupo.idgrupo = :groupid " +
             "   and ex.visibilidad = 1 " +
             "   and ex.fechaIni <= current_date and ex.fechaFin >= current_date" +
-            "   and (case when ex.personalizado = 1 then (select count(exInd) from ex.examIndivid exInd where exInd.usuarios.idusu = :userid) else 1 end) > 0 " +
+            "   and (case when ex.personalizado = 1 then (select count(exInd) from ex.examenesIndividuales exInd where exInd.usuario.idusu = :userid) else 1 end) > 0 " +
             "order by " +
-            "   ex.grupos.asignaturas.nombre, ex.grupos.grupo")
+            "   ex.grupo.asignatura.nombre, ex.grupo.grupo")
     List<Examen> findAvailableExams(@Param("userid") int userId, @Param("groupid") int groupId);
 
     @Query("select " +
@@ -52,13 +52,13 @@ public interface ExamenRepository extends JpaRepository<Examen, Serializable> {
             "from " +
             "   Examen ex " +
             "where " +
-            "   :userid not in (select excal.usuarios.idusu from ex.califs excal) " +
-            "   and ex.grupos.idgrupo = :groupid " +
+            "   :userid not in (select excal.usuario.idusu from ex.calificaciones excal) " +
+            "   and ex.grupo.idgrupo = :groupid " +
             "   and ex.publicado = 1 " +
             "   and ex.fechaIni >= current_date and ex.fechaFin >= current_date " +
-            "   and (case when ex.personalizado = 1 then (select count(exInd) from ex.examIndivid exInd where exInd.usuarios.idusu = :userid) else 1 end) > 0 " +
+            "   and (case when ex.personalizado = 1 then (select count(exInd) from ex.examenesIndividuales exInd where exInd.usuario.idusu = :userid) else 1 end) > 0 " +
             "order by " +
-            "   ex.grupos.asignaturas.nombre, ex.grupos.grupo")
+            "   ex.grupo.asignatura.nombre, ex.grupo.grupo")
     List<Examen> findNextExams(@Param("userid") int userId, @Param("groupid") int groupId);
 
     @Query("select " +
@@ -66,16 +66,16 @@ public interface ExamenRepository extends JpaRepository<Examen, Serializable> {
             "from " +
             "   Examen ex " +
             "where " +
-            "   :userid in (select excal.usuarios.idusu from ex.califs excal) " +
-            "   and ex.grupos.idgrupo = :groupid")
+            "   :userid in (select excal.usuario.idusu from ex.calificaciones excal) " +
+            "   and ex.grupo.idgrupo = :groupid")
     List<Examen> findDoneExams(@Param("userid") int userId, @Param("groupid") int groupId);
 
     @Query("select " +
-            "   cal.examenes " +
+            "   cal.examen " +
             "from " +
             "   Calificacion cal " +
             "where " +
-            "   cal.examenes.idexam = :examid " +
-            "   and cal.usuarios.idusu = :userid")
+            "   cal.examen.idexam = :examid " +
+            "   and cal.usuario.idusu = :userid")
     Examen findDoneExamByUserIdAndExamId(@Param("userid") int userId, @Param("examid") int examId);
 }

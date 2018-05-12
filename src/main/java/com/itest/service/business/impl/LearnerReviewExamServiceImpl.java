@@ -105,10 +105,10 @@ public class LearnerReviewExamServiceImpl implements LearnerReviewExamService {
             for (LogExamen logExamen : logExamenList) {
 
                 // Get the question id
-                int questionId = logExamen.getPreguntas().getIdpreg();
+                int questionId = logExamen.getPregunta().getIdpreg();
 
                 // Get the answer database object and fill the asnwer model
-                Respuesta respuesta = logExamen.getRespuestas();
+                Respuesta respuesta = logExamen.getRespuesta();
                 ReviewExamAnswerModel answerModel = new ReviewExamAnswerModel();
                 answerModel.setAsnwerId(respuesta.getIdresp());
                 answerModel.setText(respuesta.getTexto());
@@ -124,7 +124,7 @@ public class LearnerReviewExamServiceImpl implements LearnerReviewExamService {
                 }else{
 
                     // Get the question database object and fill the Exam Question model
-                    Pregunta pregunta = logExamen.getPreguntas();
+                    Pregunta pregunta = logExamen.getPregunta();
                     ReviewExamQuestionModel examQuestionModel = new ReviewExamQuestionModel();
                     examQuestionModel.setQuestionId(pregunta.getIdpreg());
                     examQuestionModel.setStatement(pregunta.getEnunciado());

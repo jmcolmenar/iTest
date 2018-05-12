@@ -87,25 +87,25 @@ public class Examen  {
 	private int visibilidad;
 
 	//bi-directional many-to-one association to Calificacion
-	@OneToMany(mappedBy="examenes")
-	private List<Calificacion> califs;
+	@OneToMany(mappedBy= "examen")
+	private List<Calificacion> calificaciones;
 
 	//bi-directional many-to-one association to ExamenIndividual
-	@OneToMany(mappedBy="examenes")
-	private List<ExamenIndividual> examIndivid;
+	@OneToMany(mappedBy= "examen")
+	private List<ExamenIndividual> examenesIndividuales;
 
 	//bi-directional many-to-one association to Grupo
 	@ManyToOne
 	@JoinColumn(name="grupo", nullable=false)
-	private Grupo grupos;
+	private Grupo grupo;
 
 	//bi-directional many-to-one association to LogExamen
-	@OneToMany(mappedBy="examenes")
-	private List<LogExamen> logExams;
+	@OneToMany(mappedBy= "examen")
+	private List<LogExamen> logExamenes;
 
 	//bi-directional many-to-one association to TemaExamen
-	@OneToMany(mappedBy="examenes")
-	private List<TemaExamen> temasExam;
+	@OneToMany(mappedBy= "examen")
+	private List<TemaExamen> temasExamenes;
 
 	public Examen() {
 	}
@@ -294,98 +294,98 @@ public class Examen  {
 		this.visibilidad = visibilidad;
 	}
 
-	public List<Calificacion> getCalifs() {
-		return this.califs;
+	public List<Calificacion> getCalificaciones() {
+		return this.calificaciones;
 	}
 
-	public void setCalifs(List<Calificacion> califs) {
-		this.califs = califs;
+	public void setCalificaciones(List<Calificacion> califs) {
+		this.calificaciones = califs;
 	}
 
 	public Calificacion addCalif(Calificacion calif) {
-		getCalifs().add(calif);
-		calif.setExamenes(this);
+		getCalificaciones().add(calif);
+		calif.setExamen(this);
 
 		return calif;
 	}
 
 	public Calificacion removeCalif(Calificacion calif) {
-		getCalifs().remove(calif);
-		calif.setExamenes(null);
+		getCalificaciones().remove(calif);
+		calif.setExamen(null);
 
 		return calif;
 	}
 
-	public List<ExamenIndividual> getExamIndivid() {
-		return this.examIndivid;
+	public List<ExamenIndividual> getExamenesIndividuales() {
+		return this.examenesIndividuales;
 	}
 
-	public void setExamIndivid(List<ExamenIndividual> examIndivid) {
-		this.examIndivid = examIndivid;
+	public void setExamenesIndividuales(List<ExamenIndividual> examIndivid) {
+		this.examenesIndividuales = examIndivid;
 	}
 
 	public ExamenIndividual addExamIndivid(ExamenIndividual examIndivid) {
-		getExamIndivid().add(examIndivid);
-		examIndivid.setExamenes(this);
+		getExamenesIndividuales().add(examIndivid);
+		examIndivid.setExamen(this);
 
 		return examIndivid;
 	}
 
 	public ExamenIndividual removeExamIndivid(ExamenIndividual examIndivid) {
-		getExamIndivid().remove(examIndivid);
-		examIndivid.setExamenes(null);
+		getExamenesIndividuales().remove(examIndivid);
+		examIndivid.setExamen(null);
 
 		return examIndivid;
 	}
 
-	public Grupo getGrupos() {
-		return this.grupos;
+	public Grupo getGrupo() {
+		return this.grupo;
 	}
 
-	public void setGrupos(Grupo grupos) {
-		this.grupos = grupos;
+	public void setGrupo(Grupo grupos) {
+		this.grupo = grupos;
 	}
 
-	public List<LogExamen> getLogExams() {
-		return this.logExams;
+	public List<LogExamen> getLogExamenes() {
+		return this.logExamenes;
 	}
 
-	public void setLogExams(List<LogExamen> logExams) {
-		this.logExams = logExams;
+	public void setLogExamenes(List<LogExamen> logExams) {
+		this.logExamenes = logExams;
 	}
 
 	public LogExamen addLogExam(LogExamen logExam) {
-		getLogExams().add(logExam);
-		logExam.setExamenes(this);
+		getLogExamenes().add(logExam);
+		logExam.setExamen(this);
 
 		return logExam;
 	}
 
 	public LogExamen removeLogExam(LogExamen logExam) {
-		getLogExams().remove(logExam);
-		logExam.setExamenes(null);
+		getLogExamenes().remove(logExam);
+		logExam.setExamen(null);
 
 		return logExam;
 	}
 
-	public List<TemaExamen> getTemasExam() {
-		return this.temasExam;
+	public List<TemaExamen> getTemasExamenes() {
+		return this.temasExamenes;
 	}
 
-	public void setTemasExam(List<TemaExamen> temasExam) {
-		this.temasExam = temasExam;
+	public void setTemasExamenes(List<TemaExamen> temasExam) {
+		this.temasExamenes = temasExam;
 	}
 
 	public TemaExamen addTemasExam(TemaExamen temasExam) {
-		getTemasExam().add(temasExam);
-		temasExam.setExamenes(this);
+		getTemasExamenes().add(temasExam);
+		temasExam.setExamen(this);
 
 		return temasExam;
 	}
 
 	public TemaExamen removeTemasExam(TemaExamen temasExam) {
-		getTemasExam().remove(temasExam);
-		temasExam.setExamenes(null);
+		getTemasExamenes().remove(temasExam);
+		temasExam.setExamen(null);
 
 		return temasExam;
 	}

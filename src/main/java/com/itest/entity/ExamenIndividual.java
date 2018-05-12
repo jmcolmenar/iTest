@@ -19,12 +19,12 @@ public class ExamenIndividual  {
 	//bi-directional many-to-one association to Examen
 	@ManyToOne
 	@JoinColumn(name="examen", nullable=false)
-	private Examen examenes;
+	private Examen examen;
 
 	//bi-directional many-to-one association to Usuario
 	@ManyToOne
 	@JoinColumn(name="alumno", nullable=false)
-	private Usuario usuarios;
+	private Usuario usuario;
 
 	public ExamenIndividual() {
 	}
@@ -37,20 +37,20 @@ public class ExamenIndividual  {
 		this.idexami = idexami;
 	}
 
-	public Examen getExamenes() {
-		return this.examenes;
+	public Examen getExamen() {
+		return this.examen;
 	}
 
-	public void setExamenes(Examen examenes) {
-		this.examenes = examenes;
+	public void setExamen(Examen examenes) {
+		this.examen = examenes;
 	}
 
-	public Usuario getUsuarios() {
-		return this.usuarios;
+	public Usuario getUsuario() {
+		return this.usuario;
 	}
 
-	public void setUsuarios(Usuario usuarios) {
-		this.usuarios = usuarios;
+	public void setUsuario(Usuario usuarios) {
+		this.usuario = usuarios;
 	}
 
 }

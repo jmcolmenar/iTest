@@ -33,7 +33,7 @@ import java.util.List;
 @Repository("matriculaRepository")
 public interface MatriculaRepository extends JpaRepository<Matricula, Serializable> {
 
-    @Query("select mat from Matricula mat where mat.usuarios.idusu = :userid")
+    @Query("select mat from Matricula mat where mat.usuario.idusu = :userid")
     List<Matricula> selectMatriculaListByUserId(@Param("userid") int userId);
 
 }

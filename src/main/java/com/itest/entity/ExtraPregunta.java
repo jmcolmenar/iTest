@@ -38,7 +38,7 @@ public class ExtraPregunta  {
 	//bi-directional many-to-one association to Pregunta
 	@ManyToOne
 	@JoinColumn(name="preg", nullable=false)
-	private Pregunta preguntas;
+	private Pregunta pregunta;
 
 	public ExtraPregunta() {
 	}
@@ -107,12 +107,12 @@ public class ExtraPregunta  {
 		this.tipo = tipo;
 	}
 
-	public Pregunta getPreguntas() {
-		return this.preguntas;
+	public Pregunta getPregunta() {
+		return this.pregunta;
 	}
 
-	public void setPreguntas(Pregunta preguntas) {
-		this.preguntas = preguntas;
+	public void setPregunta(Pregunta preguntas) {
+		this.pregunta = preguntas;
 	}
 
 }

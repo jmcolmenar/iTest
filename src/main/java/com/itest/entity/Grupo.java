@@ -27,33 +27,33 @@ public class Grupo  {
 	private int tipoAlumno;
 
 	//bi-directional many-to-one association to Examen
-	@OneToMany(mappedBy="grupos")
+	@OneToMany(mappedBy= "grupo")
 	private List<Examen> examenes;
 
 	//bi-directional many-to-one association to Asignatura
 	@ManyToOne
 	@JoinColumn(name="asig", nullable=false)
-	private Asignatura asignaturas;
+	private Asignatura asignatura;
 
 	//bi-directional many-to-one association to Centro
 	@ManyToOne
 	@JoinColumn(name="centro", nullable=false)
-	private Centro centros;
+	private Centro centro;
 
 	//bi-directional many-to-one association to Imparten
-	@OneToMany(mappedBy="grupos")
+	@OneToMany(mappedBy= "grupo")
 	private List<Imparten> imparten;
 
 	//bi-directional many-to-one association to Matricula
-	@OneToMany(mappedBy="grupos")
+	@OneToMany(mappedBy= "grupo")
 	private List<Matricula> matriculas;
 
 	//bi-directional many-to-one association to Pregunta
-	@OneToMany(mappedBy="grupos")
+	@OneToMany(mappedBy= "grupo")
 	private List<Pregunta> preguntas;
 
 	//bi-directional many-to-one association to Tema
-	@OneToMany(mappedBy="grupos")
+	@OneToMany(mappedBy= "grupo")
 	private List<Tema> temas;
 
 	public Grupo() {
@@ -101,32 +101,32 @@ public class Grupo  {
 
 	public Examen addExamene(Examen examene) {
 		getExamenes().add(examene);
-		examene.setGrupos(this);
+		examene.setGrupo(this);
 
 		return examene;
 	}
 
 	public Examen removeExamene(Examen examene) {
 		getExamenes().remove(examene);
-		examene.setGrupos(null);
+		examene.setGrupo(null);
 
 		return examene;
 	}
 
-	public Asignatura getAsignaturas() {
-		return this.asignaturas;
+	public Asignatura getAsignatura() {
+		return this.asignatura;
 	}
 
-	public void setAsignaturas(Asignatura asignaturas) {
-		this.asignaturas = asignaturas;
+	public void setAsignatura(Asignatura asignaturas) {
+		this.asignatura = asignaturas;
 	}
 
-	public Centro getCentros() {
-		return this.centros;
+	public Centro getCentro() {
+		return this.centro;
 	}
 
-	public void setCentros(Centro centros) {
-		this.centros = centros;
+	public void setCentro(Centro centros) {
+		this.centro = centros;
 	}
 
 	public List<Imparten> getImparten() {
@@ -139,14 +139,14 @@ public class Grupo  {
 
 	public Imparten addImparten(Imparten imparten) {
 		getImparten().add(imparten);
-		imparten.setGrupos(this);
+		imparten.setGrupo(this);
 
 		return imparten;
 	}
 
 	public Imparten removeImparten(Imparten imparten) {
 		getImparten().remove(imparten);
-		imparten.setGrupos(null);
+		imparten.setGrupo(null);
 
 		return imparten;
 	}
@@ -161,14 +161,14 @@ public class Grupo  {
 
 	public Matricula addMatricula(Matricula matricula) {
 		getMatriculas().add(matricula);
-		matricula.setGrupos(this);
+		matricula.setGrupo(this);
 
 		return matricula;
 	}
 
 	public Matricula removeMatricula(Matricula matricula) {
 		getMatriculas().remove(matricula);
-		matricula.setGrupos(null);
+		matricula.setGrupo(null);
 
 		return matricula;
 	}
@@ -183,14 +183,14 @@ public class Grupo  {
 
 	public Pregunta addPregunta(Pregunta pregunta) {
 		getPreguntas().add(pregunta);
-		pregunta.setGrupos(this);
+		pregunta.setGrupo(this);
 
 		return pregunta;
 	}
 
 	public Pregunta removePregunta(Pregunta pregunta) {
 		getPreguntas().remove(pregunta);
-		pregunta.setGrupos(null);
+		pregunta.setGrupo(null);
 
 		return pregunta;
 	}
@@ -205,14 +205,14 @@ public class Grupo  {
 
 	public Tema addTema(Tema tema) {
 		getTemas().add(tema);
-		tema.setGrupos(this);
+		tema.setGrupo(this);
 
 		return tema;
 	}
 
 	public Tema removeTema(Tema tema) {
 		getTemas().remove(tema);
-		tema.setGrupos(null);
+		tema.setGrupo(null);
 
 		return tema;
 	}

@@ -163,15 +163,15 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
     private List<NewExamQuestionModel> getQuestionsForNewExam(Examen exam, Date examStartDate){
 
         // Get the exam details
-        int examGroupId = exam.getGrupos().getIdgrupo();
-        int examInstitutionId = exam.getGrupos().getCentros().getIdcentro();
+        int examGroupId = exam.getGrupo().getIdgrupo();
+        int examInstitutionId = exam.getGrupo().getCentro().getIdcentro();
         int examVisibility = exam.getVisibilidad();
 
         // Initialize the list of new exam question model
         List<NewExamQuestionModel> examQuestionModelList = new ArrayList<>();
 
         // Through all available themes of the exam to select random questions
-        for (TemaExamen examTheme : exam.getTemasExam()) {
+        for (TemaExamen examTheme : exam.getTemasExamenes()) {
 
             // Get the configuration parameters of the theme
             int minDifficulty = examTheme.getDificultadMin();
@@ -180,7 +180,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
             int numberAnswersPerQuestion = examTheme.getNRespXPreg();
 
             // Get the question list of the theme
-            List<Pregunta> questionsList = examTheme.getTemas().getPreguntas();
+            List<Pregunta> questionsList = examTheme.getTema().getPreguntas();
 
             // Add random questions of the exam until the maximum number of questions
             Random randomizer = new Random();
@@ -193,9 +193,9 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
                 // Check the visibility of the question
                 boolean isVisible = false;
                 if(examVisibility == QuestionVisibilityConstant.GROUP){
-                    isVisible = question.getGrupos().getIdgrupo() == examGroupId;
+                    isVisible = question.getGrupo().getIdgrupo() == examGroupId;
                 }else if (examVisibility == QuestionVisibilityConstant.INSTITUTION){
-                    isVisible = question.getGrupos().getCentros().getIdcentro() == examInstitutionId;
+                    isVisible = question.getGrupo().getCentro().getIdcentro() == examInstitutionId;
                 }
 
                 // Check if the question is allowed in order to add to exam
@@ -272,8 +272,8 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         calificacion.setNota(new BigDecimal(0));
         calificacion.setTiempo(0);
         calificacion.setIp(ip);
-        calificacion.setUsuarios(learner);
-        calificacion.setExamenes(exam);
+        calificacion.setUsuario(learner);
+        calificacion.setExamen(exam);
 
         // Insert in database
         calificacionRepository.save(calificacion);
@@ -306,10 +306,10 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
 
                 // For each answer create a log exam entity in database (Without checked the answer)
                 LogExamen logExam = new LogExamen();
-                logExam.setExamenes(exam);
-                logExam.setUsuarios(learner);
-                logExam.setPreguntas(question);
-                logExam.setRespuestas(answer);
+                logExam.setExamen(exam);
+                logExam.setUsuario(learner);
+                logExam.setPregunta(question);
+                logExam.setRespuesta(answer);
                 logExam.setMarcada(0);
                 logExam.setPuntos(new BigDecimal(0));
                 logExam.setHoraResp(startDateExam);

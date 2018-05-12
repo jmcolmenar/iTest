@@ -33,11 +33,11 @@ public class Asignatura  {
 	private String nombre;
 
 	//bi-directional many-to-one association to Grupo
-	@OneToMany(mappedBy="asignaturas")
+	@OneToMany(mappedBy= "asignatura")
 	private List<Grupo> grupos;
 
 	//bi-directional many-to-one association to Topico
-	@OneToMany(mappedBy="asignaturas")
+	@OneToMany(mappedBy= "asignatura")
 	private List<Topico> topics;
 
 	public Asignatura() {
@@ -101,14 +101,14 @@ public class Asignatura  {
 
 	public Grupo addGrupo(Grupo grupo) {
 		getGrupos().add(grupo);
-		grupo.setAsignaturas(this);
+		grupo.setAsignatura(this);
 
 		return grupo;
 	}
 
 	public Grupo removeGrupo(Grupo grupo) {
 		getGrupos().remove(grupo);
-		grupo.setAsignaturas(null);
+		grupo.setAsignatura(null);
 
 		return grupo;
 	}
@@ -123,14 +123,14 @@ public class Asignatura  {
 
 	public Topico addTopic(Topico topic) {
 		getTopics().add(topic);
-		topic.setAsignaturas(this);
+		topic.setAsignatura(this);
 
 		return topic;
 	}
 
 	public Topico removeTopic(Topico topic) {
 		getTopics().remove(topic);
-		topic.setAsignaturas(null);
+		topic.setAsignatura(null);
 
 		return topic;
 	}

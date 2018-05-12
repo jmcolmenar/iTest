@@ -34,12 +34,12 @@ public class TemaExamen  {
 	//bi-directional many-to-one association to Examen
 	@ManyToOne
 	@JoinColumn(name="exam", nullable=false)
-	private Examen examenes;
+	private Examen examen;
 
 	//bi-directional many-to-one association to Tema
 	@ManyToOne
 	@JoinColumn(name="tema", nullable=false)
-	private Tema temas;
+	private Tema tema;
 
 	public TemaExamen() {
 	}
@@ -92,20 +92,20 @@ public class TemaExamen  {
 		this.tipoPregs = tipoPregs;
 	}
 
-	public Examen getExamenes() {
-		return this.examenes;
+	public Examen getExamen() {
+		return this.examen;
 	}
 
-	public void setExamenes(Examen examenes) {
-		this.examenes = examenes;
+	public void setExamen(Examen examenes) {
+		this.examen = examenes;
 	}
 
-	public Tema getTemas() {
-		return this.temas;
+	public Tema getTema() {
+		return this.tema;
 	}
 
-	public void setTemas(Tema temas) {
-		this.temas = temas;
+	public void setTema(Tema temas) {
+		this.tema = temas;
 	}
 
 }

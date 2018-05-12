@@ -24,13 +24,13 @@ public class Topico  {
 	private String topic;
 
 	//bi-directional many-to-one association to Pregunta
-	@OneToMany(mappedBy="topics")
+	@OneToMany(mappedBy= "topico")
 	private List<Pregunta> preguntas;
 
 	//bi-directional many-to-one association to Asignatura
 	@ManyToOne
 	@JoinColumn(name="asig", nullable=false)
-	private Asignatura asignaturas;
+	private Asignatura asignatura;
 
 	public Topico() {
 	}
@@ -69,24 +69,24 @@ public class Topico  {
 
 	public Pregunta addPregunta(Pregunta pregunta) {
 		getPreguntas().add(pregunta);
-		pregunta.setTopics(this);
+		pregunta.setTopico(this);
 
 		return pregunta;
 	}
 
 	public Pregunta removePregunta(Pregunta pregunta) {
 		getPreguntas().remove(pregunta);
-		pregunta.setTopics(null);
+		pregunta.setTopico(null);
 
 		return pregunta;
 	}
 
-	public Asignatura getAsignaturas() {
-		return this.asignaturas;
+	public Asignatura getAsignatura() {
+		return this.asignatura;
 	}
 
-	public void setAsignaturas(Asignatura asignaturas) {
-		this.asignaturas = asignaturas;
+	public void setAsignatura(Asignatura asignaturas) {
+		this.asignatura = asignaturas;
 	}
 
 }

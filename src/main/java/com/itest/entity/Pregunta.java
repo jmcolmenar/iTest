@@ -46,34 +46,34 @@ public class Pregunta  {
 	private int visibilidad;
 
 	//bi-directional many-to-one association to ExtraPregunta
-	@OneToMany(mappedBy="preguntas")
-	private List<ExtraPregunta> extraPregs;
+	@OneToMany(mappedBy= "pregunta")
+	private List<ExtraPregunta> extraPreguntas;
 
 	//bi-directional many-to-one association to ExtraPreguntaComentario
-	@OneToMany(mappedBy="preguntas")
-	private List<ExtraPreguntaComentario> extraPregsComentario;
+	@OneToMany(mappedBy= "pregunta")
+	private List<ExtraPreguntaComentario> extraPreguntaComentarios;
 
 	//bi-directional many-to-one association to LogExamen
-	@OneToMany(mappedBy="preguntas")
-	private List<LogExamen> logExams;
+	@OneToMany(mappedBy= "pregunta")
+	private List<LogExamen> logExamenes;
 
 	//bi-directional many-to-one association to Grupo
 	@ManyToOne
 	@JoinColumn(name="grupo", nullable=false)
-	private Grupo grupos;
+	private Grupo grupo;
 
 	//bi-directional many-to-one association to Tema
 	@ManyToOne
 	@JoinColumn(name="tema", nullable=false)
-	private Tema temas;
+	private Tema tema;
 
 	//bi-directional many-to-one association to Topico
 	@ManyToOne
 	@JoinColumn(name="topic")
-	private Topico topics;
+	private Topico topico;
 
 	//bi-directional many-to-one association to Respuesta
-	@OneToMany(mappedBy="preguntas")
+	@OneToMany(mappedBy= "pregunta")
 	private List<Respuesta> respuestas;
 
 	public Pregunta() {
@@ -159,94 +159,94 @@ public class Pregunta  {
 		this.visibilidad = visibilidad;
 	}
 
-	public List<ExtraPregunta> getExtraPregs() {
-		return this.extraPregs;
+	public List<ExtraPregunta> getExtraPreguntas() {
+		return this.extraPreguntas;
 	}
 
-	public void setExtraPregs(List<ExtraPregunta> extraPregs) {
-		this.extraPregs = extraPregs;
+	public void setExtraPreguntas(List<ExtraPregunta> extraPregs) {
+		this.extraPreguntas = extraPregs;
 	}
 
 	public ExtraPregunta addExtraPreg(ExtraPregunta extraPreg) {
-		getExtraPregs().add(extraPreg);
-		extraPreg.setPreguntas(this);
+		getExtraPreguntas().add(extraPreg);
+		extraPreg.setPregunta(this);
 
 		return extraPreg;
 	}
 
 	public ExtraPregunta removeExtraPreg(ExtraPregunta extraPreg) {
-		getExtraPregs().remove(extraPreg);
-		extraPreg.setPreguntas(null);
+		getExtraPreguntas().remove(extraPreg);
+		extraPreg.setPregunta(null);
 
 		return extraPreg;
 	}
 
-	public List<ExtraPreguntaComentario> getExtraPregsComentario() {
-		return this.extraPregsComentario;
+	public List<ExtraPreguntaComentario> getExtraPreguntaComentarios() {
+		return this.extraPreguntaComentarios;
 	}
 
-	public void setExtraPregsComentario(List<ExtraPreguntaComentario> extraPregsComentario) {
-		this.extraPregsComentario = extraPregsComentario;
+	public void setExtraPreguntaComentarios(List<ExtraPreguntaComentario> extraPregsComentario) {
+		this.extraPreguntaComentarios = extraPregsComentario;
 	}
 
 	public ExtraPreguntaComentario addExtraPregsComentario(ExtraPreguntaComentario extraPregsComentario) {
-		getExtraPregsComentario().add(extraPregsComentario);
-		extraPregsComentario.setPreguntas(this);
+		getExtraPreguntaComentarios().add(extraPregsComentario);
+		extraPregsComentario.setPregunta(this);
 
 		return extraPregsComentario;
 	}
 
 	public ExtraPreguntaComentario removeExtraPregsComentario(ExtraPreguntaComentario extraPregsComentario) {
-		getExtraPregsComentario().remove(extraPregsComentario);
-		extraPregsComentario.setPreguntas(null);
+		getExtraPreguntaComentarios().remove(extraPregsComentario);
+		extraPregsComentario.setPregunta(null);
 
 		return extraPregsComentario;
 	}
 
-	public List<LogExamen> getLogExams() {
-		return this.logExams;
+	public List<LogExamen> getLogExamenes() {
+		return this.logExamenes;
 	}
 
-	public void setLogExams(List<LogExamen> logExams) {
-		this.logExams = logExams;
+	public void setLogExamenes(List<LogExamen> logExams) {
+		this.logExamenes = logExams;
 	}
 
 	public LogExamen addLogExam(LogExamen logExam) {
-		getLogExams().add(logExam);
-		logExam.setPreguntas(this);
+		getLogExamenes().add(logExam);
+		logExam.setPregunta(this);
 
 		return logExam;
 	}
 
 	public LogExamen removeLogExam(LogExamen logExam) {
-		getLogExams().remove(logExam);
-		logExam.setPreguntas(null);
+		getLogExamenes().remove(logExam);
+		logExam.setPregunta(null);
 
 		return logExam;
 	}
 
-	public Grupo getGrupos() {
-		return this.grupos;
+	public Grupo getGrupo() {
+		return this.grupo;
 	}
 
-	public void setGrupos(Grupo grupos) {
-		this.grupos = grupos;
+	public void setGrupo(Grupo grupos) {
+		this.grupo = grupos;
 	}
 
-	public Tema getTemas() {
-		return this.temas;
+	public Tema getTema() {
+		return this.tema;
 	}
 
-	public void setTemas(Tema temas) {
-		this.temas = temas;
+	public void setTema(Tema temas) {
+		this.tema = temas;
 	}
 
-	public Topico getTopics() {
-		return this.topics;
+	public Topico getTopico() {
+		return this.topico;
 	}
 
-	public void setTopics(Topico topics) {
-		this.topics = topics;
+	public void setTopico(Topico topics) {
+		this.topico = topics;
 	}
 
 	public List<Respuesta> getRespuestas() {
@@ -259,14 +259,14 @@ public class Pregunta  {
 
 	public Respuesta addRespuesta(Respuesta respuesta) {
 		getRespuestas().add(respuesta);
-		respuesta.setPreguntas(this);
+		respuesta.setPregunta(this);
 
 		return respuesta;
 	}
 
 	public Respuesta removeRespuesta(Respuesta respuesta) {
 		getRespuestas().remove(respuesta);
-		respuesta.setPreguntas(null);
+		respuesta.setPregunta(null);
 
 		return respuesta;
 	}

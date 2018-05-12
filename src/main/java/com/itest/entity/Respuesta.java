@@ -34,17 +34,17 @@ public class Respuesta  {
 	private int valor;
 
 	//bi-directional many-to-one association to ExtraRespuesta
-	@OneToMany(mappedBy="respuestas")
-	private List<ExtraRespuesta> extraResps;
+	@OneToMany(mappedBy= "respuesta")
+	private List<ExtraRespuesta> extraRespuestas;
 
 	//bi-directional many-to-one association to LogExamen
-	@OneToMany(mappedBy="respuestas")
-	private List<LogExamen> logExams;
+	@OneToMany(mappedBy= "respuesta")
+	private List<LogExamen> logExamenes;
 
 	//bi-directional many-to-one association to Pregunta
 	@ManyToOne
 	@JoinColumn(name="preg", nullable=false)
-	private Pregunta preguntas;
+	private Pregunta pregunta;
 
 	public Respuesta() {
 	}
@@ -97,56 +97,56 @@ public class Respuesta  {
 		this.valor = valor;
 	}
 
-	public List<ExtraRespuesta> getExtraResps() {
-		return this.extraResps;
+	public List<ExtraRespuesta> getExtraRespuestas() {
+		return this.extraRespuestas;
 	}
 
-	public void setExtraResps(List<ExtraRespuesta> extraResps) {
-		this.extraResps = extraResps;
+	public void setExtraRespuestas(List<ExtraRespuesta> extraResps) {
+		this.extraRespuestas = extraResps;
 	}
 
 	public ExtraRespuesta addExtraResp(ExtraRespuesta extraResp) {
-		getExtraResps().add(extraResp);
-		extraResp.setRespuestas(this);
+		getExtraRespuestas().add(extraResp);
+		extraResp.setRespuesta(this);
 
 		return extraResp;
 	}
 
 	public ExtraRespuesta removeExtraResp(ExtraRespuesta extraResp) {
-		getExtraResps().remove(extraResp);
-		extraResp.setRespuestas(null);
+		getExtraRespuestas().remove(extraResp);
+		extraResp.setRespuesta(null);
 
 		return extraResp;
 	}
 
-	public List<LogExamen> getLogExams() {
-		return this.logExams;
+	public List<LogExamen> getLogExamenes() {
+		return this.logExamenes;
 	}
 
-	public void setLogExams(List<LogExamen> logExams) {
-		this.logExams = logExams;
+	public void setLogExamenes(List<LogExamen> logExams) {
+		this.logExamenes = logExams;
 	}
 
 	public LogExamen addLogExam(LogExamen logExam) {
-		getLogExams().add(logExam);
-		logExam.setRespuestas(this);
+		getLogExamenes().add(logExam);
+		logExam.setRespuesta(this);
 
 		return logExam;
 	}
 
 	public LogExamen removeLogExam(LogExamen logExam) {
-		getLogExams().remove(logExam);
-		logExam.setRespuestas(null);
+		getLogExamenes().remove(logExam);
+		logExam.setRespuesta(null);
 
 		return logExam;
 	}
 
-	public Pregunta getPreguntas() {
-		return this.preguntas;
+	public Pregunta getPregunta() {
+		return this.pregunta;
 	}
 
-	public void setPreguntas(Pregunta preguntas) {
-		this.preguntas = preguntas;
+	public void setPregunta(Pregunta preguntas) {
+		this.pregunta = preguntas;
 	}
 
 }

@@ -42,29 +42,29 @@ public class Usuario  {
 	private int idioma;
 
 	//bi-directional many-to-one association to Calificacion
-	@OneToMany(mappedBy="usuarios")
-	private List<Calificacion> califs;
+	@OneToMany(mappedBy= "usuario")
+	private List<Calificacion> calificaciones;
 
 	//bi-directional many-to-one association to ExamenIndividual
-	@OneToMany(mappedBy="usuarios")
-	private List<ExamenIndividual> examIndivids;
+	@OneToMany(mappedBy= "usuario")
+	private List<ExamenIndividual> examenesIndividuales;
 
 	//bi-directional many-to-one association to Imparten
-	@OneToMany(mappedBy="usuarios")
+	@OneToMany(mappedBy= "usuario")
 	private List<Imparten> imparten;
 
 	//bi-directional many-to-one association to LogExamen
-	@OneToMany(mappedBy="usuarios")
-	private List<LogExamen> logExams;
+	@OneToMany(mappedBy= "usuario")
+	private List<LogExamen> logExamenes;
 
 	//bi-directional many-to-one association to Matricula
-	@OneToMany(mappedBy="usuarios")
+	@OneToMany(mappedBy= "usuario")
 	private List<Matricula> matriculas;
 
 	//bi-directional many-to-one association to Centro
 	@ManyToOne
 	@JoinColumn(name="centro", nullable=false)
-	private Centro centros;
+	private Centro centro;
 
 	public Usuario() {
 	}
@@ -141,46 +141,46 @@ public class Usuario  {
 		this.idioma = idioma;
 	}
 
-	public List<Calificacion> getCalifs() {
-		return this.califs;
+	public List<Calificacion> getCalificaciones() {
+		return this.calificaciones;
 	}
 
-	public void setCalifs(List<Calificacion> califs) {
-		this.califs = califs;
+	public void setCalificaciones(List<Calificacion> califs) {
+		this.calificaciones = califs;
 	}
 
 	public Calificacion addCalif(Calificacion calif) {
-		getCalifs().add(calif);
-		calif.setUsuarios(this);
+		getCalificaciones().add(calif);
+		calif.setUsuario(this);
 
 		return calif;
 	}
 
 	public Calificacion removeCalif(Calificacion calif) {
-		getCalifs().remove(calif);
-		calif.setUsuarios(null);
+		getCalificaciones().remove(calif);
+		calif.setUsuario(null);
 
 		return calif;
 	}
 
-	public List<ExamenIndividual> getExamIndivids() {
-		return this.examIndivids;
+	public List<ExamenIndividual> getExamenesIndividuales() {
+		return this.examenesIndividuales;
 	}
 
-	public void setExamIndivids(List<ExamenIndividual> examIndivids) {
-		this.examIndivids = examIndivids;
+	public void setExamenesIndividuales(List<ExamenIndividual> examIndivids) {
+		this.examenesIndividuales = examIndivids;
 	}
 
 	public ExamenIndividual addExamIndivid(ExamenIndividual examIndivid) {
-		getExamIndivids().add(examIndivid);
-		examIndivid.setUsuarios(this);
+		getExamenesIndividuales().add(examIndivid);
+		examIndivid.setUsuario(this);
 
 		return examIndivid;
 	}
 
 	public ExamenIndividual removeExamIndivid(ExamenIndividual examIndivid) {
-		getExamIndivids().remove(examIndivid);
-		examIndivid.setUsuarios(null);
+		getExamenesIndividuales().remove(examIndivid);
+		examIndivid.setUsuario(null);
 
 		return examIndivid;
 	}
@@ -195,36 +195,36 @@ public class Usuario  {
 
 	public Imparten addImparten(Imparten imparten) {
 		getImparten().add(imparten);
-		imparten.setUsuarios(this);
+		imparten.setUsuario(this);
 
 		return imparten;
 	}
 
 	public Imparten removeImparten(Imparten imparten) {
 		getImparten().remove(imparten);
-		imparten.setUsuarios(null);
+		imparten.setUsuario(null);
 
 		return imparten;
 	}
 
-	public List<LogExamen> getLogExams() {
-		return this.logExams;
+	public List<LogExamen> getLogExamenes() {
+		return this.logExamenes;
 	}
 
-	public void setLogExams(List<LogExamen> logExams) {
-		this.logExams = logExams;
+	public void setLogExamenes(List<LogExamen> logExams) {
+		this.logExamenes = logExams;
 	}
 
 	public LogExamen addLogExam(LogExamen logExam) {
-		getLogExams().add(logExam);
-		logExam.setUsuarios(this);
+		getLogExamenes().add(logExam);
+		logExam.setUsuario(this);
 
 		return logExam;
 	}
 
 	public LogExamen removeLogExam(LogExamen logExam) {
-		getLogExams().remove(logExam);
-		logExam.setUsuarios(null);
+		getLogExamenes().remove(logExam);
+		logExam.setUsuario(null);
 
 		return logExam;
 	}
@@ -239,24 +239,24 @@ public class Usuario  {
 
 	public Matricula addMatricula(Matricula matricula) {
 		getMatriculas().add(matricula);
-		matricula.setUsuarios(this);
+		matricula.setUsuario(this);
 
 		return matricula;
 	}
 
 	public Matricula removeMatricula(Matricula matricula) {
 		getMatriculas().remove(matricula);
-		matricula.setUsuarios(null);
+		matricula.setUsuario(null);
 
 		return matricula;
 	}
 
-	public Centro getCentros() {
-		return this.centros;
+	public Centro getCentro() {
+		return this.centro;
 	}
 
-	public void setCentros(Centro centros) {
-		this.centros = centros;
+	public void setCentro(Centro centros) {
+		this.centro = centros;
 	}
 
 }

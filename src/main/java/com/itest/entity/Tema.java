@@ -24,17 +24,17 @@ public class Tema  {
 	private String tema;
 
 	//bi-directional many-to-one association to Pregunta
-	@OneToMany(mappedBy="temas")
+	@OneToMany(mappedBy= "tema")
 	private List<Pregunta> preguntas;
 
 	//bi-directional many-to-one association to Grupo
 	@ManyToOne
 	@JoinColumn(name="grupo", nullable=false)
-	private Grupo grupos;
+	private Grupo grupo;
 
 	//bi-directional many-to-one association to TemaExamen
-	@OneToMany(mappedBy="temas")
-	private List<TemaExamen> temasExam;
+	@OneToMany(mappedBy= "tema")
+	private List<TemaExamen> temasExamenes;
 
 	public Tema() {
 	}
@@ -73,44 +73,44 @@ public class Tema  {
 
 	public Pregunta addPregunta(Pregunta pregunta) {
 		getPreguntas().add(pregunta);
-		pregunta.setTemas(this);
+		pregunta.setTema(this);
 
 		return pregunta;
 	}
 
 	public Pregunta removePregunta(Pregunta pregunta) {
 		getPreguntas().remove(pregunta);
-		pregunta.setTemas(null);
+		pregunta.setTema(null);
 
 		return pregunta;
 	}
 
-	public Grupo getGrupos() {
-		return this.grupos;
+	public Grupo getGrupo() {
+		return this.grupo;
 	}
 
-	public void setGrupos(Grupo grupos) {
-		this.grupos = grupos;
+	public void setGrupo(Grupo grupos) {
+		this.grupo = grupos;
 	}
 
-	public List<TemaExamen> getTemasExam() {
-		return this.temasExam;
+	public List<TemaExamen> getTemasExamenes() {
+		return this.temasExamenes;
 	}
 
-	public void setTemasExam(List<TemaExamen> temasExam) {
-		this.temasExam = temasExam;
+	public void setTemasExamenes(List<TemaExamen> temasExam) {
+		this.temasExamenes = temasExam;
 	}
 
 	public TemaExamen addTemasExam(TemaExamen temasExam) {
-		getTemasExam().add(temasExam);
-		temasExam.setTemas(this);
+		getTemasExamenes().add(temasExam);
+		temasExam.setTema(this);
 
 		return temasExam;
 	}
 
 	public TemaExamen removeTemasExam(TemaExamen temasExam) {
-		getTemasExam().remove(temasExam);
-		temasExam.setTemas(null);
+		getTemasExamenes().remove(temasExam);
+		temasExam.setTema(null);
 
 		return temasExam;
 	}

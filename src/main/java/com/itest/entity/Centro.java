@@ -57,11 +57,11 @@ public class Centro  {
 	private String web;
 
 	//bi-directional many-to-one association to Grupo
-	@OneToMany(mappedBy="centros")
+	@OneToMany(mappedBy= "centro")
 	private List<Grupo> grupos;
 
 	//bi-directional many-to-one association to Usuario
-	@OneToMany(mappedBy="centros")
+	@OneToMany(mappedBy= "centro")
 	private List<Usuario> usuarios;
 
 	public Centro() {
@@ -189,14 +189,14 @@ public class Centro  {
 
 	public Grupo addGrupo(Grupo grupo) {
 		getGrupos().add(grupo);
-		grupo.setCentros(this);
+		grupo.setCentro(this);
 
 		return grupo;
 	}
 
 	public Grupo removeGrupo(Grupo grupo) {
 		getGrupos().remove(grupo);
-		grupo.setCentros(null);
+		grupo.setCentro(null);
 
 		return grupo;
 	}
@@ -211,14 +211,14 @@ public class Centro  {
 
 	public Usuario addUsuario(Usuario usuario) {
 		getUsuarios().add(usuario);
-		usuario.setCentros(this);
+		usuario.setCentro(this);
 
 		return usuario;
 	}
 
 	public Usuario removeUsuario(Usuario usuario) {
 		getUsuarios().remove(usuario);
-		usuario.setCentros(null);
+		usuario.setCentro(null);
 
 		return usuario;
 	}

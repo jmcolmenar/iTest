@@ -19,12 +19,12 @@ public class Imparten  {
 	//bi-directional many-to-one association to Grupo
 	@ManyToOne
 	@JoinColumn(name="grupo", nullable=false)
-	private Grupo grupos;
+	private Grupo grupo;
 
 	//bi-directional many-to-one association to Usuario
 	@ManyToOne
 	@JoinColumn(name="profe", nullable=false)
-	private Usuario usuarios;
+	private Usuario usuario;
 
 	public Imparten() {
 	}
@@ -37,20 +37,20 @@ public class Imparten  {
 		this.idimp = idimp;
 	}
 
-	public Grupo getGrupos() {
-		return this.grupos;
+	public Grupo getGrupo() {
+		return this.grupo;
 	}
 
-	public void setGrupos(Grupo grupos) {
-		this.grupos = grupos;
+	public void setGrupo(Grupo grupos) {
+		this.grupo = grupos;
 	}
 
-	public Usuario getUsuarios() {
-		return this.usuarios;
+	public Usuario getUsuario() {
+		return this.usuario;
 	}
 
-	public void setUsuarios(Usuario usuarios) {
-		this.usuarios = usuarios;
+	public void setUsuario(Usuario usuarios) {
+		this.usuario = usuarios;
 	}
 
 }

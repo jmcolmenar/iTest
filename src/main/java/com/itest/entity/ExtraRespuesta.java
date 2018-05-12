@@ -35,7 +35,7 @@ public class ExtraRespuesta  {
 	//bi-directional many-to-one association to Respuesta
 	@ManyToOne
 	@JoinColumn(name="resp", nullable=false)
-	private Respuesta respuestas;
+	private Respuesta respuesta;
 
 	public ExtraRespuesta() {
 	}
@@ -96,12 +96,12 @@ public class ExtraRespuesta  {
 		this.tipo = tipo;
 	}
 
-	public Respuesta getRespuestas() {
-		return this.respuestas;
+	public Respuesta getRespuesta() {
+		return this.respuesta;
 	}
 
-	public void setRespuestas(Respuesta respuestas) {
-		this.respuestas = respuestas;
+	public void setRespuesta(Respuesta respuestas) {
+		this.respuesta = respuestas;
 	}
 
 }
