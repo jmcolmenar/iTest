@@ -19,33 +19,23 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.controller.view;
+package com.itest.controller.mvc;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/learner/partial/")
-public class LearnerPartialViewController {
+@RequestMapping("/user/partial/")
+public class UserController {
 
-    @GetMapping("/courses")
-    public String getCoursesPartialView(){
-        return "learner/courses";
+    @GetMapping("/changePassword")
+    public String getChangePasswordView(){
+        return "learner/change_password";
     }
 
-    @GetMapping("/subject")
-    public String getSubjectPartialView(){
-        return "learner/subject";
-    }
-
-    @GetMapping("/reviewExam")
-    public String getReviewExamPartialView(){
-        return "learner/review_exam";
-    }
-
-    @GetMapping("/newExam")
-    public String getNewExamPartialView(){
-        return "learner/new_exam";
+    @GetMapping("/userProfile")
+    public String getUserProfileView(){
+        return "learner/user_profile";
     }
 }

@@ -19,20 +19,15 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.controller;
+package com.itest.controller.mvc;
 
 import com.itest.constant.UserRoleConstant;
-import com.itest.model.CurrentUserModel;
-import com.itest.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Set;
 
@@ -42,10 +37,6 @@ import java.util.Set;
 @Controller
 public class LoginController {
 
-    @Autowired
-    @Qualifier("userServiceImpl")
-    private UserService userService;
-
     /**
      * Return the index page as a view
      * @return The index page
@@ -54,23 +45,6 @@ public class LoginController {
     public String index(){
         // Return index page
         return "index";
-    }
-
-    /**
-     * Check the current authenticated user
-     * @return The current user
-     */
-    @RequestMapping(value = "/checkCurrentUser", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public CurrentUserModel checkAuthentication(){
-        // Get current authentication
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        // Check if the user is a valid user
-        boolean isValidUser = this.userService.isAuthorizedUser(auth);
-
-        // Return the current user
-        return new CurrentUserModel(isValidUser, auth != null ? auth.getName() : null);
     }
 
     /**

@@ -19,14 +19,14 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service.impl;
+package com.itest.service.business.impl;
 
 import com.itest.constant.UserRoleConstant;
 import com.itest.entity.Usuario;
 import com.itest.model.UserInfoModel;
 import com.itest.repository.UsuarioRepository;
-import com.itest.service.TranslationService;
-import com.itest.service.UserService;
+import com.itest.service.business.TranslationService;
+import com.itest.service.business.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;

@@ -19,15 +19,14 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service.impl;
+package com.itest.service.business.impl;
 
 import com.itest.constant.LanguageConstant;
-import com.itest.service.TranslationService;
+import com.itest.service.business.TranslationService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.LocaleResolver;
@@ -35,7 +34,6 @@ import org.springframework.web.servlet.LocaleResolver;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Locale;
 
 @Service("translationServiceImpl")
 public class TranslationServiceImpl implements TranslationService{

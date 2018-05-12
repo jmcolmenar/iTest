@@ -19,19 +19,25 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service;
+package com.itest.service.controller;
 
-import com.itest.model.ReviewExamQuestionModel;
+import com.itest.model.request.ChangePasswordRequest;
+import com.itest.model.request.UpdateUserProfileRequest;
+import com.itest.model.response.*;
+import org.springframework.security.core.Authentication;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public interface LearnerReviewExamService {
+public interface UserManagementService {
 
-    /**
-     * Get the questions of the exam to review by the learner
-     * @param examId Exam identifier to review
-     * @param learnerId User identifier of the learner
-     * @return The list of exam questions to review
-     */
-    List<ReviewExamQuestionModel> getExamQuestionsToReviewList(int examId, int learnerId);
+    CheckSessionResponse checkSession();
+
+    ChangePasswordResponse changePassword(ChangePasswordRequest request);
+
+    GetFullNameResponse getFullName();
+
+    GetUserProfileResponse getUserProfile();
+
+    UpdateUserProfileResponse updateUserProfile(UpdateUserProfileRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse);
 }

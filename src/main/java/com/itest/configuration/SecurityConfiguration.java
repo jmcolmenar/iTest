@@ -32,14 +32,30 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    @Qualifier("customAccessDeniedHandler")
+    private AccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    @Qualifier("customAuthenticationEntryPoint")
+    private AuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    @Qualifier("customAuthenticationFailureHandler")
+    private AuthenticationFailureHandler authenticationFailureHandler;
+
+    @Autowired
     @Qualifier("customAuthenticationSuccessHandler")
-    private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
@@ -61,18 +77,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Authorizes the requests to resources depending of user's roles
+        http.authorizeRequests().mvcMatchers("/api/user/checkSession").permitAll();
         http.authorizeRequests().antMatchers("/api/user/**", "/user/**").access("hasAnyAuthority('"+ UserRoleConstant.ROLE_LEARNER +"','"+ UserRoleConstant.ROLE_KID +"','"+ UserRoleConstant.ROLE_TUTOR  +"','"+ UserRoleConstant.ROLE_ADVANCED_TUTOR +"','"+ UserRoleConstant.ROLE_ADMIN +"')");
         http.authorizeRequests().antMatchers("/api/learner/**", "/learner/**").access("hasAnyAuthority('"+ UserRoleConstant.ROLE_LEARNER +"','"+ UserRoleConstant.ROLE_KID +"')");
         http.authorizeRequests().antMatchers("/api/tutor/**", "/tutor/**").access("hasAnyAuthority('"+ UserRoleConstant.ROLE_TUTOR +"','"+ UserRoleConstant.ROLE_ADVANCED_TUTOR+"')");
         http.authorizeRequests().antMatchers("/api/admin/**", "/admin/**").access("hasAuthority('"+ UserRoleConstant.ROLE_ADMIN +"')");
 
         // Specifies the AuthenticationEntryPoint and AccessDeniedHandler to be used
-        http.exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
-        http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler());
+        http.exceptionHandling().authenticationEntryPoint(this.authenticationEntryPoint);
+        http.exceptionHandling().accessDeniedHandler(this.accessDeniedHandler);
 
         // Specifies the AuthenticationSuccessHandler and AuthenticationFailureHandler to be used
         http.formLogin().successHandler(this.authenticationSuccessHandler);
-        http.formLogin().failureHandler(new CustomAuthenticationFailureHandler());
+        http.formLogin().failureHandler(this.authenticationFailureHandler);
 
         // The URL to redirect to after logout has occurred. Redirects to index action of login controller and delete the session cookie
         http.logout().logoutSuccessUrl("/");

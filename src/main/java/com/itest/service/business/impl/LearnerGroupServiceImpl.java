@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service.impl;
+package com.itest.service.business.impl;
 
 import com.itest.entity.Grupo;
 import com.itest.entity.Matricula;
@@ -30,8 +30,8 @@ import com.itest.model.TutorInfoToSendEmailModel;
 import com.itest.repository.GrupoRepository;
 import com.itest.repository.MatriculaRepository;
 import com.itest.repository.UsuarioRepository;
-import com.itest.service.LearnerGroupService;
-import com.itest.service.TranslationService;
+import com.itest.service.business.LearnerGroupService;
+import com.itest.service.business.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

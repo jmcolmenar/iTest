@@ -19,22 +19,33 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service;
+package com.itest.controller.mvc;
 
-import com.itest.model.request.*;
-import com.itest.model.response.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-public interface LearnerManagementService {
+@Controller
+@RequestMapping("/learner/partial/")
+public class LearnerController {
 
-    GetCoursesResponse getCourseList();
+    @GetMapping("/courses")
+    public String getCoursesView(){
+        return "learner/courses";
+    }
 
-    GetExamsInfoResponse getExamsInfo(GetExamsInfoRequest request);
+    @GetMapping("/subject")
+    public String getSubjectView(){
+        return "learner/subject";
+    }
 
-    GetExamToReviewResponse getExamToReview(GetExamToReviewRequest request);
+    @GetMapping("/reviewExam")
+    public String getReviewExamView(){
+        return "learner/review_exam";
+    }
 
-    GetTutorsToSendEmailResponse getTutorsToSendEmail(GetTutorsToSendEmailRequest request);
-
-    GetNewExamResponse getNewExam(GetNewExamRequest request);
-
-    EndExamResponse endExam(EndExamRequest request);
+    @GetMapping("/newExam")
+    public String getNewExamView(){
+        return "learner/new_exam";
+    }
 }

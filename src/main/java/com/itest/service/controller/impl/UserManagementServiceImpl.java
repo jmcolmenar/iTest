@@ -19,22 +19,21 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service.impl;
+package com.itest.service.controller.impl;
 
 import com.itest.model.UserInfoModel;
 import com.itest.model.request.ChangePasswordRequest;
 import com.itest.model.request.UpdateUserProfileRequest;
-import com.itest.model.response.ChangePasswordResponse;
-import com.itest.model.response.GetFullNameResponse;
-import com.itest.model.response.GetUserProfileResponse;
-import com.itest.model.response.UpdateUserProfileResponse;
-import com.itest.service.TranslationService;
-import com.itest.service.UserManagementService;
-import com.itest.service.UserService;
+import com.itest.model.response.*;
+import com.itest.service.business.TranslationService;
+import com.itest.service.controller.UserManagementService;
+import com.itest.service.business.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +51,33 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Autowired
     @Qualifier("translationServiceImpl")
     TranslationService translationService;
+
+    public CheckSessionResponse checkSession(){
+
+        // Initialize the change password response
+        CheckSessionResponse checkSessionResponse = new CheckSessionResponse();
+
+        try{
+            // Get current authentication
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            // Check if the user in the current session is authorized
+            boolean isAuthorizedUser = this.userService.isAuthorizedUser(auth);
+
+            // Fill the response object
+            checkSessionResponse.setAuthorizedUser(isAuthorizedUser);
+
+        }catch(Exception exc){
+            // Log the exception
+            LOG.error("Error checking the user session. Exception: " + exc.getMessage());
+
+            // Set the error when an exception is thrown
+            checkSessionResponse.setHasError(true);
+        }
+
+        // Return the response
+        return checkSessionResponse;
+    }
 
     public ChangePasswordResponse changePassword(ChangePasswordRequest request){
 

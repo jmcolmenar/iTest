@@ -19,11 +19,11 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.controller;
+package com.itest.controller.rest;
 
 import com.itest.model.request.*;
 import com.itest.model.response.*;
-import com.itest.service.LearnerManagementService;
+import com.itest.service.controller.LearnerManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/learner/")
-public class LearnerController {
+public class LearnerManagementController {
 
     @Autowired
     @Qualifier("learnerManagementServiceImpl")
@@ -102,5 +102,4 @@ public class LearnerController {
         // Return the response
         return response;
     }
-
 }

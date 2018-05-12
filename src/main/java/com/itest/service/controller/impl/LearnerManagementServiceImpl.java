@@ -19,12 +19,13 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service.impl;
+package com.itest.service.controller.impl;
 
 import com.itest.model.*;
 import com.itest.model.request.*;
 import com.itest.model.response.*;
-import com.itest.service.*;
+import com.itest.service.business.*;
+import com.itest.service.controller.LearnerManagementService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

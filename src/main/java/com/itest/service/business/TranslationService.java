@@ -19,25 +19,16 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service;
-
-import com.itest.model.request.ChangePasswordRequest;
-import com.itest.model.request.UpdateUserProfileRequest;
-import com.itest.model.response.ChangePasswordResponse;
-import com.itest.model.response.GetFullNameResponse;
-import com.itest.model.response.GetUserProfileResponse;
-import com.itest.model.response.UpdateUserProfileResponse;
+package com.itest.service.business;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public interface UserManagementService {
+public interface TranslationService {
 
-    ChangePasswordResponse changePassword(ChangePasswordRequest request);
+    // Get the translated message by the resource identifier
+    String getMessage(String messageResource);
 
-    GetFullNameResponse getFullName();
-
-    GetUserProfileResponse getUserProfile();
-
-    UpdateUserProfileResponse updateUserProfile(UpdateUserProfileRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse);
+    // Set the application locale from language id
+    void setLocale(int languageId, HttpServletRequest request, HttpServletResponse response);
 }

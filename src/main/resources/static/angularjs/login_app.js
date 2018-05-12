@@ -7,21 +7,28 @@ app.controller('loginCtrl', function($scope, $http, $window){
     $scope.showFormLogin = false;
     $scope.showLoginError = false;
     $scope.showInvalidUserError = false;
-    $scope.credentials = {};
+    $scope.credentials = { username : '', password : '' };
 
     // Function to check if there is an authenticated user
-    $scope.checkUser = function(){
-        // Get request to check the authentication
-        $http.get('checkCurrentUser').success(function(response){
+    $scope.checkUser = function() {
+        // Request to check the current session
+        $http.post('/api/user/checkSession', {}, {
+            headers : {
+                'content-type' : 'application/json'
+            }
+        }).success(function(response) {
             // check if there is an authenticated user
-            if(response.validUser){
+            if(response.authorizedUser){
                 // Call Action "redirect" to login controller
                 $window.location.href = '/redirect'
             }else{
                 // Show form login
                 $scope.showFormLogin = true;
             }
-        });
+        }).error(function(response) {
+            // Show form login
+            $scope.showFormLogin = true;
+        })
     };
 
     // Function to perform login

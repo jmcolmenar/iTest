@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service;
+package com.itest.service.business;
 
 import com.itest.model.DoneExamInfoModel;
 import com.itest.model.ExamExtraInfoModel;

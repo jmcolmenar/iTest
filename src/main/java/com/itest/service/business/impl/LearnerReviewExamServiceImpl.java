@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service.impl;
+package com.itest.service.business.impl;
 
 import com.itest.component.FormatterComponent;
 import com.itest.entity.Examen;
@@ -30,8 +30,8 @@ import com.itest.model.ReviewExamAnswerModel;
 import com.itest.model.ReviewExamQuestionModel;
 import com.itest.repository.ExamenRepository;
 import com.itest.repository.LogExamenRepository;
-import com.itest.service.LearnerExamService;
-import com.itest.service.LearnerReviewExamService;
+import com.itest.service.business.LearnerExamService;
+import com.itest.service.business.LearnerReviewExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

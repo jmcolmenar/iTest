@@ -19,15 +19,12 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.controller;
+package com.itest.controller.rest;
 
 import com.itest.model.request.ChangePasswordRequest;
 import com.itest.model.request.UpdateUserProfileRequest;
-import com.itest.model.response.ChangePasswordResponse;
-import com.itest.model.response.GetFullNameResponse;
-import com.itest.model.response.GetUserProfileResponse;
-import com.itest.model.response.UpdateUserProfileResponse;
-import com.itest.service.UserManagementService;
+import com.itest.model.response.*;
+import com.itest.service.controller.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
@@ -37,11 +34,21 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/user/")
-public class UserController {
+public class UserManagementController {
 
     @Autowired
     @Qualifier("userManagementServiceImpl")
     private UserManagementService userManagementService;
+
+    @PostMapping("/checkSession")
+    public CheckSessionResponse checkSession(){
+
+        // call to the server to check the session
+        CheckSessionResponse checkSessionResponse = this.userManagementService.checkSession();
+
+        // Return the response
+        return checkSessionResponse;
+    }
 
     @PostMapping("/getFullName")
     public GetFullNameResponse getFullName(){

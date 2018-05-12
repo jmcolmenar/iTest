@@ -21,9 +21,11 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.configuration;
 
-import com.itest.controller.CustomErrorController;
+import com.itest.controller.mvc.CustomErrorController;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.stereotype.Component;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +34,7 @@ import java.io.IOException;
 /**
  * Returns 401 error (Unauthorized). For default Spring-Security redirect to login page
  */
+@Component("customAccessDeniedHandler")
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override

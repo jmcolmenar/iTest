@@ -23,7 +23,7 @@ package com.itest.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itest.model.CurrentUserModel;
-import com.itest.service.UserService;
+import com.itest.service.business.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;

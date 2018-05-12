@@ -19,35 +19,34 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service;
+package com.itest.service.business;
 
-import com.itest.model.CourseModel;
-import com.itest.model.SubjectModel;
-import com.itest.model.TutorInfoToSendEmailModel;
+import com.itest.model.NewExamModel;
 
-import java.util.List;
-
-public interface LearnerGroupService {
+public interface LearnerNewExamService {
 
     /**
-     * Get the list of courses of the learner
+     * Check if the exam is already done by the learner
      * @param learnerId The learner identifier
-     * @return The course model list
+     * @param examId The exam identifier
+     * @return Whether the exam is already done or not
      */
-    List<CourseModel> getCourseList(int learnerId);
+    boolean isExamAlreadyDonde(int learnerId, int examId);
 
     /**
-     * Get the subject corresponding to a group
-     * @param groupId The group identifier
-     * @return The subject model
+     * Check if the exam must be finised due to the exam end date is before than now
+     * @param examId The exam identifier
+     * @return Whether the exam must be finished or not
      */
-    SubjectModel getSubjectFromGroup(int groupId);
+    boolean examMustBeFinished(int examId);
 
     /**
-     * Get the tutors to send an email from a group
-     * @param groupId The group identifier
-     * @return The list of tutors
+     * Generate a new exam to perform by the learner
+     * @param learnerId The learner identifier
+     * @param examId The exam identifier
+     * @param ip The ip of the learner
+     * @return The generated exam for learner
      */
-    List<TutorInfoToSendEmailModel> getTutorsToSendEmailFromGroup(int groupId);
+    NewExamModel generateNewExamForLearner(int learnerId, int examId, String ip);
 
 }

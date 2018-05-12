@@ -19,16 +19,22 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.service;
+package com.itest.service.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.itest.model.request.*;
+import com.itest.model.response.*;
 
-public interface TranslationService {
+public interface LearnerManagementService {
 
-    // Get the translated message by the resource identifier
-    String getMessage(String messageResource);
+    GetCoursesResponse getCourseList();
 
-    // Set the application locale from language id
-    void setLocale(int languageId, HttpServletRequest request, HttpServletResponse response);
+    GetExamsInfoResponse getExamsInfo(GetExamsInfoRequest request);
+
+    GetExamToReviewResponse getExamToReview(GetExamToReviewRequest request);
+
+    GetTutorsToSendEmailResponse getTutorsToSendEmail(GetTutorsToSendEmailRequest request);
+
+    GetNewExamResponse getNewExam(GetNewExamRequest request);
+
+    EndExamResponse endExam(EndExamRequest request);
 }
