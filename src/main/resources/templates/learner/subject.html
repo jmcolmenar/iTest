@@ -193,7 +193,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body modal-body-witout-center">
                     <div class="radio radio-primary" ng-repeat="tutorInfo in tutorsToSendEmail">
                         <input type="radio" ng-model="selectedTutor.email" name="tutorEmailRadio" id="tutorEmailRadio{{$index}}" value="{{tutorInfo.email}}"/><label for="tutorEmailRadio{{$index}}">{{tutorInfo.fullName}}</label>
                     </div>

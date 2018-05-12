@@ -142,7 +142,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         }
 
         // Get the list of new exam question model
-        List<NewExamQuestionModel> examQuestionModelList = this.getQuestionsForNewExam(exam);
+        List<NewExamQuestionModel> examQuestionModelList = this.getQuestionsForNewExam(exam, startDate);
 
         // Set the question list to the exam model
         newExamModel.setQuestionList(examQuestionModelList);
@@ -157,9 +157,10 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
     /**
      * Get the questions for the new exam
      * @param exam The new exam database object
+     * @param examStartDate The start date of new exam
      * @return The question list for the new exam
      */
-    private List<NewExamQuestionModel> getQuestionsForNewExam(Examen exam){
+    private List<NewExamQuestionModel> getQuestionsForNewExam(Examen exam, Date examStartDate){
 
         // Get the exam details
         int examGroupId = exam.getGrupos().getIdgrupo();
@@ -219,7 +220,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
                     // Add all right question to the added answer for question list
                     rightAnswers.forEach(respuesta -> {
                         // Convert the answer to model and add to the list
-                        NewExamQuestionAnswerModel answerModel = this.convertRespuestaToNewExamQuestionAnswerModel(respuesta);
+                        NewExamQuestionAnswerModel answerModel = this.convertRespuestaToNewExamQuestionAnswerModel(respuesta, examStartDate);
                         questionModel.addAnswerToAnswerList(answerModel);
                     });
 
@@ -231,7 +232,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
                         Respuesta answer = remainingAsnwers.get(randomizer.nextInt(remainingAsnwers.size()));
 
                         // Convert the answer to model and add to the list
-                        NewExamQuestionAnswerModel answerModel = this.convertRespuestaToNewExamQuestionAnswerModel(answer);
+                        NewExamQuestionAnswerModel answerModel = this.convertRespuestaToNewExamQuestionAnswerModel(answer, examStartDate);
                         questionModel.addAnswerToAnswerList(answerModel);
 
                         // Increment the added answers counter
@@ -337,15 +338,17 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
     /**
      * Convert a answer database object to question model object
      * @param answer The answer database object
+     * @param examStartDate The start date of new exam.
      * @return The answer model object
      */
-    private NewExamQuestionAnswerModel convertRespuestaToNewExamQuestionAnswerModel(Respuesta answer){
+    private NewExamQuestionAnswerModel convertRespuestaToNewExamQuestionAnswerModel(Respuesta answer, Date examStartDate){
 
         // Initialize and fill the model object
         NewExamQuestionAnswerModel newExamQuestionAnswerModel = new NewExamQuestionAnswerModel();
         newExamQuestionAnswerModel.setAsnwerId(answer.getIdresp());
         newExamQuestionAnswerModel.setText(answer.getTexto());
         newExamQuestionAnswerModel.setChecked(false);
+        newExamQuestionAnswerModel.setAnswerTime(examStartDate);
 
         // Return the model object
         return newExamQuestionAnswerModel;

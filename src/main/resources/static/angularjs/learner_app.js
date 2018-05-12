@@ -493,9 +493,9 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
 
     // Function to check if the CheckBox can be changed due to the maximum number of right answers
     $scope.checkChangedAnswer = function (question, answer) {
+
         // Check if the exam shows the number of right answers
         if($scope.newExam.showNumberRightAnswers){
-
             // Get the number of checked answers
             var checkedAnswersCounter = 0;
             question.answerList.forEach(function(answerItem) {
@@ -508,8 +508,13 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
 
                 // Set the asnwer as not checked
                 answer.checked = false;
+            }else{
+                // Set the answer time for this answer
+                answer.answerTime = new Date().getTime();
             }
-
+        }else{
+            // Set the answer time for this answer
+            answer.answerTime = new Date().getTime();
         }
     };
 
