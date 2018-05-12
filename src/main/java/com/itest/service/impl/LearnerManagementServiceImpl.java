@@ -51,6 +51,10 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
     private LearnerExamService learnerExamService;
 
     @Autowired
+    @Qualifier("learnerReviewExamServiceImpl")
+    private LearnerReviewExamService learnerReviewExamService;
+
+    @Autowired
     @Qualifier("learnerNewExamServiceImpl")
     private LearnerNewExamService learnerNewExamService;
 
@@ -132,7 +136,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
             DoneExamInfoModel doneExam = this.learnerExamService.getDoneExam(examId, userId);
             
             // Get the questions of the exam
-            List<ExamQuestionModel> questionList = this.learnerExamService.getExamQuestionsToReviewList(examId, userId);
+            List<ReviewExamQuestionModel> questionList = this.learnerReviewExamService.getExamQuestionsToReviewList(examId, userId);
 
             // Get the subject name from the exam
             String subjectName = this.learnerExamService.getSubjectNameFromExam(examId);

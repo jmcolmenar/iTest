@@ -26,6 +26,7 @@ import com.itest.entity.*;
 import com.itest.model.*;
 import com.itest.repository.ExamenRepository;
 import com.itest.repository.LogExamenRepository;
+import com.itest.repository.PreguntaRepository;
 import com.itest.service.LearnerExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,6 +40,10 @@ public class LearnerExamServiceImpl implements LearnerExamService {
     @Autowired
     @Qualifier("examenRepository")
     private ExamenRepository examenRepository;
+
+    @Autowired
+    @Qualifier("preguntaRepository")
+    private PreguntaRepository preguntaRepository;
 
     @Autowired
     @Qualifier("logExamenRepository")
@@ -133,45 +138,19 @@ public class LearnerExamServiceImpl implements LearnerExamService {
     }
 
     /**
-     * Get the questions of the exam to review by the learner
-     * @param examId Exam identifier to review
-     * @param learnerId User identifier of the learner
-     * @return The list of exam questions to review
-     */
-    public List<ExamQuestionModel> getExamQuestionsToReviewList(int examId, int learnerId){
-
-        // Get the logs of the exam to review
-        List<LogExamen> logExamList = this.logExamenRepository.findByExamIdAndUserIdOrderById(examId, learnerId);
-
-        // Convert the database objects to model objects
-        List<ExamQuestionModel> questionModelList = this.convertLogExamListToExamQuestionModelList(logExamList);
-
-        // Get the current exam from database
-        Examen exam = this.examenRepository.findOne(examId);
-
-        // Get the score for each question
-        for (ExamQuestionModel question : questionModelList) {
-            double score = this.getQuestionScore(question, exam, questionModelList.size());
-            String scoreAsString = this.formatterComponent.formatNumberWithTwoDecimals(score);
-            question.setScore(scoreAsString.equals("0.00") ? "0" : scoreAsString);
-        }
-
-        // Return the question model list
-        return questionModelList;
-    }
-
-    /**
-     * Method to calculate the question score based in current exam parameters
-     * @param question The question
-     * @param exam The current exam database object
-     * @param numberQuestionsOfCurrentExam The number of question in the current exam
+     * Calculates the score of a question in an donde exam by a learner
+     * @param learnerId The learner identifier
+     * @param examId The exam identifier
+     * @param questionId The question identifier
+     * @param numberQuestionsOfCurrentExam The number of questions in the current exam
      * @return The score of the question
      */
-    private double getQuestionScore(ExamQuestionModel question, Examen exam, int numberQuestionsOfCurrentExam) {
+    public double calculateQuestionScore(int learnerId, int examId, int questionId, int numberQuestionsOfCurrentExam) {
         // The question score variable
         double questionScore = 0;
 
         // Exam information variables
+        Examen exam = this.examenRepository.findOne(examId);
         boolean isPartialCorrection = exam.getCorrParcial() == 1;
         double questionFailedPenalty = exam.getPPregFallada();
         double questionNotAnsweredPenalty = exam.getPPregNoResp();
@@ -181,11 +160,19 @@ public class LearnerExamServiceImpl implements LearnerExamService {
         double penaltyConfidenceLevel = exam.getPNivelConfianza();
 
         // Question information variables
+        Pregunta pregunta = this.preguntaRepository.findOne(questionId);
         double maxScorePerQuestion = (double)exam.getNotaMax() / (double)numberQuestionsOfCurrentExam;
         double minQuestionScore = maxScorePerQuestion * exam.getCotaCalifPreg();
-        int numberCorrectAnswers = question.getNumberCorrectAnswers();
-        int numberCheckedCorrectAnswers = (int)question.getAnswerList().stream().filter(a -> a.isChecked() && a.isRight()).count();
-        int numberCheckedIncorrectAnswers = (int)question.getAnswerList().stream().filter(a -> a.isChecked() && !a.isRight()).count();
+        int numberCorrectAnswers = pregunta.getNRespCorrectas();
+
+        // Get the asnwers of question answered by the user in order to get the number of correct and incorrect answers
+        List<LogExamen> logExamList = this.logExamenRepository.findByExamIdAndUserIdAndQuestionId(examId, learnerId, questionId);
+        int numberCheckedCorrectAnswers = (int)logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuestas().getSolucion() == 1).count();
+        int numberCheckedIncorrectAnswers = (int)logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuestas().getSolucion() == 1).count();
+
+        // Check if the learner has ckeched the confidence level in the question
+        Optional<LogExamen> firstAnswer = logExamList.stream().findFirst(); // All answers of question has the "nivel_confianza" field set as the same
+        boolean activeConfidenceLevelInQuestion = firstAnswer.isPresent() && firstAnswer.get().getNivelConfianza() == 1;
 
         /* Start the question score calculation */
 
@@ -262,14 +249,14 @@ public class LearnerExamServiceImpl implements LearnerExamService {
             if(numberCheckedCorrectAnswers == numberCorrectAnswers && numberCheckedIncorrectAnswers == 0){
 
                 // Apply the confidence level reward when the confidence level is active in the question
-                if(question.isActiveConfidenceLevel()) {
+                if(activeConfidenceLevelInQuestion) {
                     questionScore += maxScorePerQuestion * rewardConfidenceLevel;
                 }
 
             }else{
 
                 // Apply the confidence level penalty when the confidence level is active in the question
-                if(question.isActiveConfidenceLevel()){
+                if(activeConfidenceLevelInQuestion){
                     questionScore -= maxScorePerQuestion * penaltyConfidenceLevel;
                 }
             }
@@ -284,65 +271,11 @@ public class LearnerExamServiceImpl implements LearnerExamService {
         return questionScore;
     }
 
-    private List<ExamQuestionModel> convertLogExamListToExamQuestionModelList(List<LogExamen> logExamenList){
-
-        // Initialize the Auxiliar Map of Exam Question
-        Map<Integer, List<ExamQuestionAnswerModel>> examQuestionMapAux = new HashMap<>();
-
-        // Initialize the Exam Question model list
-        List<ExamQuestionModel> examQuestionModelList = new ArrayList<>();
-
-        if(logExamenList != null && logExamenList.size() > 0){
-            for (LogExamen logExamen : logExamenList) {
-
-                // Get the question database object and fill the Exam Question model
-                Pregunta pregunta = logExamen.getPreguntas();
-                ExamQuestionModel examQuestionModel = new ExamQuestionModel();
-                examQuestionModel.setQuestionId(pregunta.getIdpreg());
-                examQuestionModel.setStatement(pregunta.getEnunciado());
-                examQuestionModel.setComment(pregunta.getComentario());
-                examQuestionModel.setNumberCorrectAnswers(pregunta.getNRespCorrectas());
-                examQuestionModel.setActiveConfidenceLevel(logExamen.getNivelConfianza() == 1);
-
-                // Get the answer database object and fill the asnwer model
-                Respuesta respuesta = logExamen.getRespuestas();
-                ExamQuestionAnswerModel examQuestionAnswerModel = new ExamQuestionAnswerModel();
-                examQuestionAnswerModel.setAsnwerId(respuesta.getIdresp());
-                examQuestionAnswerModel.setText(respuesta.getTexto());
-                examQuestionAnswerModel.setRight(respuesta.getSolucion() == 1);
-                examQuestionAnswerModel.setChecked(logExamen.getMarcada() == 1);
-
-                // Check if the question has been added to the auxiliar map
-                if(examQuestionMapAux.containsKey(pregunta.getIdpreg())){
-
-                    // Add the answer to the answer list
-                    examQuestionMapAux.get(pregunta.getIdpreg()).add(examQuestionAnswerModel);
-
-                }else{
-
-                    // Add the question model to the list
-                    examQuestionModelList.add(examQuestionModel);
-
-                    // Initialize a list of answer model and add the answer
-                    List<ExamQuestionAnswerModel> examQuestionAnswerModelList = new ArrayList<>();
-                    examQuestionAnswerModelList.add(examQuestionAnswerModel);
-
-                    // Put the answer list in the dictionary associated by the question
-                    examQuestionMapAux.put(pregunta.getIdpreg(), examQuestionAnswerModelList);
-                }
-            }
-        }
-
-        // Fill the question objects with the answer list from the map
-        for (ExamQuestionModel questionModel : examQuestionModelList) {
-            questionModel.setAnswerList(examQuestionMapAux.get(questionModel.getQuestionId()));
-        }
-
-        // Return the list of Question Exam Model
-        return examQuestionModelList;
-    }
-
-
+    /**
+     * Convert the exam from database to done exam model object
+     * @param exam The exam from database
+     * @return The done exam model
+     */
     private DoneExamInfoModel convertExamenToDoneExamInfoModel(Examen exam){
         // Initialize and fill the model object
         DoneExamInfoModel doneExam = new DoneExamInfoModel();
@@ -372,6 +305,11 @@ public class LearnerExamServiceImpl implements LearnerExamService {
         return doneExam;
     }
 
+    /**
+     * Convert the list of exams from database to done exam model object list
+     * @param examenList The exams from database
+     * @return The list of done exam model objects
+     */
     private List<DoneExamInfoModel> convertExamenListToDoneExamInfoModelList(List<Examen> examenList){
 
         // Initialize the Donde Exam Info Model list
@@ -393,6 +331,11 @@ public class LearnerExamServiceImpl implements LearnerExamService {
         return doneExamInfoModelList;
     }
 
+    /**
+     * Convert the list of exams from database to exam extra info model list
+     * @param examenList The exams from database
+     * @return The list of exam extra info model objects
+     */
     private List<ExamExtraInfoModel> convertExamListToExamExtraInfoModelList(List<Examen> examenList){
 
         // Initialize the Exam Extra Info Model list

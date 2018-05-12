@@ -523,10 +523,10 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
         var callServerToEndExam = true;
         if(checkAllQuestionAnswered){
             // Check if all questions are answered
-            var allQuestionsAreAnswered = false;
+            var allQuestionsAreAnswered = true;
             $scope.newExam.questionList.forEach(function (question) {
                 checkedAnswers = question.answerList.filter(function(answer){ return answer.checked; });
-                allQuestionsAreAnswered = allQuestionsAreAnswered || checkedAnswers.length > 0;
+                if(checkedAnswers.length == 0) { allQuestionsAreAnswered = false; }
             });
 
             // Show error modal when all questions are not answered

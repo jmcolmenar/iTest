@@ -23,7 +23,7 @@ package com.itest.model;
 
 import java.util.Date;
 
-public class NewExamQuestionAnswerModel {
+public class NewExamAnswerModel {
 
     private int asnwerId;
 

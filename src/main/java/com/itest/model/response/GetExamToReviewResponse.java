@@ -21,7 +21,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.model.response;
 
-import com.itest.model.ExamQuestionModel;
+import com.itest.model.ReviewExamQuestionModel;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class GetExamToReviewResponse extends Response {
 
     private String maxScore;
 
-    List<ExamQuestionModel> questionList;
+    List<ReviewExamQuestionModel> questionList;
 
     public int getExamId() {
         return examId;
@@ -79,11 +79,11 @@ public class GetExamToReviewResponse extends Response {
         this.maxScore = maxScore;
     }
 
-    public List<ExamQuestionModel> getQuestionList() {
+    public List<ReviewExamQuestionModel> getQuestionList() {
         return questionList;
     }
 
-    public void setQuestionList(List<ExamQuestionModel> questionList) {
+    public void setQuestionList(List<ReviewExamQuestionModel> questionList) {
         this.questionList = questionList;
     }
 }

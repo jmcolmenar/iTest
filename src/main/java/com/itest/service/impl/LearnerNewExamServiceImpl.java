@@ -24,7 +24,7 @@ package com.itest.service.impl;
 import com.itest.constant.QuestionVisibilityConstant;
 import com.itest.entity.*;
 import com.itest.model.NewExamModel;
-import com.itest.model.NewExamQuestionAnswerModel;
+import com.itest.model.NewExamAnswerModel;
 import com.itest.model.NewExamQuestionModel;
 import com.itest.repository.*;
 import com.itest.service.LearnerExamService;
@@ -220,7 +220,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
                     // Add all right question to the added answer for question list
                     rightAnswers.forEach(respuesta -> {
                         // Convert the answer to model and add to the list
-                        NewExamQuestionAnswerModel answerModel = this.convertRespuestaToNewExamQuestionAnswerModel(respuesta, examStartDate);
+                        NewExamAnswerModel answerModel = this.convertRespuestaToNewExamQuestionAnswerModel(respuesta, examStartDate);
                         questionModel.addAnswerToAnswerList(answerModel);
                     });
 
@@ -232,7 +232,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
                         Respuesta answer = remainingAsnwers.get(randomizer.nextInt(remainingAsnwers.size()));
 
                         // Convert the answer to model and add to the list
-                        NewExamQuestionAnswerModel answerModel = this.convertRespuestaToNewExamQuestionAnswerModel(answer, examStartDate);
+                        NewExamAnswerModel answerModel = this.convertRespuestaToNewExamQuestionAnswerModel(answer, examStartDate);
                         questionModel.addAnswerToAnswerList(answerModel);
 
                         // Increment the added answers counter
@@ -297,7 +297,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
             question.setUsedInExam(1);
             this.preguntaRepository.save(question);
 
-            for(NewExamQuestionAnswerModel answerModel : questionModel.getAnswerList()){
+            for(NewExamAnswerModel answerModel : questionModel.getAnswerList()){
 
                 // Update field of answer
                 Respuesta answer = this.respuestaRepository.findOne(answerModel.getAsnwerId());
@@ -341,17 +341,17 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
      * @param examStartDate The start date of new exam.
      * @return The answer model object
      */
-    private NewExamQuestionAnswerModel convertRespuestaToNewExamQuestionAnswerModel(Respuesta answer, Date examStartDate){
+    private NewExamAnswerModel convertRespuestaToNewExamQuestionAnswerModel(Respuesta answer, Date examStartDate){
 
         // Initialize and fill the model object
-        NewExamQuestionAnswerModel newExamQuestionAnswerModel = new NewExamQuestionAnswerModel();
-        newExamQuestionAnswerModel.setAsnwerId(answer.getIdresp());
-        newExamQuestionAnswerModel.setText(answer.getTexto());
-        newExamQuestionAnswerModel.setChecked(false);
-        newExamQuestionAnswerModel.setAnswerTime(examStartDate);
+        NewExamAnswerModel newExamAnswerModel = new NewExamAnswerModel();
+        newExamAnswerModel.setAsnwerId(answer.getIdresp());
+        newExamAnswerModel.setText(answer.getTexto());
+        newExamAnswerModel.setChecked(false);
+        newExamAnswerModel.setAnswerTime(examStartDate);
 
         // Return the model object
-        return newExamQuestionAnswerModel;
+        return newExamAnswerModel;
     }
 
 }

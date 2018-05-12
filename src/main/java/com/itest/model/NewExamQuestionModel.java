@@ -25,13 +25,13 @@ import java.util.List;
 
 public class NewExamQuestionModel {
 
-    int questionId;
+    private int questionId;
 
-    String statement;
+    private String statement;
 
-    int numberCorrectAnswers;
+    private int numberCorrectAnswers;
 
-    List<NewExamQuestionAnswerModel> answerList;
+    private List<NewExamAnswerModel> answerList;
 
     public int getQuestionId() {
         return questionId;
@@ -57,15 +57,15 @@ public class NewExamQuestionModel {
         this.numberCorrectAnswers = numberCorrectAnswers;
     }
 
-    public List<NewExamQuestionAnswerModel> getAnswerList() {
+    public List<NewExamAnswerModel> getAnswerList() {
         return answerList;
     }
 
-    public void setAnswerList(List<NewExamQuestionAnswerModel> answerList) {
+    public void setAnswerList(List<NewExamAnswerModel> answerList) {
         this.answerList = answerList;
     }
 
-    public void addAnswerToAnswerList(NewExamQuestionAnswerModel answer){
+    public void addAnswerToAnswerList(NewExamAnswerModel answer){
         this.answerList.add(answer);
     }
 }

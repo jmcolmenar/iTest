@@ -23,7 +23,6 @@ package com.itest.service;
 
 import com.itest.model.DoneExamInfoModel;
 import com.itest.model.ExamExtraInfoModel;
-import com.itest.model.ExamQuestionModel;
 
 import java.util.List;
 
@@ -69,10 +68,12 @@ public interface LearnerExamService {
     String getSubjectNameFromExam(int examId);
 
     /**
-     * Get the questions of the exam to review by the learner
-     * @param examId Exam identifier to review
-     * @param learnerId User identifier of the learner
-     * @return The list of exam questions to review
+     * Calculates the score of a question in an donde exam by a learner
+     * @param learnerId The learner identifier
+     * @param examId The exam identifier
+     * @param questionId The question identifier
+     * @param numberQuestionsOfCurrentExam The number of questions in the current exam
+     * @return The score of the question
      */
-    List<ExamQuestionModel> getExamQuestionsToReviewList(int examId, int learnerId);
+    double calculateQuestionScore(int learnerId, int examId, int questionId, int numberQuestionsOfCurrentExam);
 }

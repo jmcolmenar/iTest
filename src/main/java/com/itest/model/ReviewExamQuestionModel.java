@@ -23,21 +23,21 @@ package com.itest.model;
 
 import java.util.List;
 
-public class ExamQuestionModel {
+public class ReviewExamQuestionModel {
 
-    int questionId;
+    private int questionId;
 
-    String statement;
+    private String statement;
 
-    String comment;
+    private String comment;
 
-    String score;
+    private String score;
 
-    int numberCorrectAnswers;
+    private int numberCorrectAnswers;
 
-    boolean activeConfidenceLevel;
+    private boolean activeConfidenceLevel;
 
-    List<ExamQuestionAnswerModel> answerList;
+    private List<ReviewExamAnswerModel> answerList;
 
     public int getQuestionId() {
         return questionId;
@@ -87,11 +87,11 @@ public class ExamQuestionModel {
         this.activeConfidenceLevel = activeConfidenceLevel;
     }
 
-    public List<ExamQuestionAnswerModel> getAnswerList() {
+    public List<ReviewExamAnswerModel> getAnswerList() {
         return answerList;
     }
 
-    public void setAnswerList(List<ExamQuestionAnswerModel> answerList) {
+    public void setAnswerList(List<ReviewExamAnswerModel> answerList) {
         this.answerList = answerList;
     }
 }
