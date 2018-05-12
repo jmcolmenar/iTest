@@ -74,7 +74,24 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <h2><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></h2>
-                    <p id="genericErrorFromPage">No todas las respuestas han sido contestadas. ¿Seguro que desea finalizar el exámen?</p>
+                    <p>No todas las respuestas han sido contestadas. ¿Seguro que desea finalizar el exámen?</p>
+                </div>
+                <div class="modal-footer-custom">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-right: 20px;" th:text="#{modalCancelButton}"></button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="endExam(false)" th:text="#{modalOkButton}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal to finsih the exam -->
+    <div class="modal fade" id="finishExamModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h2><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></h2>
+                    <p id="genericErrorFromPage">¿Seguro que desea finalizar el exámen?</p>
                 </div>
                 <div class="modal-footer-custom">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-right: 20px;" th:text="#{modalCancelButton}"></button>

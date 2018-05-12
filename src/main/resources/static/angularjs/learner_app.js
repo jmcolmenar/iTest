@@ -519,9 +519,13 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
     };
 
     // Function to end the exam
-    $scope.endExam = function(checkAllQuestionAnswered){
+    $scope.endExam = function(isFromEndExamButton){
+        // Variable to check if call to the server to
         var callServerToEndExam = true;
-        if(checkAllQuestionAnswered){
+
+        // Check if the exam button is clicked
+        if(isFromEndExamButton){
+
             // Check if all questions are answered
             var allQuestionsAreAnswered = true;
             $scope.newExam.questionList.forEach(function (question) {
@@ -538,22 +542,26 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
             }
         }
 
-        // Check if call to the server to end the exam
+        // Check if call to the server to
         if(callServerToEndExam){
-            // TODO: Call to the server to send the exam to correct it
-            // Prepare te request to end the exam
-            var endExamRequest = {
-                examId : $scope.newExam.examId,
-                questionList : $scope.newExam.questionList
-            };
+            // Shows a confirmation model when the exam is ended from the finish button
+            if(isFromEndExamButton){
+                $("#finishExamModal").modal("show");
+            }else{
+                // Prepare te request to end the exam
+                var endExamRequest = {
+                    examId : $scope.newExam.examId,
+                    questionList : $scope.newExam.questionList
+                };
 
-            // Call to the server to end the exam
-            serverCaller.httpPost(endExamRequest, '/api/learner/endExam',
-                function (response) {
-                    // TODO: Go to the exam score page
-                },
-                function (response) {},
-                true);
+                // Call to the server to end the exam
+                serverCaller.httpPost(endExamRequest, '/api/learner/endExam',
+                    function (response) {
+                        // TODO: Go to the exam score page
+                    },
+                    function (response) {},
+                    true);
+            }
         }
     }
 
