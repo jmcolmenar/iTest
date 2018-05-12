@@ -31,6 +31,8 @@ public class NewExamQuestionModel {
 
     private int numberCorrectAnswers;
 
+    private boolean activeConfidenceLevel;
+
     private List<NewExamAnswerModel> answerList;
 
     public int getQuestionId() {
@@ -55,6 +57,14 @@ public class NewExamQuestionModel {
 
     public void setNumberCorrectAnswers(int numberCorrectAnswers) {
         this.numberCorrectAnswers = numberCorrectAnswers;
+    }
+
+    public boolean isActiveConfidenceLevel() {
+        return activeConfidenceLevel;
+    }
+
+    public void setActiveConfidenceLevel(boolean activeConfidenceLevel) {
+        this.activeConfidenceLevel = activeConfidenceLevel;
     }
 
     public List<NewExamAnswerModel> getAnswerList() {

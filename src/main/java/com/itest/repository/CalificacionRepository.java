@@ -23,10 +23,21 @@ package com.itest.repository;
 
 import com.itest.entity.Calificacion;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 
 @Repository("calificacionRepository")
 public interface CalificacionRepository extends JpaRepository<Calificacion, Serializable>{
+
+    @Query(" select " +
+            "   c " +
+            "from " +
+            "   Calificacion c " +
+            "where " +
+            "   c.usuario.idusu = :userid " +
+            "   and c.examen.idexam = :examid ")
+    Calificacion findByUserIdAndExamId(@Param("userid") int userId, @Param("examid") int examId);
 }

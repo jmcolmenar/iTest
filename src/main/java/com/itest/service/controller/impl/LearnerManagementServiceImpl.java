@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service("learnerManagementServiceImpl")
@@ -253,12 +254,34 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
         int examId = 0;
 
         try{
+            // Get the request variables
+            examId = request.getExamId();
+            List<NewExamQuestionModel> questionList = request.getQuestionList();
 
-            // TODO: Update the questions in database
+            // Set the end date of the exam
+            Date examEndDate = new Date(System.currentTimeMillis());
 
-            // TODO: Calculates the exam score
+            // Get the the learner identifier
+            learnerId = this.userService.getUserIdOfCurrentUser();
 
+            // Check if the exam has ended out of time
+            boolean isEndedOutOfTime = this.learnerNewExamService.isExamEndedOutOfDate(examId, learnerId, examEndDate);
+            if(isEndedOutOfTime){
 
+                // Set the error when the exam has ended out of time
+                endExamResponse.setHasError(true);
+                endExamResponse.setErrorMessage("The exam is ended out of time"); // TODO: Translate the error
+
+            }else{
+
+                // Update the answered questions in database
+                this.learnerNewExamService.updateAnsweredQuestionsInDatabase(examId, learnerId, questionList);
+
+                // Calculates the exam score
+                this.learnerNewExamService.calculateExamScore(examId, learnerId, questionList, examEndDate);
+
+                // Get the exam info
+            }
         }catch (Exception exc){
             // Log the exception
             LOG.debug("Error ending the exam. LearnerId:" + learnerId + " , ExamId:" + examId +" . Exception: " + exc.getMessage());

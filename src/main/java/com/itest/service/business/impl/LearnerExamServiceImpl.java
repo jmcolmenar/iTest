@@ -168,7 +168,7 @@ public class LearnerExamServiceImpl implements LearnerExamService {
         // Get the asnwers of question answered by the user in order to get the number of correct and incorrect answers
         List<LogExamen> logExamList = this.logExamenRepository.findByExamIdAndUserIdAndQuestionId(examId, learnerId, questionId);
         int numberCheckedCorrectAnswers = (int)logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuesta().getSolucion() == 1).count();
-        int numberCheckedIncorrectAnswers = (int)logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuesta().getSolucion() == 1).count();
+        int numberCheckedIncorrectAnswers = (int)logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuesta().getSolucion() == 0).count();
 
         // Check if the learner has ckeched the confidence level in the question
         Optional<LogExamen> firstAnswer = logExamList.stream().findFirst(); // All answers of question has the "nivel_confianza" field set as the same

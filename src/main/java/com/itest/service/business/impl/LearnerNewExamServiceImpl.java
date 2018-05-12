@@ -105,6 +105,34 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
     }
 
     /**
+     * Check if the exam is ended out of date
+     * @param examId The exam identifier
+     * @param learnerId The learner identifier
+     * @param examEndDate The exam end date
+     * @return Whether the exam is ended out of date or not
+     */
+    public boolean isExamEndedOutOfDate(int examId, int learnerId, Date examEndDate){
+
+        // Find the qualification of exam and exam from database
+        Calificacion calif = this.calificacionRepository.findByUserIdAndExamId(learnerId, examId);
+        Examen exam = this.examenRepository.findOne(examId);
+
+        // Get the date when the learner starts the exam
+        Date examStartDate = calif.getFechaIni();
+        long examDuration = exam.getDuracion() * 60 * 1000; // In milliseconds
+        long extraTime = 10 * 1000; // 10 seconds of extra time
+
+        // Check if the exam has ended out of time
+        boolean isEndedOutOfTime = false;
+        if(examEndDate.getTime() > (examStartDate.getTime() + examDuration + extraTime)){
+            isEndedOutOfTime = true;
+        }
+
+        // Return if the exam is ended out of time
+        return isEndedOutOfTime;
+    }
+
+    /**
      * Generate a new exam to perform by the learner
      * This method is executed insida a transaction. If the method launch an exception the transaction will be rollback
      * @param learnerId The learner identifier
@@ -152,6 +180,83 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
 
         // Return the new exam model
         return newExamModel;
+    }
+
+    /**
+     * Update the answered question of the exam in database
+     * @param examId The exam identifier
+     * @param learnerId The learner identifier
+     * @param questionList The answered questions of the exam
+     */
+    public void updateAnsweredQuestionsInDatabase(int examId, int learnerId, List<NewExamQuestionModel> questionList){
+
+        // Update the answered questions in database
+        for(NewExamQuestionModel question : questionList){
+            for(NewExamAnswerModel answer : question.getAnswerList()){
+
+                // The fields of log exam entity to update(The fields can be updated or not - Optional)
+                boolean updateLogExamInDatabase = false;
+                Boolean checked = null;
+                Boolean activeConfidenceLevel = null;
+                Date answerTime = null;
+
+                // Check if confidence level is active in the question
+                if(question.isActiveConfidenceLevel()){
+                    // The log exam entity for this answer will be updated in database
+                    updateLogExamInDatabase = true;
+
+                    // Set the confidence level field
+                    activeConfidenceLevel = true;
+                }
+
+                // Check if the learner has answered this questions using this answer
+                if(answer.isChecked()){
+                    // The log exam entity for this answer will be updated in database
+                    updateLogExamInDatabase = true;
+
+                    // Set the checked and answer time fields
+                    checked = true;
+                    answerTime = answer.getAnswerTime();
+                }
+
+                // Check if the log exam have to update in database
+                if(updateLogExamInDatabase){
+                    // Update the log exam entity in database
+                    this.insertOrUpdateLogExam(learnerId, examId, question.getQuestionId(), answer.getAsnwerId(), checked, activeConfidenceLevel, answerTime);
+                }
+            }
+        }
+    }
+
+    /**
+     * Calculates the exam score and update it in database
+     * @param examId The exam identifer
+     * @param learnerId The learner identifier
+     * @param questionList The question list of the exam
+     * @param examEndDate The exam end date
+     */
+    public void calculateExamScore(int examId, int learnerId, List<NewExamQuestionModel> questionList, Date examEndDate){
+
+        // Variable with the exam score
+        double examScore  = 0;
+
+        // Calculate the score for each question
+        for(NewExamQuestionModel question : questionList){
+
+            // Calculate the question score
+            double questionScore = this.learnerExamService.calculateQuestionScore(learnerId, examId, question.getQuestionId(), questionList.size());
+
+            // Add the question score to exam score
+            examScore += questionScore;
+        }
+
+        // Update the score in database
+        Calificacion calif = this.calificacionRepository.findByUserIdAndExamId(learnerId, examId);
+        long examDurationInMilliseconds = examEndDate.getTime() - calif.getFechaIni().getTime();
+        calif.setTiempo((int)Math.ceil(examDurationInMilliseconds / (60.0 * 1000.0)));
+        calif.setFechaFin(examEndDate);
+        calif.setNota(new BigDecimal(examScore));
+        this.calificacionRepository.save(calif);
     }
 
     /**
@@ -330,6 +435,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         newExamQuestionModel.setQuestionId(question.getIdpreg());
         newExamQuestionModel.setStatement(question.getEnunciado());
         newExamQuestionModel.setNumberCorrectAnswers(question.getNRespCorrectas());
+        newExamQuestionModel.setActiveConfidenceLevel(false);
 
         // Return the model object
         return newExamQuestionModel;
@@ -354,4 +460,58 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         return newExamAnswerModel;
     }
 
+    /**
+     * Insert or update the log exam entity in database
+     * @param learnerId The learner identifier
+     * @param examId The exam identifier
+     * @param questionId The question identifier
+     * @param answerId The answer identifier
+     * @param checked If the answer is checked (Optional value to insert or update)
+     * @param confidenceLevel If the question has checked as confidence level (Optional value to insert or update)
+     * @param answerTime The answer time (Optional value to insert or update)
+     */
+    private void insertOrUpdateLogExam(int learnerId, int examId, int questionId, int answerId, Boolean checked, Boolean confidenceLevel, Date answerTime){
+        // Try to get the Log Exam
+        LogExamen logExam = this.logExamenRepository.findByExamIdAndUserIdAndQuestionIdAndAnswerId(examId, learnerId, questionId, answerId);
+
+        // Check if the log exam is in database
+        if(logExam != null){
+            // Set the fields
+            if(checked != null){
+                logExam.setMarcada(checked ? 1 : 0);
+            }
+            if(confidenceLevel != null){
+                logExam.setNivelConfianza(confidenceLevel ? 1 : 0);
+            }
+            if(answerTime != null){
+                logExam.setHoraResp(answerTime);
+            }
+        }else{
+            // Crate a new log exam
+            logExam = new LogExamen();
+            logExam.setUsuario(this.usuarioRepository.findOne(learnerId));
+            logExam.setExamen(this.examenRepository.findOne(examId));
+            logExam.setPregunta(this.preguntaRepository.findOne(questionId));
+            logExam.setRespuesta(this.respuestaRepository.findOne(answerId));
+            logExam.setPuntos(new BigDecimal(0));
+            if(checked != null){
+                logExam.setMarcada(checked ? 1 : 0);
+            }else{
+                logExam.setMarcada(0);
+            }
+            if(confidenceLevel != null){
+                logExam.setNivelConfianza(confidenceLevel ? 1 : 0);
+            }else{
+                logExam.setNivelConfianza(0);
+            }
+            if(answerTime != null){
+                logExam.setHoraResp(answerTime);
+            }else{
+                logExam.setHoraResp(new Date(System.currentTimeMillis()));
+            }
+        }
+
+        // Insert or update the log exam in database
+        this.logExamenRepository.save(logExam);
+    }
 }

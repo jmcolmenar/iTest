@@ -22,6 +22,10 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.service.business;
 
 import com.itest.model.NewExamModel;
+import com.itest.model.NewExamQuestionModel;
+
+import java.util.Date;
+import java.util.List;
 
 public interface LearnerNewExamService {
 
@@ -41,6 +45,15 @@ public interface LearnerNewExamService {
     boolean examMustBeFinished(int examId);
 
     /**
+     * Check if the exam is ended out of date
+     * @param examId The exam identifier
+     * @param learnerId The learner identifier
+     * @param examEndDate The exam end date
+     * @return Whether the exam is ended out of date or not
+     */
+    boolean isExamEndedOutOfDate(int examId, int learnerId, Date examEndDate);
+
+    /**
      * Generate a new exam to perform by the learner
      * @param learnerId The learner identifier
      * @param examId The exam identifier
@@ -49,4 +62,20 @@ public interface LearnerNewExamService {
      */
     NewExamModel generateNewExamForLearner(int learnerId, int examId, String ip);
 
+    /**
+     * Update the answered question of the exam in database
+     * @param examId The exam identifier
+     * @param learnerId The learner identifier
+     * @param questionList The answered questions of the exam
+     */
+    void updateAnsweredQuestionsInDatabase(int examId, int learnerId, List<NewExamQuestionModel> questionList);
+
+    /**
+     * Calculates the exam score and update it in database
+     * @param examId The exam identifer
+     * @param learnerId The learner identifier
+     * @param questionList The question list of the exam
+     * @param examEndDate The exam end date
+     */
+    void calculateExamScore(int examId, int learnerId, List<NewExamQuestionModel> questionList, Date examEndDate);
 }

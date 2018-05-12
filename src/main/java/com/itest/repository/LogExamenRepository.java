@@ -54,4 +54,15 @@ public interface LogExamenRepository extends JpaRepository<LogExamen, Serializab
             "   and log.pregunta.idpreg = :questionid ")
     List<LogExamen> findByExamIdAndUserIdAndQuestionId(@Param("examid") int examId, @Param("userid") int userId, @Param("questionid") int questionId);
 
+    @Query("select " +
+            "   log " +
+            "from " +
+            "   LogExamen log " +
+            "where" +
+            "   log.examen.idexam = :examid " +
+            "   and log.usuario.idusu = :userid " +
+            "   and log.pregunta.idpreg = :questionid " +
+            "   and log.respuesta.idresp = :answerid ")
+    LogExamen findByExamIdAndUserIdAndQuestionIdAndAnswerId(@Param("examid") int examId, @Param("userid") int userId, @Param("questionid") int questionId, @Param("answerid") int answerId);
+
 }
