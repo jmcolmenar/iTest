@@ -30,6 +30,14 @@ import java.util.List;
 public interface LearnerNewExamService {
 
     /**
+     * Check if the exam is already started by the learner
+     * @param learnerId The learner identifier
+     * @param examId The exam identifier
+     * @return Whether the exam is started or not
+     */
+    boolean isExamAlreadyStarted(int learnerId, int examId);
+
+    /**
      * Check if the exam is already done by the learner
      * @param learnerId The learner identifier
      * @param examId The exam identifier
@@ -38,20 +46,20 @@ public interface LearnerNewExamService {
     boolean isExamAlreadyDonde(int learnerId, int examId);
 
     /**
-     * Check if the exam must be finised due to the exam end date is before than now
+     * Check if the exam to start is out of time
      * @param examId The exam identifier
-     * @return Whether the exam must be finished or not
+     * @return Whether the exam to start is out of time or not
      */
-    boolean examMustBeFinished(int examId);
+    boolean isExamToStartOutOfTime(int examId);
 
     /**
-     * Check if the exam is ended out of date
+     * Check if the exam to end is out of time
      * @param examId The exam identifier
      * @param learnerId The learner identifier
      * @param examEndDate The exam end date
-     * @return Whether the exam is ended out of date or not
+     * @return Whether the exam to end is out of time or not
      */
-    boolean isExamEndedOutOfDate(int examId, int learnerId, Date examEndDate);
+    boolean isExamToEndOutOfTime(int examId, int learnerId, Date examEndDate);
 
     /**
      * Generate a new exam to perform by the learner

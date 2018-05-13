@@ -70,6 +70,23 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
     private LogExamenRepository logExamenRepository;
 
     /**
+     * Check if the exam is already started by the learner
+     * @param learnerId The learner identifier
+     * @param examId The exam identifier
+     * @return Whether the exam is started or not
+     */
+    public boolean isExamAlreadyStarted(int learnerId, int examId){
+        // Find the qualifiaction of exam by user (When a new exam is generated a empty qualification is created in database)
+        Calificacion qualification = this.calificacionRepository.findByUserIdAndExamId(learnerId, examId);
+
+        // Check if there is a qualification of the exam by user and the end date has not been set
+        boolean isExamAlreadyStarted = qualification != null && qualification.getFechaFin().getTime() == new Date(0).getTime();
+
+        // Return the boolean indicating whether the exam is already started or not
+        return isExamAlreadyStarted;
+    }
+
+    /**
      * Check if the exam is already done by the learner
      * @param learnerId The learner identifier
      * @param examId The exam identifier
@@ -77,41 +94,41 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
      */
     public boolean isExamAlreadyDonde(int learnerId, int examId){
 
-        // Find the done exam by user
-        Examen exam = this.examenRepository.findDoneExamByUserIdAndExamId(learnerId, examId);
+        // Find the qualifiaction of exam by user (When a new exam is generated a empty qualification is created in database)
+        Calificacion qualification = this.calificacionRepository.findByUserIdAndExamId(learnerId, examId);
 
-        // Check if there is a done exam by user in database
-        boolean isExamAlreadyDonde = exam != null;
+        // Check if there is a qualification of the exam by user and the end date has been set
+        boolean isExamAlreadyDonde = qualification != null && qualification.getFechaFin().getTime() != new Date(0).getTime();
 
         // Return the boolean indicating whether the exam is already done or not
         return isExamAlreadyDonde;
     }
 
     /**
-     * Check if the exam must be finised due to the exam end date is before than now
+     * Check if the exam to start is out of time
      * @param examId The exam identifier
-     * @return Whether the exam must be finished or not
+     * @return Whether the exam to start is out of time or not
      */
-    public boolean examMustBeFinished(int examId){
+    public boolean isExamToStartOutOfTime(int examId){
 
         // Find the exam
         Examen exam = this.examenRepository.findOne(examId);
 
         // Check if the exam end date is before than now
-        boolean examMustBeFinished = exam != null && exam.getFechaFin() != null && exam.getFechaFin().getTime() <= System.currentTimeMillis();
+        boolean isExamOutOfTime = exam != null && exam.getFechaFin() != null && exam.getFechaFin().getTime() <= System.currentTimeMillis();
 
-        // Return the boolean indicating whether the exam must be finished or not
-        return examMustBeFinished;
+        // Return the boolean indicating whether the exam is out of time or not
+        return isExamOutOfTime;
     }
 
     /**
-     * Check if the exam is ended out of date
+     * Check if the exam to end is out of time
      * @param examId The exam identifier
      * @param learnerId The learner identifier
      * @param examEndDate The exam end date
-     * @return Whether the exam is ended out of date or not
+     * @return Whether the exam to end is out of time or not
      */
-    public boolean isExamEndedOutOfDate(int examId, int learnerId, Date examEndDate){
+    public boolean isExamToEndOutOfTime(int examId, int learnerId, Date examEndDate){
 
         // Find the qualification of exam and exam from database
         Calificacion calif = this.calificacionRepository.findByUserIdAndExamId(learnerId, examId);
