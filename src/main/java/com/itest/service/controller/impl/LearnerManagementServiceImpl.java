@@ -247,7 +247,10 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
                 getNewExamResponse.setNewExam(newExamModel);
 
                 // Set the session interval period to avoid the session expires -> The maximum inactive interval will be the exam duration more an extra time
-                httpRequest.getSession().setMaxInactiveInterval(newExamModel.getExamTime() * 60 + 15);
+                int examDurationMoreExtraTimeSeconds = newExamModel.getExamTime() * 60 + 10;
+                if(httpRequest.getSession().getMaxInactiveInterval() < examDurationMoreExtraTimeSeconds){
+                    httpRequest.getSession().setMaxInactiveInterval(examDurationMoreExtraTimeSeconds);
+                }
             }
 
         }catch (Exception exc){
