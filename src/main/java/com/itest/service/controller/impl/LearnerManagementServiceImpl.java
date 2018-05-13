@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -190,7 +191,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
         return getTutorsResponse;
     }
 
-    public GetNewExamResponse getNewExam(GetNewExamRequest request){
+    public GetNewExamResponse getNewExam(GetNewExamRequest request, HttpServletRequest httpRequest){
 
         // Initialize the response
         GetNewExamResponse getNewExamResponse = new GetNewExamResponse();
@@ -202,7 +203,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
         try{
             // Get the request variables
             examId = request.getExamId();
-            String ip = request.getIp();
+            String ip = httpRequest.getRemoteAddr();
 
             // Get the identifer of current learner
             learnerId = this.userService.getUserIdOfCurrentUser();
@@ -239,6 +240,9 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
                 // Set the generated exam to response
                 getNewExamResponse.setNewExam(newExamModel);
+
+                // Set the session interval period to avoid the session expires -> The maximum inactive interval will be the exam duration more an extra time
+                httpRequest.getSession().setMaxInactiveInterval(newExamModel.getExamTime() * 60 + 15);
             }
 
         }catch (Exception exc){

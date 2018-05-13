@@ -24,6 +24,8 @@ package com.itest.service.controller;
 import com.itest.model.request.*;
 import com.itest.model.response.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface LearnerManagementService {
 
     GetCoursesResponse getCourseList();
@@ -34,7 +36,7 @@ public interface LearnerManagementService {
 
     GetTutorsToSendEmailResponse getTutorsToSendEmail(GetTutorsToSendEmailRequest request);
 
-    GetNewExamResponse getNewExam(GetNewExamRequest request);
+    GetNewExamResponse getNewExam(GetNewExamRequest request, HttpServletRequest httpRequest);
 
     EndExamResponse endExam(EndExamRequest request);
 }

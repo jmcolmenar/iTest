@@ -81,13 +81,8 @@ public class LearnerManagementController {
     @PostMapping("/getNewExam")
     public GetNewExamResponse getNewExam(@RequestBody GetNewExamRequest request, HttpServletRequest httpRequest){
 
-        // Check if the request is not null to set the ip
-        if(request != null){
-            request.setIp(httpRequest.getRemoteAddr());
-        }
-
         // Call to the service to get a new exam to perfom
-        GetNewExamResponse response = this.learnerManagementService.getNewExam(request);
+        GetNewExamResponse response = this.learnerManagementService.getNewExam(request, httpRequest);
 
         // Return the response
         return response;
