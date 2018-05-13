@@ -30,6 +30,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,6 +61,10 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
     @Autowired
     @Qualifier("learnerNewExamServiceImpl")
     private LearnerNewExamService learnerNewExamService;
+
+    @Autowired
+    @Qualifier("translationServiceImpl")
+    private TranslationService translationService;
 
     public GetCoursesResponse getCourseList() {
 
@@ -213,7 +218,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
                 // Set the error when the exam has already done by the user
                 getNewExamResponse.setHasError(true);
-                getNewExamResponse.setErrorMessage("The exam is already started"); // TODO: Translate the error
+                getNewExamResponse.setErrorMessage(this.translationService.getMessage("newExam.alreadyStartedError"));
             }
 
             // Check if the exam is already done
@@ -221,7 +226,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
                 // Set the error when the exam has already done by the user
                 getNewExamResponse.setHasError(true);
-                getNewExamResponse.setErrorMessage("The exam is already done"); // TODO: Translate the error
+                getNewExamResponse.setErrorMessage(this.translationService.getMessage("newExam.alreadyDoneError"));
             }
 
             // Check if the exam is out of time
@@ -229,7 +234,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
                 // Set the error because the exam must be finished
                 getNewExamResponse.setHasError(true);
-                getNewExamResponse.setErrorMessage("The exam is not available because it is out of time"); // TODO: Translate the error
+                getNewExamResponse.setErrorMessage(this.translationService.getMessage("newExam.outOfTimeError"));
             }
 
             // Get the exam to perform if there are no errors
@@ -282,7 +287,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
                 // Set the error when the exam has ended out of time
                 endExamResponse.setHasError(true);
-                endExamResponse.setErrorMessage("The exam is ended out of time"); // TODO: Translate the error
+                endExamResponse.setErrorMessage(this.translationService.getMessage("newExam.endExamOutOfTimeError"));
 
             }else{
 

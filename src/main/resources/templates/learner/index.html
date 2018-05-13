@@ -102,7 +102,7 @@
                     <div class="modal-body">
                         <h2><span class="glyphicon glyphicon-exclamation-sign"></span></h2>
                         <p id="genericErrorFromServer"></p>
-                        <p id="genericErrorFromPage">Error contactando con el servidor...</p>
+                        <p id="genericErrorFromPage" th:text="#{serverError}"></p>
                     </div>
                     <div class="modal-footer-custom">
                         <button type="button" class="btn btn-primary" data-dismiss="modal" th:text="#{modalOkButton}"></button>

@@ -13,7 +13,7 @@
     </div>
 
     <div class="new-exam-finish-button-div">
-        <button href="#/subject/" type="button" ng-click="endExam(true)" class="btn btn-primary btn-lg">Finalizar Exámen</button>
+        <button href="#/subject/" type="button" ng-click="endExam(true)" class="btn btn-primary btn-lg" th:text="#{newExam.endExam}"></button>
     </div>
 
     <div id="main-exam-div">
@@ -25,7 +25,7 @@
         <div class="container-fluid" id="exam-questions-div">
             <!-- on-finish-render="convertFormulas" => Call to the AsciiMath library at the end of ng-repeat rendering -->
             <div ng-repeat="question in newExam.questionList" on-finish-render="convertFormulas">
-                <h3><strong><span th:text="#{exam.questionTitle.question}"></span>&nbsp;{{$index + 1}}</strong><span ng-show="newExam.showNumberRightAnswers">&nbsp;-&nbsp;({{question.numberCorrectAnswers}}&nbsp;respuestas)</span></h3>
+                <h3><strong><span th:text="#{exam.questionTitle.question}"></span>&nbsp;{{$index + 1}}</strong><span ng-show="newExam.showNumberRightAnswers">&nbsp;-&nbsp;({{question.numberCorrectAnswers}}&nbsp;<span th:text="#{newExam.answerNumber}"></span>)</span></h3>
                 <div class="exam-question">
                     <h4>{{question.statement}}</h4>
 
@@ -39,7 +39,7 @@
                     <div ng-show="newExam.activeConfidenceLevel" class="confidence-level-checkbox">
                         <div class="checkbox checkbox-rtl">
                             <input id="questionConfLevel{{question.questionId}}" ng-model="question.activeConfidenceLevel" type="checkbox"/>
-                            <label for="questionConfLevel{{question.questionId}}">Estoy seguro de mi respuesta</label>
+                            <label for="questionConfLevel{{question.questionId}}" th:text="#{newExam.question.confidenceLevel}"></label>
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
     </div>
 
     <div class="new-exam-finish-button-div">
-        <button href="#/subject/" type="button" ng-click="endExam(true)" class="btn btn-primary btn-lg">Finalizar Exámen</button>
+        <button href="#/subject/" type="button" ng-click="endExam(true)" class="btn btn-primary btn-lg" th:text="#{newExam.endExam}"></button>
     </div>
 
     <!-- Modal with warning message for number of right answers -->
@@ -58,7 +58,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <h2><span class="glyphicon glyphicon-alert" aria-hidden="true"></span></h2>
-                    <p>Por favor, marque menos respuestas</p>
+                    <p th:text="#{newExam.checkLessAnswers}"></p>
                 </div>
                 <div class="modal-footer-custom">
                     <button type="button" class="btn btn-primary" data-dismiss="modal" th:text="#{modalOkButton}"></button>
@@ -74,7 +74,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <h2><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></h2>
-                    <p>No todas las respuestas han sido contestadas. ¿Seguro que desea finalizar el exámen?</p>
+                    <p th:text="#{newExam.endExamWithoutCheckAllAnswers}"></p>
                 </div>
                 <div class="modal-footer-custom">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-right: 20px;" th:text="#{modalCancelButton}"></button>
@@ -91,7 +91,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <h2><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></h2>
-                    <p id="genericErrorFromPage">¿Seguro que desea finalizar el exámen?</p>
+                    <p th:text="#{newExam.endExamQuestion}"></p>
                 </div>
                 <div class="modal-footer-custom">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-right: 20px;" th:text="#{modalCancelButton}"></button>

@@ -10,17 +10,17 @@
         </div>
         <br/>
         <div class="container-fluid" id="exam-score-info-div">
-            <h3>Su calificación es:</h3>
-            <h2><strong>{{examScoreInfo.score}} / {{examScoreInfo.maxScore}}</strong></h2>
+            <h3 th:text="#{examScore.qualification}"></h3>
+            <h2><strong>{{examScoreInfo.score}}&nbsp;/&nbsp;{{examScoreInfo.maxScore}}</strong></h2>
             <br/>
-            <h4 ng-hide="examScoreInfo.availableReview">La revisión de este examen no esta disponible</h4>
+            <h4 ng-hide="examScoreInfo.availableReview" th:text="#{examScore.notAvailableReview}"></h4>
             <div ng-show="examScoreInfo.availableReview">
-                <h4>La revisión de este examen esta disponible</h4>
+                <h4 th:text="#{examScore.availableReview}"></h4>
                 <ul>
-                    <li><h4>Fecha de inicio de la revision: <strong>{{examScoreInfo.reviewStartDate}}</strong></h4></li>
-                    <li><h4>Fecha de fin de la revision: <strong>{{examScoreInfo.reviewEndDate}}</strong></h4></li>
+                    <li><h4><span th:text="#{examScore.reviewStartDate}"></span>&nbsp;<strong>{{examScoreInfo.reviewStartDate}}</strong></h4></li>
+                    <li><h4><span th:text="#{examScore.reviewEndDate}"></span>&nbsp;<strong>{{examScoreInfo.reviewEndDate}}</strong></h4></li>
                 </ul>
-                <button id="exam-score-info-review-button" class="btn btn-primary" ng-click="goToReview()">Ir a la revisión</button>
+                <button id="exam-score-info-review-button" class="btn btn-primary" ng-click="goToReview()" th:text="#{examScore.goToReview}"></button>
             </div>
         </div>
     </div>
