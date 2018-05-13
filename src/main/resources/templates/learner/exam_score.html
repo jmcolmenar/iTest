@@ -13,8 +13,8 @@
             <h3 th:text="#{examScore.qualification}"></h3>
             <h2><strong>{{examScoreInfo.score}}&nbsp;/&nbsp;{{examScoreInfo.maxScore}}</strong></h2>
             <br/>
-            <h4 ng-hide="examScoreInfo.availableReview" th:text="#{examScore.notAvailableReview}"></h4>
-            <div ng-show="examScoreInfo.availableReview">
+            <h4 ng-hide="examScoreInfo.availableReview" class="exam-score-above" th:text="#{examScore.notAvailableReview}"></h4>
+            <div ng-show="examScoreInfo.availableReview" class="exam-score-above">
                 <h4 th:text="#{examScore.availableReview}"></h4>
                 <ul>
                     <li><h4><span th:text="#{examScore.reviewStartDate}"></span>&nbsp;<strong>{{examScoreInfo.reviewStartDate}}</strong></h4></li>
