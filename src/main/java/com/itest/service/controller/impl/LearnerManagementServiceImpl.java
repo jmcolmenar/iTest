@@ -292,7 +292,9 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
                 // Calculates the exam score
                 this.learnerNewExamService.calculateExamScore(examId, learnerId, questionList, examEndDate);
 
-                // Get the exam info
+                // Get the exam info and set to the response object
+                ExamScoreInfoModel examScoreInfo = this.learnerNewExamService.getExamScoreInfo(examId, learnerId);
+                endExamResponse.setExamScoreInfo(examScoreInfo);
             }
         }catch (Exception exc){
             // Log the exception

@@ -1,0 +1,27 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <div class="exam-score-info-exit-button">
+        <a href="#/subject/" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;&nbsp;<span th:text="#{examScore.exit}"></span></a>
+    </div>
+
+    <div id="main-exam-div">
+        <div id="exam-title-div">
+            <h2>{{examScoreInfo.examTitle}}</h2>
+            <h4>{{examScoreInfo.subjectName}}</h4>
+        </div>
+        <br/>
+        <div class="container-fluid" id="exam-score-info-div">
+            <h3>Su calificación es:</h3>
+            <h2><strong>{{examScoreInfo.score}} / {{examScoreInfo.maxScore}}</strong></h2>
+            <br/>
+            <h4 ng-hide="examScoreInfo.availableReview">La revisión de este examen no esta disponible</h4>
+            <div ng-show="examScoreInfo.availableReview">
+                <h4>La revisión de este examen esta disponible</h4>
+                <ul>
+                    <li><h4>Fecha de inicio de la revision: <strong>{{examScoreInfo.reviewStartDate}}</strong></h4></li>
+                    <li><h4>Fecha de fin de la revision: <strong>{{examScoreInfo.reviewEndDate}}</strong></h4></li>
+                </ul>
+                <button id="exam-score-info-review-button" class="btn btn-primary" ng-click="goToReview()">Ir a la revisión</button>
+            </div>
+        </div>
+    </div>
+</div>

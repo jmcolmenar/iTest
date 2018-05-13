@@ -243,7 +243,7 @@ body{
     background: rgba(80, 203, 29, 0.65);
 }
 
-.review-exam-go-back-button-div{
+.review-exam-go-back-button-div, .exam-score-info-exit-button{
     margin-bottom: 15px;
     text-align: center;
 }
@@ -343,4 +343,18 @@ body{
     padding-bottom: 25px;
 }
 
-/* TODO: Media queries .new-exam-top-righ-middle-div span{padding-right}*/
+/* === SCORE EXAM INFO === */
+
+#exam-score-info-div{
+    margin-top: -5px;
+}
+
+#exam-score-info-div h2{
+    margin-left: 15px;
+}
+
+#exam-score-info-review-button{
+    margin-top: 5px;
+    margin-left: 40px;
+    margin-bottom: 15px;
+}

@@ -21,5 +21,17 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.model.response;
 
+import com.itest.model.ExamScoreInfoModel;
+
 public class EndExamResponse extends Response {
+
+    private ExamScoreInfoModel examScoreInfo;
+
+    public ExamScoreInfoModel getExamScoreInfo() {
+        return examScoreInfo;
+    }
+
+    public void setExamScoreInfo(ExamScoreInfoModel examScoreInfo) {
+        this.examScoreInfo = examScoreInfo;
+    }
 }

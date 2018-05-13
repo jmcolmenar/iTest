@@ -48,4 +48,9 @@ public class LearnerController {
     public String getNewExamView(){
         return "learner/new_exam";
     }
+
+    @GetMapping("/examScore")
+    public String getExamScoreView(){
+        return "learner/exam_score";
+    }
 }

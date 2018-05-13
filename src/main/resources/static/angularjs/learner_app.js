@@ -10,6 +10,7 @@ app.service('sharedProperties', function () {
     var currentGroupId = 0;
     var currentExamId = 0;
     var newExamInfo = null;
+    var examScoreInfo = null;
 
     return {
         getCurrentGroupId: function () {
@@ -29,6 +30,12 @@ app.service('sharedProperties', function () {
         },
         setNewExamInfo: function(value) {
             newExamInfo = value;
+        },
+        getExamScoreInfo: function () {
+            return examScoreInfo;
+        },
+        setExamScoreInfo: function(value) {
+            examScoreInfo = value;
         }
     };
 });
@@ -127,6 +134,10 @@ app.config(['$routeProvider', function ($routeProvider){
         .when('/newexam',{
             templateUrl: '/learner/partial/newExam',
             controller: 'newExamCtrl'
+        })
+        .when('/examscore',{
+            templateUrl: '/learner/partial/examScore',
+            controller: 'examScoreCtrl'
         })
         .otherwise({
             redirectTo: '/'
@@ -557,12 +568,33 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
                 // Call to the server to end the exam
                 serverCaller.httpPost(endExamRequest, '/api/learner/endExam',
                     function (response) {
-                        // TODO: Go to the exam score page
+                        // Set the exam score response in the shared properties
+                        sharedProperties.setExamScoreInfo(response.examScoreInfo);
+
+                        // Go to the exam score info page
+                        $window.location.href = '#/examscore/';
                     },
                     function (response) {},
                     true);
             }
         }
     }
+
+}]);
+
+// Exam score management controller
+app.controller('examScoreCtrl', ['$scope', '$window', 'sharedProperties', 'serverCaller', function($scope, $window, sharedProperties, serverCaller){
+
+    // Get the exam score info from the shared properties
+    $scope.examScoreInfo = sharedProperties.getExamScoreInfo();
+
+    // Function to go to exam review
+    $scope.goToReview = function () {
+        // Set the exam identifier
+        sharedProperties.setCurrentExamId($scope.examScoreInfo.examId);
+
+        // The learner is redirected to the review exam page
+        $window.location.href = '#/reviewexam/';
+    };
 
 }]);

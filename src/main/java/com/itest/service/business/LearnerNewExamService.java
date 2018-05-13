@@ -21,6 +21,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.business;
 
+import com.itest.model.ExamScoreInfoModel;
 import com.itest.model.NewExamModel;
 import com.itest.model.NewExamQuestionModel;
 
@@ -86,4 +87,12 @@ public interface LearnerNewExamService {
      * @param examEndDate The exam end date
      */
     void calculateExamScore(int examId, int learnerId, List<NewExamQuestionModel> questionList, Date examEndDate);
+
+    /**
+     * Get the exam score information
+     * @param examId The exam identifier
+     * @param learnerId The learner identifier
+     * @return The model object holding the exam score information
+     */
+    ExamScoreInfoModel getExamScoreInfo(int examId, int learnerId);
 }

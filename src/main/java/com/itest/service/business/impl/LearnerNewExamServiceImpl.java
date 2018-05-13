@@ -21,8 +21,10 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.business.impl;
 
+import com.itest.component.FormatterComponent;
 import com.itest.constant.QuestionVisibilityConstant;
 import com.itest.entity.*;
+import com.itest.model.ExamScoreInfoModel;
 import com.itest.model.NewExamModel;
 import com.itest.model.NewExamAnswerModel;
 import com.itest.model.NewExamQuestionModel;
@@ -68,6 +70,10 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
     @Autowired
     @Qualifier("logExamenRepository")
     private LogExamenRepository logExamenRepository;
+
+    @Autowired
+    @Qualifier("formatterComponent")
+    private FormatterComponent formatterComponent;
 
     /**
      * Check if the exam is already started by the learner
@@ -274,6 +280,37 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         calif.setFechaFin(examEndDate);
         calif.setNota(new BigDecimal(examScore));
         this.calificacionRepository.save(calif);
+    }
+
+    /**
+     * Get the exam score information
+     * @param examId The exam identifier
+     * @param learnerId The learner identifier
+     * @return The model object holding the exam score information
+     */
+    public ExamScoreInfoModel getExamScoreInfo(int examId, int learnerId){
+
+        // Get the exam and qualification from database
+        Examen exam = this.examenRepository.findOne(examId);
+        Calificacion qualification = this.calificacionRepository.findByUserIdAndExamId(learnerId, examId);
+
+        // Initialize the model object and fill it
+        ExamScoreInfoModel examScoreInfoModel = new ExamScoreInfoModel();
+        examScoreInfoModel.setExamId(examId);
+        examScoreInfoModel.setExamTitle(exam.getTitulo());
+        examScoreInfoModel.setSubjectName(this.learnerExamService.getSubjectNameFromExam(examId));
+        examScoreInfoModel.setScore(this.formatterComponent.formatNumberWithTwoDecimals(qualification.getNota()));
+        examScoreInfoModel.setMaxScore(this.formatterComponent.formatNumberWithTwoDecimals(exam.getNotaMax()));
+        if(exam.getRevActiva() == 1){
+            examScoreInfoModel.setAvailableReview(true);
+            examScoreInfoModel.setReviewStartDate(this.formatterComponent.formatDateToString(exam.getFechaIniRev()));
+            examScoreInfoModel.setReviewEndDate(this.formatterComponent.formatDateToString(exam.getFechaFinRev()));
+        }else{
+            examScoreInfoModel.setAvailableReview(false);
+        }
+
+        // Return the model object holding the exam score info
+        return examScoreInfoModel;
     }
 
     /**
