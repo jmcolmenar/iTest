@@ -81,7 +81,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input type="text" class="form-control" name="username" th:placeholder="#{user}" value="" ng-model="credentials.username"/>
+                                        <input type="text" class="form-control" name="username" th:placeholder="#{user}" value="" ng-model="credentials.username" maxlength="20"/>
                                     </div>
                                 </div>
 
@@ -89,7 +89,7 @@
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                                         <input type="text" style="display:none;"/> <!-- To avoid autocomplete the password -->
-                                        <input type="password" class="form-control" name="password" th:placeholder="#{password}" value="" ng-model="credentials.password"/>
+                                        <input type="password" class="form-control" name="password" th:placeholder="#{password}" value="" ng-model="credentials.password" maxlength="32"/>
                                     </div>
                                 </div>
 
