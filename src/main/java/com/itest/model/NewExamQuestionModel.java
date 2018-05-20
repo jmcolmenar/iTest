@@ -35,6 +35,8 @@ public class NewExamQuestionModel {
 
     private List<NewExamAnswerModel> answerList;
 
+    private List<MultimediaElementModel> questionMultimediaList;
+
     public int getQuestionId() {
         return questionId;
     }
@@ -77,5 +79,17 @@ public class NewExamQuestionModel {
 
     public void addAnswerToAnswerList(NewExamAnswerModel answer){
         this.answerList.add(answer);
+    }
+
+    public List<MultimediaElementModel> getQuestionMultimediaList() {
+        return questionMultimediaList;
+    }
+
+    public void setQuestionMultimediaList(List<MultimediaElementModel> questionMultimediaList) {
+        this.questionMultimediaList = questionMultimediaList;
+    }
+
+    public void addQuestionMultimedia(MultimediaElementModel questionMultimedia) {
+        this.questionMultimediaList.add(questionMultimedia);
     }
 }

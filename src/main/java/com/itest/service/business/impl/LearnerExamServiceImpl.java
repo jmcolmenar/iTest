@@ -22,6 +22,8 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.service.business.impl;
 
 import com.itest.component.FormatterComponent;
+import com.itest.constant.MultimediaPathConstant;
+import com.itest.constant.MultimediaTypeConstant;
 import com.itest.entity.*;
 import com.itest.model.*;
 import com.itest.repository.ExamenRepository;
@@ -269,6 +271,56 @@ public class LearnerExamServiceImpl implements LearnerExamService {
 
         // Return the question score
         return questionScore;
+    }
+
+    /**
+     * Get the Multimedia Element Model object from the database object
+     * @param databaseMultimediaElement The database object with the multimedia element information
+     * @return The model object with the multimedia info
+     */
+    public MultimediaElementModel getMultimediaElementModelFromDatabaseEntity(Object databaseMultimediaElement){
+
+        // Get the common fields of the multimedia element from the entities in database
+        String ruta;
+        int tipo;
+        String ancho;
+        String alto;
+        int geogebraType = 0;
+        if(databaseMultimediaElement.getClass() == ExtraPregunta.class){
+            ruta = ((ExtraPregunta)databaseMultimediaElement).getRuta();
+            tipo = ((ExtraPregunta)databaseMultimediaElement).getTipo();
+            ancho = ((ExtraPregunta)databaseMultimediaElement).getAncho();
+            alto = ((ExtraPregunta)databaseMultimediaElement).getAlto();
+            geogebraType = ((ExtraPregunta)databaseMultimediaElement).getGeogebraType();
+        }else if(databaseMultimediaElement.getClass() == ExtraPreguntaComentario.class){
+            ruta = ((ExtraPreguntaComentario)databaseMultimediaElement).getRuta();
+            tipo = ((ExtraPreguntaComentario)databaseMultimediaElement).getTipo();
+            ancho = ((ExtraPreguntaComentario)databaseMultimediaElement).getAncho();
+            alto = ((ExtraPreguntaComentario)databaseMultimediaElement).getAlto();
+        } else if(databaseMultimediaElement.getClass() == ExtraRespuesta.class){
+            ruta = ((ExtraRespuesta)databaseMultimediaElement).getRuta();
+            tipo = ((ExtraRespuesta)databaseMultimediaElement).getTipo();
+            ancho = ((ExtraRespuesta)databaseMultimediaElement).getAncho();
+            alto = ((ExtraRespuesta)databaseMultimediaElement).getAlto();
+        } else {
+            return null;
+        }
+
+        // Initialize and fill the multimedia element model
+        MultimediaElementModel multimediaElementModel = new MultimediaElementModel();
+        multimediaElementModel.setType(tipo);
+        multimediaElementModel.setWidht(ancho);
+        multimediaElementModel.setHeight(alto);
+        multimediaElementModel.setGeogebraType(geogebraType);
+        if(tipo == MultimediaTypeConstant.YOUTUBE){
+            multimediaElementModel.setPath(MultimediaPathConstant.YOUTUBE + ruta);
+        }else{
+            multimediaElementModel.setPath(MultimediaPathConstant.MEDIA_FILE + ruta);
+            multimediaElementModel.setExtension(ruta.substring(ruta.lastIndexOf('.') + 1).toLowerCase());
+        }
+
+        // Return the multimedia element model
+        return multimediaElementModel;
     }
 
     /**

@@ -23,6 +23,7 @@ package com.itest.service.business;
 
 import com.itest.model.DoneExamInfoModel;
 import com.itest.model.ExamExtraInfoModel;
+import com.itest.model.MultimediaElementModel;
 
 import java.util.List;
 
@@ -76,4 +77,11 @@ public interface LearnerExamService {
      * @return The score of the question
      */
     double calculateQuestionScore(int learnerId, int examId, int questionId, int numberQuestionsOfCurrentExam);
+
+    /**
+     * Get the Multimedia Element Model object from the database object
+     * @param databaseMultimediaElement The database object with the multimedia element information
+     * @return The model object with the multimedia info
+     */
+    MultimediaElementModel getMultimediaElementModelFromDatabaseEntity(Object databaseMultimediaElement);
 }

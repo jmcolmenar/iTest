@@ -22,10 +22,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.service.business.impl;
 
 import com.itest.component.FormatterComponent;
-import com.itest.entity.Examen;
-import com.itest.entity.LogExamen;
-import com.itest.entity.Pregunta;
-import com.itest.entity.Respuesta;
+import com.itest.entity.*;
 import com.itest.model.ReviewExamAnswerModel;
 import com.itest.model.ReviewExamQuestionModel;
 import com.itest.repository.ExamenRepository;
@@ -36,10 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("learnerReviewExamServiceImpl")
 public class LearnerReviewExamServiceImpl implements LearnerReviewExamService {
@@ -115,6 +109,15 @@ public class LearnerReviewExamServiceImpl implements LearnerReviewExamService {
                 answerModel.setRight(respuesta.getSolucion() == 1);
                 answerModel.setChecked(logExamen.getMarcada() == 1);
 
+                // Set the multimedia elements of answer
+                answerModel.setMultimediaList(new ArrayList<>());
+                if(respuesta.getExtraRespuestas() != null && respuesta.getExtraRespuestas().size() > 0){
+                    Collections.sort(respuesta.getExtraRespuestas(), (x1, x2) -> new Integer(x1.getOrden()).compareTo(x2.getOrden()));
+                    for(ExtraRespuesta extraRespuesta : respuesta.getExtraRespuestas()){
+                        answerModel.addMultimedia(this.learnerExamService.getMultimediaElementModelFromDatabaseEntity(extraRespuesta));
+                    }
+                }
+
                 // Check if the question has been added to the auxiliar map
                 if(examQuestionMapAux.containsKey(questionId)){
 
@@ -131,6 +134,24 @@ public class LearnerReviewExamServiceImpl implements LearnerReviewExamService {
                     examQuestionModel.setComment(pregunta.getComentario());
                     examQuestionModel.setNumberCorrectAnswers(pregunta.getNRespCorrectas());
                     examQuestionModel.setActiveConfidenceLevel(logExamen.getNivelConfianza() == 1);
+
+                    // Set the multimedia elements of question
+                    examQuestionModel.setMultimediaList(new ArrayList<>());
+                    if(pregunta.getExtraPreguntas() != null && pregunta.getExtraPreguntas().size() > 0){
+                        Collections.sort(pregunta.getExtraPreguntas(), (x1, x2) -> new Integer(x1.getOrden()).compareTo(x2.getOrden()));
+                        for(ExtraPregunta extraPregunta : pregunta.getExtraPreguntas()){
+                           examQuestionModel.addMultimedia(this.learnerExamService.getMultimediaElementModelFromDatabaseEntity(extraPregunta));
+                       }
+                    }
+
+                    // Set the multimedia elements of question comment
+                    examQuestionModel.setCommentMultimediaList(new ArrayList<>());
+                    if(pregunta.getExtraPreguntaComentarios() != null && pregunta.getExtraPreguntaComentarios().size() > 0){
+                        Collections.sort(pregunta.getExtraPreguntaComentarios(), (x1, x2) -> new Integer(x1.getOrden()).compareTo(x2.getOrden()));
+                        for(ExtraPreguntaComentario extraPreguntaComentario : pregunta.getExtraPreguntaComentarios()){
+                            examQuestionModel.addCommentMultimedia(this.learnerExamService.getMultimediaElementModelFromDatabaseEntity(extraPreguntaComentario));
+                        }
+                    }
 
                     // Add the question model to the list
                     examQuestionModelList.add(examQuestionModel);

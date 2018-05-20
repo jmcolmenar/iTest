@@ -22,6 +22,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class NewExamAnswerModel {
 
@@ -32,6 +33,8 @@ public class NewExamAnswerModel {
     private boolean checked;
 
     private Date answerTime;
+
+    private List<MultimediaElementModel> multimediaList;
 
     public int getAsnwerId() {
         return asnwerId;
@@ -63,5 +66,17 @@ public class NewExamAnswerModel {
 
     public void setAnswerTime(Date answerTime) {
         this.answerTime = answerTime;
+    }
+
+    public List<MultimediaElementModel> getMultimediaList() {
+        return multimediaList;
+    }
+
+    public void setMultimediaList(List<MultimediaElementModel> multimediaList) {
+        this.multimediaList = multimediaList;
+    }
+
+    public void addMultimedia(MultimediaElementModel multimediaModel) {
+        this.multimediaList.add(multimediaModel);
     }
 }

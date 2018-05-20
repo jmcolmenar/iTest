@@ -21,6 +21,8 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.model;
 
+import java.util.List;
+
 public class ReviewExamAnswerModel {
 
     private int asnwerId;
@@ -30,6 +32,8 @@ public class ReviewExamAnswerModel {
     private boolean checked;
 
     private boolean right;
+
+    private List<MultimediaElementModel> multimediaList;
 
     public int getAsnwerId() {
         return asnwerId;
@@ -61,5 +65,17 @@ public class ReviewExamAnswerModel {
 
     public void setRight(boolean right) {
         this.right = right;
+    }
+
+    public List<MultimediaElementModel> getMultimediaList() {
+        return multimediaList;
+    }
+
+    public void setMultimediaList(List<MultimediaElementModel> multimediaList) {
+        this.multimediaList = multimediaList;
+    }
+
+    public void addMultimedia(MultimediaElementModel multimedia) {
+        this.multimediaList.add(multimedia);
     }
 }

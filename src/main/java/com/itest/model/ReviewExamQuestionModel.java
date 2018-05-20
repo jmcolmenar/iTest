@@ -39,6 +39,10 @@ public class ReviewExamQuestionModel {
 
     private List<ReviewExamAnswerModel> answerList;
 
+    private List<MultimediaElementModel> multimediaList;
+
+    private List<MultimediaElementModel> commentMultimediaList;
+
     public int getQuestionId() {
         return questionId;
     }
@@ -93,5 +97,29 @@ public class ReviewExamQuestionModel {
 
     public void setAnswerList(List<ReviewExamAnswerModel> answerList) {
         this.answerList = answerList;
+    }
+
+    public List<MultimediaElementModel> getMultimediaList() {
+        return multimediaList;
+    }
+
+    public void setMultimediaList(List<MultimediaElementModel> multimediaList) {
+        this.multimediaList = multimediaList;
+    }
+
+    public void addMultimedia(MultimediaElementModel multimedia) {
+        this.multimediaList.add(multimedia);
+    }
+
+    public List<MultimediaElementModel> getCommentMultimediaList() {
+        return commentMultimediaList;
+    }
+
+    public void setCommentMultimediaList(List<MultimediaElementModel> commentMultimediaList) {
+        this.commentMultimediaList = commentMultimediaList;
+    }
+
+    public void addCommentMultimedia(MultimediaElementModel commentMultimedia) {
+        this.commentMultimediaList.add(commentMultimedia);
     }
 }

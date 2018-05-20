@@ -24,10 +24,7 @@ package com.itest.service.business.impl;
 import com.itest.component.FormatterComponent;
 import com.itest.constant.QuestionVisibilityConstant;
 import com.itest.entity.*;
-import com.itest.model.ExamScoreInfoModel;
-import com.itest.model.NewExamModel;
-import com.itest.model.NewExamAnswerModel;
-import com.itest.model.NewExamQuestionModel;
+import com.itest.model.*;
 import com.itest.repository.*;
 import com.itest.service.business.LearnerExamService;
 import com.itest.service.business.LearnerNewExamService;
@@ -490,6 +487,13 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         newExamQuestionModel.setStatement(question.getEnunciado());
         newExamQuestionModel.setNumberCorrectAnswers(question.getNRespCorrectas());
         newExamQuestionModel.setActiveConfidenceLevel(false);
+        newExamQuestionModel.setQuestionMultimediaList(new ArrayList<>());
+        if(question.getExtraPreguntas() != null && question.getExtraPreguntas().size() > 0){
+            Collections.sort(question.getExtraPreguntas(), (x1, x2) -> new Integer(x1.getOrden()).compareTo(x2.getOrden()));
+            for(ExtraPregunta extraPregunta : question.getExtraPreguntas()){
+                newExamQuestionModel.addQuestionMultimedia(this.learnerExamService.getMultimediaElementModelFromDatabaseEntity(extraPregunta));
+            }
+        }
 
         // Return the model object
         return newExamQuestionModel;
@@ -509,6 +513,13 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         newExamAnswerModel.setText(answer.getTexto());
         newExamAnswerModel.setChecked(false);
         newExamAnswerModel.setAnswerTime(examStartDate);
+        newExamAnswerModel.setMultimediaList(new ArrayList<>());
+        if(answer.getExtraRespuestas() != null && answer.getExtraRespuestas().size() > 0){
+            Collections.sort(answer.getExtraRespuestas(), (x1, x2) -> new Integer(x1.getOrden()).compareTo(x2.getOrden()));
+            for(ExtraRespuesta extraRespuesta : answer.getExtraRespuestas()){
+                newExamAnswerModel.addMultimedia(this.learnerExamService.getMultimediaElementModelFromDatabaseEntity(extraRespuesta));
+            }
+        }
 
         // Return the model object
         return newExamAnswerModel;
