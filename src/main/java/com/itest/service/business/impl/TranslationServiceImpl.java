@@ -66,6 +66,8 @@ public class TranslationServiceImpl implements TranslationService{
                 this.localeResolver.setLocale(request, response, LanguageConstant.SPANSIH_LOCALE);
             }else if(languageId == LanguageConstant.ENGLISH_ID){
                 this.localeResolver.setLocale(request, response, LanguageConstant.ENGLISH_LOCALE);
+            }else if(languageId == LanguageConstant.FRENCH_ID){
+                this.localeResolver.setLocale(request, response, LanguageConstant.FRENCH_LOCALE);
             }else{
                 throw new Exception("There is not a Locale with LanguageId = "+ languageId);
             }

@@ -28,13 +28,10 @@ public class LanguageConstant {
     // The identifiers of cultures
     public static final int SPANISH_ID = 0;
     public static final int ENGLISH_ID = 1;
-
-    // The strings with the languages of locales
-    public static final String SPANISH_LANGUAGE = "es";
-    public static final String ENGLISH_LANGUAGE = "en";
-
+    public static final int FRENCH_ID = 2;
 
     // The strings with the locales
-    public static Locale SPANSIH_LOCALE = new Locale(SPANISH_LANGUAGE, "");
-    public static Locale ENGLISH_LOCALE = new Locale(ENGLISH_LANGUAGE, "");
+    public static Locale SPANSIH_LOCALE = new Locale("es", "");
+    public static Locale ENGLISH_LOCALE = new Locale("en", "");
+    public static Locale FRENCH_LOCALE = new Locale("fr", "");
 }

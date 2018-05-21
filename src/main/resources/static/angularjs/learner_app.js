@@ -254,6 +254,7 @@ app.controller('userProfileCtrl', ['$scope', '$http', '$window', 'serverCaller' 
     // The language identifiers
     $scope.spanishId = 0;
     $scope.englishId = 1;
+    $scope.frenchId = 2;
 
     // Call to the server to get user profile data
     serverCaller.httpPost({}, '/api/user/getUserProfile',
