@@ -34,7 +34,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service("learnerExamServiceImpl")
 public class LearnerExamServiceImpl implements LearnerExamService {
@@ -145,9 +147,10 @@ public class LearnerExamServiceImpl implements LearnerExamService {
      * @param examId The exam identifier
      * @param questionId The question identifier
      * @param numberQuestionsOfCurrentExam The number of questions in the current exam
+     * @param updateAnswerScoreInDatabase To check if the score for the correct and incorrect answers must be updated in database
      * @return The score of the question
      */
-    public double calculateQuestionScore(int learnerId, int examId, int questionId, int numberQuestionsOfCurrentExam) {
+    public double calculateQuestionScore(int learnerId, int examId, int questionId, int numberQuestionsOfCurrentExam, boolean updateAnswerScoreInDatabase) {
         // The question score variable
         double questionScore = 0;
 
@@ -169,12 +172,20 @@ public class LearnerExamServiceImpl implements LearnerExamService {
 
         // Get the asnwers of question answered by the user in order to get the number of correct and incorrect answers
         List<LogExamen> logExamList = this.logExamenRepository.findByExamIdAndUserIdAndQuestionId(examId, learnerId, questionId);
-        int numberCheckedCorrectAnswers = (int)logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuesta().getSolucion() == 1).count();
-        int numberCheckedIncorrectAnswers = (int)logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuesta().getSolucion() == 0).count();
+        List<LogExamen> checkedCorrectAnswers = logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuesta().getSolucion() == 1).collect(Collectors.toList());
+        List<LogExamen> checkedIncorrectAnswers = logExamList.stream().filter(logExam -> logExam.getMarcada() == 1 && logExam.getRespuesta().getSolucion() == 0).collect(Collectors.toList());
+        int numberCheckedCorrectAnswers = checkedCorrectAnswers.size();
+        int numberCheckedIncorrectAnswers = checkedIncorrectAnswers.size();
 
         // Check if the learner has ckeched the confidence level in the question
         Optional<LogExamen> firstAnswer = logExamList.stream().findFirst(); // All answers of question has the "nivel_confianza" field set as the same
         boolean activeConfidenceLevelInQuestion = firstAnswer.isPresent() && firstAnswer.get().getNivelConfianza() == 1;
+
+        // Variables to calculates the score of correct and incorrect answers
+        boolean updateCorrectAnswers = false;
+        double correctAnswersScore = 0.0;
+        boolean updateIncorrectAnswers = false;
+        double incorrectAnswersScore = 0.0;
 
         /* Start the question score calculation */
 
@@ -189,8 +200,21 @@ public class LearnerExamServiceImpl implements LearnerExamService {
 
             }else{
 
-                // Apply the penalty for question failed
-                questionScore = -(maxScorePerQuestion * questionFailedPenalty);
+                // Check if the exam has partial correction
+                if(isPartialCorrection){
+
+                    // The question score will be the minimum
+                    questionScore = minQuestionScore;
+
+                }else{
+
+                    // Apply the penalty for question failed
+                    questionScore = -(maxScorePerQuestion * questionFailedPenalty);
+                }
+
+                // The answer score for incorrect answers will be the penalty divided between the answers
+                updateIncorrectAnswers = true;
+                incorrectAnswersScore = questionScore / numberCheckedIncorrectAnswers;
             }
         }else{
 
@@ -211,6 +235,10 @@ public class LearnerExamServiceImpl implements LearnerExamService {
                         // Set the max grade per question
                         questionScore = maxScorePerQuestion;
 
+                        // All correct asnwers will have the maximum score
+                        updateCorrectAnswers = true;
+                        correctAnswersScore = questionScore / numberCheckedCorrectAnswers;
+
                     }else{
 
                         // Increment the right answers
@@ -224,6 +252,22 @@ public class LearnerExamServiceImpl implements LearnerExamService {
 
                             // The question score will be the minimum
                             questionScore = minQuestionScore;
+
+                            // The score of answers is divided between the correct and incorrect answers
+                            updateCorrectAnswers = true;
+                            updateIncorrectAnswers = true;
+                            correctAnswersScore = questionScore / (numberCheckedCorrectAnswers + numberCheckedIncorrectAnswers);
+                            incorrectAnswersScore = questionScore / (numberCheckedCorrectAnswers + numberCheckedIncorrectAnswers);
+
+                        }else{
+
+                            // Thesocre of correct answers will be the max score per question divided by the maximum number of correct answers
+                            updateCorrectAnswers = true;
+                            correctAnswersScore = maxScorePerQuestion / numberCorrectAnswers;
+
+                            // The score of incorrect answers will be the pre-configured penalty per answer failed
+                            updateIncorrectAnswers = true;
+                            incorrectAnswersScore = - (maxScorePerQuestion * answerFailedPenalty);
                         }
                     }
 
@@ -235,10 +279,24 @@ public class LearnerExamServiceImpl implements LearnerExamService {
                         // Set the max grade per question
                         questionScore = maxScorePerQuestion;
 
+                        // All correct asnwers will have the maximum score
+                        updateCorrectAnswers = true;
+                        correctAnswersScore = questionScore / numberCorrectAnswers;
+
                     }else{
 
                         // Apply the question failed penalty
                         questionScore = -(maxScorePerQuestion * questionFailedPenalty);
+
+                        // The answer score for correct answers will be 0
+                        updateCorrectAnswers = true;
+                        correctAnswersScore = 0.0;
+
+                        // The answer score for incorrect answers will be the penalty divided between the answers
+                        if(numberCheckedIncorrectAnswers > 0){
+                            updateIncorrectAnswers = true;
+                            incorrectAnswersScore = questionScore / numberCheckedIncorrectAnswers;
+                        }
                     }
                 }
             }
@@ -253,6 +311,12 @@ public class LearnerExamServiceImpl implements LearnerExamService {
                 // Apply the confidence level reward when the confidence level is active in the question
                 if(activeConfidenceLevelInQuestion) {
                     questionScore += maxScorePerQuestion * rewardConfidenceLevel;
+
+                    // All correct asnwers will have the maximum score
+                    if(numberCheckedCorrectAnswers > 0){
+                        updateCorrectAnswers = true;
+                        correctAnswersScore = questionScore / numberCheckedCorrectAnswers;
+                    }
                 }
 
             }else{
@@ -260,6 +324,36 @@ public class LearnerExamServiceImpl implements LearnerExamService {
                 // Apply the confidence level penalty when the confidence level is active in the question
                 if(activeConfidenceLevelInQuestion){
                     questionScore -= maxScorePerQuestion * penaltyConfidenceLevel;
+
+                    // The answer score for correct answers will be 0
+                    updateCorrectAnswers = true;
+                    correctAnswersScore = 0.0;
+
+                    // The answer score for incorrect answers will be the penalty divided between the answers
+                    if(numberCheckedIncorrectAnswers > 0){
+                        updateIncorrectAnswers = true;
+                        incorrectAnswersScore = questionScore / numberCheckedIncorrectAnswers;
+                    }
+                }
+            }
+        }
+
+        // Check if the score for each answer must be updated in database
+        if(updateAnswerScoreInDatabase){
+
+            // Check if update the score for correct answer
+            if(updateCorrectAnswers){
+                for(LogExamen logExamen : checkedCorrectAnswers){
+                    logExamen.setPuntos(new BigDecimal(correctAnswersScore));
+                    this.logExamenRepository.save(logExamen);
+                }
+            }
+
+            // Check if update the score for incorrect answer
+            if(updateIncorrectAnswers){
+                for(LogExamen logExamen : checkedIncorrectAnswers){
+                    logExamen.setPuntos(new BigDecimal(incorrectAnswersScore));
+                    this.logExamenRepository.save(logExamen);
                 }
             }
         }

@@ -73,7 +73,7 @@ public class LearnerReviewExamServiceImpl implements LearnerReviewExamService {
 
         // Get the score for each question
         for (ReviewExamQuestionModel question : questionModelList) {
-            double score = this.learnerExamService.calculateQuestionScore(learnerId, examId, question.getQuestionId(), questionModelList.size());
+            double score = this.learnerExamService.calculateQuestionScore(learnerId, examId, question.getQuestionId(), questionModelList.size(), false);
             String scoreAsString = this.formatterComponent.formatNumberWithTwoDecimals(score);
             question.setScore(scoreAsString.equals("0.00") ? "0" : scoreAsString);
         }

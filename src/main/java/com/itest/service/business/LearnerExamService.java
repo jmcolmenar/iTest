@@ -74,9 +74,10 @@ public interface LearnerExamService {
      * @param examId The exam identifier
      * @param questionId The question identifier
      * @param numberQuestionsOfCurrentExam The number of questions in the current exam
+     * @param updateAnswerScoreInDatabase To check if the score for the correct and incorrect answers must be updated in database
      * @return The score of the question
      */
-    double calculateQuestionScore(int learnerId, int examId, int questionId, int numberQuestionsOfCurrentExam);
+    double calculateQuestionScore(int learnerId, int examId, int questionId, int numberQuestionsOfCurrentExam, boolean updateAnswerScoreInDatabase);
 
     /**
      * Get the Multimedia Element Model object from the database object

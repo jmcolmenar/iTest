@@ -264,7 +264,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         for(NewExamQuestionModel question : questionList){
 
             // Calculate the question score
-            double questionScore = this.learnerExamService.calculateQuestionScore(learnerId, examId, question.getQuestionId(), questionList.size());
+            double questionScore = this.learnerExamService.calculateQuestionScore(learnerId, examId, question.getQuestionId(), questionList.size(), true);
 
             // Add the question score to exam score
             examScore += questionScore;
