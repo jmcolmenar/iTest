@@ -21,12 +21,21 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.constant;
 
-public class MultimediaTypeConstant {
+public class MultimediaMeasureUnitConstant {
 
-    // Multimedia types
-    public static final int FLASH = 1;
-    public static final int IMAGE = 2;
-    public static final int SOUND = 3;
-    public static final int GEOGEBRA = 4;
-    public static final int YOUTUBE = 7;
+    // The measure unit of the multimedia elements
+    public static final int NONE = 0;
+    public static final int SIZE = 1;
+    public static final int PIXEL = 2;
+    public static final int PERCENT = 3;
+
+    // The available sizes
+    public static String SIZE_AUTO = "auto";
+    public static String SIZE_BIG = "big";
+    public static String SIZE_MEDIUM = "medium";
+    public static String SIZE_SMALL = "small";
+
+    // The symbol of percent measure unit
+    public static String PERCENT_SYMBOL = "%";
+
 }

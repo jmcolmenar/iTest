@@ -28,6 +28,7 @@ import com.itest.model.ReviewExamQuestionModel;
 import com.itest.repository.ExamenRepository;
 import com.itest.repository.LogExamenRepository;
 import com.itest.service.business.LearnerExamService;
+import com.itest.service.business.LearnerMultimediaService;
 import com.itest.service.business.LearnerReviewExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -49,6 +50,10 @@ public class LearnerReviewExamServiceImpl implements LearnerReviewExamService {
     @Autowired
     @Qualifier("learnerExamServiceImpl")
     private LearnerExamService learnerExamService;
+
+    @Autowired
+    @Qualifier("learnerMultimediaServiceImpl")
+    private LearnerMultimediaService learnerMultimediaService;
 
     @Autowired
     @Qualifier("formatterComponent")
@@ -110,13 +115,7 @@ public class LearnerReviewExamServiceImpl implements LearnerReviewExamService {
                 answerModel.setChecked(logExamen.getMarcada() == 1);
 
                 // Set the multimedia elements of answer
-                answerModel.setMultimediaList(new ArrayList<>());
-                if(respuesta.getExtraRespuestas() != null && respuesta.getExtraRespuestas().size() > 0){
-                    Collections.sort(respuesta.getExtraRespuestas(), (x1, x2) -> new Integer(x1.getOrden()).compareTo(x2.getOrden()));
-                    for(ExtraRespuesta extraRespuesta : respuesta.getExtraRespuestas()){
-                        answerModel.addMultimedia(this.learnerExamService.getMultimediaElementModelFromDatabaseEntity(extraRespuesta));
-                    }
-                }
+                answerModel.setMultimediaList(this.learnerMultimediaService.getMultimediaModelListFromDatabaseObjectList(respuesta.getExtraRespuestas()));
 
                 // Check if the question has been added to the auxiliar map
                 if(examQuestionMapAux.containsKey(questionId)){
@@ -135,23 +134,9 @@ public class LearnerReviewExamServiceImpl implements LearnerReviewExamService {
                     examQuestionModel.setNumberCorrectAnswers(pregunta.getNRespCorrectas());
                     examQuestionModel.setActiveConfidenceLevel(logExamen.getNivelConfianza() == 1);
 
-                    // Set the multimedia elements of question
-                    examQuestionModel.setMultimediaList(new ArrayList<>());
-                    if(pregunta.getExtraPreguntas() != null && pregunta.getExtraPreguntas().size() > 0){
-                        Collections.sort(pregunta.getExtraPreguntas(), (x1, x2) -> new Integer(x1.getOrden()).compareTo(x2.getOrden()));
-                        for(ExtraPregunta extraPregunta : pregunta.getExtraPreguntas()){
-                           examQuestionModel.addMultimedia(this.learnerExamService.getMultimediaElementModelFromDatabaseEntity(extraPregunta));
-                       }
-                    }
-
-                    // Set the multimedia elements of question comment
-                    examQuestionModel.setCommentMultimediaList(new ArrayList<>());
-                    if(pregunta.getExtraPreguntaComentarios() != null && pregunta.getExtraPreguntaComentarios().size() > 0){
-                        Collections.sort(pregunta.getExtraPreguntaComentarios(), (x1, x2) -> new Integer(x1.getOrden()).compareTo(x2.getOrden()));
-                        for(ExtraPreguntaComentario extraPreguntaComentario : pregunta.getExtraPreguntaComentarios()){
-                            examQuestionModel.addCommentMultimedia(this.learnerExamService.getMultimediaElementModelFromDatabaseEntity(extraPreguntaComentario));
-                        }
-                    }
+                    // Set the multimedia elements
+                    examQuestionModel.setMultimediaList(this.learnerMultimediaService.getMultimediaModelListFromDatabaseObjectList(pregunta.getExtraPreguntas()));
+                    examQuestionModel.setCommentMultimediaList(this.learnerMultimediaService.getMultimediaModelListFromDatabaseObjectList(pregunta.getExtraPreguntaComentarios()));
 
                     // Add the question model to the list
                     examQuestionModelList.add(examQuestionModel);

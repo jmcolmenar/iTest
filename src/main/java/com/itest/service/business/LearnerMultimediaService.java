@@ -19,13 +19,19 @@ You should have received a copy of the GNU General Public License
 along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.itest.constant;
+package com.itest.service.business;
 
-public class MultimediaMeasureUnitTypeConstant {
+import com.itest.model.MultimediaElementModel;
 
-    // The measure unit of the multimedia elements
-    public static final int NONE = 0;
-    public static final int SIZE = 1;
-    public static final int PIXEL = 2;
-    public static final int PERCENT = 3;
+import java.util.List;
+
+public interface LearnerMultimediaService {
+
+    /**
+     * Get the Multimedia Element Model list from the database object list
+     * @param databaseMultimediaList The database object list with the information of multimedia elements
+     * @return The model object list ith the multimedia info
+     */
+    List<MultimediaElementModel> getMultimediaModelListFromDatabaseObjectList(List databaseMultimediaList);
+
 }

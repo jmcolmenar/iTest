@@ -27,6 +27,7 @@ import com.itest.entity.*;
 import com.itest.model.*;
 import com.itest.repository.*;
 import com.itest.service.business.LearnerExamService;
+import com.itest.service.business.LearnerMultimediaService;
 import com.itest.service.business.LearnerNewExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,6 +44,10 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
     @Autowired
     @Qualifier("learnerExamServiceImpl")
     private LearnerExamService learnerExamService;
+
+    @Autowired
+    @Qualifier("learnerMultimediaServiceImpl")
+    private LearnerMultimediaService learnerMultimediaService;
 
     @Autowired
     @Qualifier("examenRepository")
@@ -487,13 +492,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         newExamQuestionModel.setStatement(question.getEnunciado());
         newExamQuestionModel.setNumberCorrectAnswers(question.getNRespCorrectas());
         newExamQuestionModel.setActiveConfidenceLevel(false);
-        newExamQuestionModel.setQuestionMultimediaList(new ArrayList<>());
-        if(question.getExtraPreguntas() != null && question.getExtraPreguntas().size() > 0){
-            Collections.sort(question.getExtraPreguntas(), (x1, x2) -> new Integer(x1.getOrden()).compareTo(x2.getOrden()));
-            for(ExtraPregunta extraPregunta : question.getExtraPreguntas()){
-                newExamQuestionModel.addQuestionMultimedia(this.learnerExamService.getMultimediaElementModelFromDatabaseEntity(extraPregunta));
-            }
-        }
+        newExamQuestionModel.setQuestionMultimediaList(this.learnerMultimediaService.getMultimediaModelListFromDatabaseObjectList(question.getExtraPreguntas()));
 
         // Return the model object
         return newExamQuestionModel;
@@ -513,13 +512,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         newExamAnswerModel.setText(answer.getTexto());
         newExamAnswerModel.setChecked(false);
         newExamAnswerModel.setAnswerTime(examStartDate);
-        newExamAnswerModel.setMultimediaList(new ArrayList<>());
-        if(answer.getExtraRespuestas() != null && answer.getExtraRespuestas().size() > 0){
-            Collections.sort(answer.getExtraRespuestas(), (x1, x2) -> new Integer(x1.getOrden()).compareTo(x2.getOrden()));
-            for(ExtraRespuesta extraRespuesta : answer.getExtraRespuestas()){
-                newExamAnswerModel.addMultimedia(this.learnerExamService.getMultimediaElementModelFromDatabaseEntity(extraRespuesta));
-            }
-        }
+        newExamAnswerModel.setMultimediaList(this.learnerMultimediaService.getMultimediaModelListFromDatabaseObjectList(answer.getExtraRespuestas()));
 
         // Return the model object
         return newExamAnswerModel;

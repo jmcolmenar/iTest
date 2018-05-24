@@ -21,8 +21,6 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.model;
 
-import com.itest.constant.MultimediaMeasureUnitTypeConstant;
-
 public class MultimediaElementModel {
 
     private String path;
@@ -77,8 +75,16 @@ public class MultimediaElementModel {
         return measureUnitWidht;
     }
 
+    public void setMeasureUnitWidht(int measureUnitWidht) {
+        this.measureUnitWidht = measureUnitWidht;
+    }
+
     public int getMeasureUnitHeight() {
         return measureUnitHeight;
+    }
+
+    public void setMeasureUnitHeight(int measureUnitHeight) {
+        this.measureUnitHeight = measureUnitHeight;
     }
 
     public String getExtension() {
@@ -95,20 +101,5 @@ public class MultimediaElementModel {
 
     public void setGeogebraType(int geogebraType) {
         this.geogebraType = geogebraType;
-    }
-
-    private int calculateMeasureUnit(String value){
-        int measureUnitType;
-        if(value == null || value.trim().isEmpty()){
-            measureUnitType = MultimediaMeasureUnitTypeConstant.NONE;
-        }
-        else if(value.equals("auto") || value.equals("small") || value.equals("medium") || value.equals("big")){
-            measureUnitType = MultimediaMeasureUnitTypeConstant.SIZE;
-        }else if(value.endsWith("%")){
-            measureUnitType = MultimediaMeasureUnitTypeConstant.PERCENT;
-        }else{
-            measureUnitType = MultimediaMeasureUnitTypeConstant.PIXEL;
-        }
-        return measureUnitType;
     }
 }
