@@ -579,7 +579,26 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
                     true);
             }
         }
-    }
+    };
+
+    // Event to check if the back button is clicked
+    $scope.$on('$routeChangeStart', function (event, next, prev) {
+
+        // Check if the back button is clicked to avoid going to the previous page
+        if(next.controller != null && next.controller == 'subjectCtrl'){
+            // Prevent the event
+            event.preventDefault();
+
+            // End the exam as the same that End Exam button
+            $scope.endExam(true);
+        }
+    });
+
+    // Event to show a popup before refresh/close the tab in the browser
+    var windowElement = angular.element($window);
+    windowElement.on('beforeunload', function (event) {
+        event.preventDefault();
+    });
 
 }]);
 
