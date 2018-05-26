@@ -25,6 +25,6 @@ public class MultimediaPathConstant {
 
     // The path of the multimedia elements
     public static final String YOUTUBE = "https://www.youtube.com/embed/";
-    public static final String MEDIA_FILE = "/resources/media/";
+    public static final String MEDIA_FILE = "/multimedia/";
 
 }

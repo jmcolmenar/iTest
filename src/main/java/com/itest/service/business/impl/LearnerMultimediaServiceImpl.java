@@ -21,7 +21,6 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.business.impl;
 
-import com.itest.constant.MultimediaMeasureUnitConstant;
 import com.itest.constant.MultimediaPathConstant;
 import com.itest.constant.MultimediaTypeConstant;
 import com.itest.entity.ExtraPregunta;
@@ -94,8 +93,8 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
         // Fill the width and height
         String width = multimediaInfo.getWidth();
         String heigh = multimediaInfo.getHeight();
-        multimediaElementModel.setWidht(width);
-        multimediaElementModel.setMeasureUnitWidht(this.calculateMeasureUnit(width));
+        multimediaElementModel.setWidth(width);
+        multimediaElementModel.setMeasureUnitWidth(this.calculateMeasureUnit(width));
         multimediaElementModel.setHeight(heigh);
         multimediaElementModel.setMeasureUnitHeight(this.calculateMeasureUnit(heigh));
 
@@ -115,8 +114,8 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
 
     /**
      * Calculates the measure unit from a value of width or height
-     * @param value The value of widht or height of the multimedia element
-     * @return The measure unit of widht or height
+     * @param value The value of width or height of the multimedia element
+     * @return The measure unit of width or height
      */
     private int calculateMeasureUnit(String value) {
 

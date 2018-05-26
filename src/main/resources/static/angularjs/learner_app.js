@@ -145,7 +145,7 @@ app.config(['$routeProvider', function ($routeProvider){
 }]);
 
 // Main controller
-app.controller('mainCtrl', ['$scope', '$http', '$window', 'serverCaller', function($scope, $http, $window, serverCaller){
+app.controller('mainCtrl', ['$scope', '$http', '$window', '$sce', 'serverCaller', function($scope, $http, $window, $sce, serverCaller){
 
     // The function to executes when the page has been loaded
     $scope.init = function(){
@@ -188,6 +188,94 @@ app.controller('mainCtrl', ['$scope', '$http', '$window', 'serverCaller', functi
         asciimath.translate();
     });
 
+    // Function to get the url to use in an embed element
+    $scope.getYoutubeUrl = function(path){
+        return $sce.trustAsResourceUrl(path);
+    };
+
+    // Get the audio type for the <audio> html5 tag from file extension
+    $scope.getAudioType = function(multimedia){
+        if(multimedia.extension == 'mp3'){
+            return 'mpeg';
+        }else if(multimedia.extension == 'wav'){
+            return 'wav';
+        }else if(multimedia.extension == 'ogg'){
+            return 'ogg';
+        }else{
+            return 'mpeg';
+        }
+    };
+
+    // Get the class for <img> tag from multimedia image element
+    $scope.getClassImg = function(multimedia){
+        if(multimedia.measureUnitWidth == 0 && multimedia.measureUnitHeight == 0){
+
+            // The measure unit is "NONE"
+            return 'multimedia-img-small';
+
+        }else if(multimedia.measureUnitWidth == 1){
+
+            // The measure unit is "SIZE"
+            if(multimedia.width == 'big'){
+
+                // The size is "big"
+                return 'multimedia-img-big';
+
+            }else if(multimedia.width == 'medium'){
+
+                // The size is "medium"
+                return 'multimedia-img-medium';
+
+            }else if(multimedia.width == 'small'){
+
+                // The size is "small"
+                return 'multimedia-img-small';
+
+            }else{
+
+                // The size is "auto"
+                return '';
+            }
+        }else{
+
+            // The measure unit is "PIXEL" or "PERCENT", the width and height is calculated in the attributes of <img> tag
+            return '';
+        }
+    };
+
+    // Get the width and height style for <img> tag from multimedia image element
+    $scope.getWidthAndHeightImg = function(multimedia){
+        var widthAndHeight = '';
+
+        // Calculate Width style
+        if(multimedia.measureUnitWidth == 2){
+
+            // The measure unit is "PIXEL"
+            widthAndHeight += 'width:' + multimedia.width + 'px;';
+
+        }else if(multimedia.measureUnitWidth == 3){
+
+            // The measure unit is "PERCENT"
+            widthAndHeight += 'width:' + multimedia.width + ';';
+
+        }
+
+        // Calculate Height style
+        if(multimedia.measureUnitHeight == 2){
+
+            // The measure unit is "PIXEL"
+            widthAndHeight += 'height:' + multimedia.height + 'px;';
+
+        }else if(multimedia.measureUnitHeight == 3){
+
+            // The measure unit is "PERCENT"
+            widthAndHeight += 'height:' + multimedia.height + ';';
+
+        }
+
+        // Return the width and height style
+        return widthAndHeight;
+    };
 }]);
 
 // Change password controller

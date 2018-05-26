@@ -377,3 +377,67 @@ body{
 .exam-score-above{
     margin-bottom: 15px;
 }
+
+/* === MULTIMEDIA ELEMENTS OF NEW AND REVIEW EXAM === */
+
+.multimedia-div-center{
+    text-align: center;
+}
+
+@media (max-width: 360px){
+    .multimedia-audio{
+        width: 100%;
+    }
+}
+
+.multimedia-flash{
+    border: 1px solid gray;
+    border-radius: 4px;
+    width: 500px;
+    height: 300px;
+}
+
+@media (min-width: 350px) and (max-width: 584px){
+    .multimedia-flash{
+        width: 100%;
+        height: 250px;
+    }
+}
+
+@media (max-width: 349px) {
+    .multimedia-flash{
+        width: 100%;
+        height: 230px;
+    }
+}
+
+.multimedia-youtube{
+    width:425px;
+    height:344px;
+}
+
+@media (min-width: 350px) and (max-width: 506px) {
+    .multimedia-youtube{
+        width:100%;
+        height:300px;
+    }
+}
+
+@media (max-width: 349px) {
+    .multimedia-youtube{
+        width:100%;
+        height:230px;
+    }
+}
+
+.multimedia-img-big{
+    width: 100%
+}
+
+.multimedia-img-medium{
+    width: 75%
+}
+
+.multimedia-img-small{
+    width: 50%
+}

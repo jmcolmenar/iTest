@@ -29,6 +29,29 @@
                 <div class="exam-question">
                     <h4>{{question.statement}}</h4>
 
+                    <!-- Multimedia elements for question -->
+                    <div ng-repeat="multimedia in question.questionMultimediaList" ng-class="{'multimedia-div-center': question.questionMultimediaList.length > 1}">
+                        <br ng-if="!$first"/>
+                        <!-- Flash Multimedia Element -->
+                        <div ng-if="multimedia.type == 1">
+                            <object class="multimedia-flash" data="{{multimedia.path}}"></object>
+                        </div>
+                        <!-- Image Multimedia Element -->
+                        <div ng-if="multimedia.type == 2">
+                            <img src="{{multimedia.path}}" class="{{getClassImg(multimedia)}}" style="{{getWidthAndHeightImg(multimedia)}}"/>
+                        </div>
+                        <!-- Audio Multimedia Element -->
+                        <div ng-if="multimedia.type == 3">
+                            <audio controls="true" class="multimedia-audio">
+                                <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
+                            </audio>
+                        </div>
+                        <!-- YouTube Multimedia Element -->
+                        <div ng-if="multimedia.type == 7">
+                            <iframe class="multimedia-youtube" ng-src="{{getYoutubeUrl(multimedia.path)}}" allowfullscreen="true"></iframe>
+                        </div>
+                    </div>
+
                     <div class="exam-answer" ng-repeat="answer in question.answerList">
                         <div class="checkbox checkbox-ltr checkbox-primary">
                             <input id="answer{{answer.asnwerId}}" ng-model="answer.checked" ng-change="checkChangedAnswer(question, answer)" type="checkbox"/>

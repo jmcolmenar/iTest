@@ -27,11 +27,11 @@ public class MultimediaElementModel {
 
     private int type;
 
-    private String widht;
+    private String width;
 
     private String height;
 
-    private int measureUnitWidht;
+    private int measureUnitWidth;
 
     private int measureUnitHeight;
 
@@ -55,12 +55,12 @@ public class MultimediaElementModel {
         this.type = type;
     }
 
-    public String getWidht() {
-        return widht;
+    public String getWidth() {
+        return width;
     }
 
-    public void setWidht(String widht) {
-        this.widht = widht;
+    public void setWidth(String width) {
+        this.width = width;
     }
 
     public String getHeight() {
@@ -71,12 +71,12 @@ public class MultimediaElementModel {
         this.height = height;
     }
 
-    public int getMeasureUnitWidht() {
-        return measureUnitWidht;
+    public int getMeasureUnitWidth() {
+        return measureUnitWidth;
     }
 
-    public void setMeasureUnitWidht(int measureUnitWidht) {
-        this.measureUnitWidht = measureUnitWidht;
+    public void setMeasureUnitWidth(int measureUnitWidth) {
+        this.measureUnitWidth = measureUnitWidth;
     }
 
     public int getMeasureUnitHeight() {
