@@ -187,6 +187,10 @@ app.controller('mainCtrl', ['$scope', '$http', '$window', '$sce', 'serverCaller'
         // Translate the formulas through Ascii Math javascript library
         asciimath.translate();
     });
+}]);
+
+// Multimedia controller
+app.controller('multimediaCtrl', ['$scope', '$sce', function($scope, $sce){
 
     // Function to get the url to use in an embed element
     $scope.getYoutubeUrl = function(path){
@@ -210,7 +214,7 @@ app.controller('mainCtrl', ['$scope', '$http', '$window', '$sce', 'serverCaller'
     $scope.getClassImg = function(multimedia){
         if(multimedia.measureUnitWidth == 0 && multimedia.measureUnitHeight == 0){
 
-            // The measure unit is "NONE"
+            // The measure unit is "NONE", therefore the size will be the same as "small"
             return 'multimedia-img-small';
 
         }else if(multimedia.measureUnitWidth == 1){
