@@ -33,23 +33,15 @@
                     <div ng-repeat="multimedia in question.questionMultimediaList" ng-class="{'multimedia-div-center': question.questionMultimediaList.length > 1}">
                         <br ng-if="!$first"/>
                         <!-- Flash Multimedia Element -->
-                        <div ng-if="multimedia.type == 1">
-                            <object class="multimedia-flash" data="{{multimedia.path}}"></object>
-                        </div>
+                        <object ng-if="multimedia.type == 1" class="multimedia-flash" data="{{multimedia.path}}"></object>
                         <!-- Image Multimedia Element -->
-                        <div ng-if="multimedia.type == 2">
-                            <img src="{{multimedia.path}}" class="{{getClassImg(multimedia)}} multimedia-img-border" style="{{getWidthAndHeightImg(multimedia)}}"/>
-                        </div>
+                        <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" class="{{getClassImg(multimedia)}} multimedia-img-border" style="{{getWidthAndHeightImg(multimedia)}}"/>
                         <!-- Audio Multimedia Element -->
-                        <div ng-if="multimedia.type == 3">
-                            <audio controls="true" class="multimedia-audio">
-                                <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
-                            </audio>
-                        </div>
+                        <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio">
+                            <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
+                        </audio>
                         <!-- YouTube Multimedia Element -->
-                        <div ng-if="multimedia.type == 7">
-                            <iframe class="multimedia-youtube" ng-src="{{getYoutubeUrl(multimedia.path)}}" allowfullscreen="true"></iframe>
-                        </div>
+                        <iframe ng-if="multimedia.type == 7" class="multimedia-youtube" ng-src="{{getYoutubeUrl(multimedia.path)}}" allowfullscreen="true"></iframe>
                     </div>
 
                     <div class="exam-answer" ng-repeat="answer in question.answerList">
