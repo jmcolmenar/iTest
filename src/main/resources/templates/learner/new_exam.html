@@ -38,7 +38,7 @@
                         </div>
                         <!-- Image Multimedia Element -->
                         <div ng-if="multimedia.type == 2">
-                            <img src="{{multimedia.path}}" class="{{getClassImg(multimedia)}}" style="{{getWidthAndHeightImg(multimedia)}}"/>
+                            <img src="{{multimedia.path}}" class="{{getClassImg(multimedia)}} multimedia-img-border" style="{{getWidthAndHeightImg(multimedia)}}"/>
                         </div>
                         <!-- Audio Multimedia Element -->
                         <div ng-if="multimedia.type == 3">
@@ -55,7 +55,21 @@
                     <div class="exam-answer" ng-repeat="answer in question.answerList">
                         <div class="checkbox checkbox-ltr checkbox-primary">
                             <input id="answer{{answer.asnwerId}}" ng-model="answer.checked" ng-change="checkChangedAnswer(question, answer)" type="checkbox"/>
-                            <label for="answer{{answer.asnwerId}}">{{answer.text}}</label>
+                            <label for="answer{{answer.asnwerId}}" ng-class="{'multimedia-answer-div': answer.multimediaList.length > 0}">
+                                <span ng-if="answer.text">{{answer.text}}</span>
+                                <br ng-if="answer.text"/>
+                                <!-- Multimedia elements for answer -->
+                                <div ng-repeat="multimedia in answer.multimediaList" class="multimedia-answer-div">
+                                    <!-- Flash Multimedia Element -->
+                                    <object ng-if="multimedia.type == 1" class="multimedia-flash-answer" data="{{multimedia.path}}"></object>
+                                    <!-- Image Multimedia Element -->
+                                    <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" class="multimedia-img-answer multimedia-img-border"/>
+                                    <!-- Audio Multimedia Element -->
+                                    <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio-answer">
+                                        <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
+                                    </audio>
+                                </div>
+                            </label>
                         </div>
                     </div>
 
