@@ -459,6 +459,7 @@ body{
 
 .multimedia-img-answer{
     width: 150px;
+    z-index: 100;
 }
 
 .multimedia-flash-answer{
@@ -489,4 +490,8 @@ body{
     .multimedia-audio-answer{
         width: 100%;
     }
+}
+
+.multimedia-img-modal{
+    width: 100%;
 }

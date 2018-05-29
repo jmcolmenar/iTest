@@ -280,6 +280,18 @@ app.controller('multimediaCtrl', ['$scope', '$sce', function($scope, $sce){
         // Return the width and height style
         return widthAndHeight;
     };
+
+    // Function to show an image in a modal
+    $scope.showImageInModal = function (src, $event) {
+        // Set the source of image and show the modal
+        $scope.imageSrc = src;
+        $("#showImageModal").modal("show");
+
+        // Prevent the event to avoid checking the answer
+        if($event != null){
+            $event.preventDefault();
+        }
+    }
 }]);
 
 // Change password controller

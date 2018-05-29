@@ -35,13 +35,15 @@
                         <!-- Flash Multimedia Element -->
                         <object ng-if="multimedia.type == 1" class="multimedia-flash" data="{{multimedia.path}}"></object>
                         <!-- Image Multimedia Element -->
-                        <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" class="{{getClassImg(multimedia)}} multimedia-img-border" style="{{getWidthAndHeightImg(multimedia)}}"/>
+                        <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, null)" class="{{getClassImg(multimedia)}} multimedia-img-border" style="{{getWidthAndHeightImg(multimedia)}}"/>
                         <!-- Audio Multimedia Element -->
                         <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio">
                             <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
                         </audio>
                         <!-- YouTube Multimedia Element -->
                         <iframe ng-if="multimedia.type == 7" class="multimedia-youtube" ng-src="{{getYoutubeUrl(multimedia.path)}}" allowfullscreen="true"></iframe>
+                        <br ng-if="$last"/>
+                        <br ng-if="$last"/>
                     </div>
 
                     <div class="exam-answer" ng-repeat="answer in question.answerList">
@@ -55,7 +57,7 @@
                                     <!-- Flash Multimedia Element -->
                                     <object ng-if="multimedia.type == 1" class="multimedia-flash-answer" data="{{multimedia.path}}"></object>
                                     <!-- Image Multimedia Element -->
-                                    <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" class="multimedia-img-answer multimedia-img-border"/>
+                                    <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, $event)" class="multimedia-img-answer multimedia-img-border"/>
                                     <!-- Audio Multimedia Element -->
                                     <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio-answer">
                                         <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
@@ -125,6 +127,21 @@
                 <div class="modal-footer-custom">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-right: 20px;" th:text="#{modalCancelButton}"></button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="endExam(false)" th:text="#{modalOkButton}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal to show an image  -->
+    <div class="modal fade" id="showImageModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div>
+                    <img class="img-responsive multimedia-img-modal" src="{{imageSrc}}"/>
                 </div>
             </div>
         </div>
