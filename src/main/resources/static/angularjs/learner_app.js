@@ -291,7 +291,30 @@ app.controller('multimediaCtrl', ['$scope', '$sce', function($scope, $sce){
         if($event != null){
             $event.preventDefault();
         }
-    }
+    };
+
+    // Function to get the class for the multimedia comment element
+    $scope.getClassForMultimediaComment = function(multimedia){
+        var className;
+        switch (multimedia.type){
+            case 1:
+                className = " multimedia-flash-comment";
+                break;
+            case 2:
+                className = " multimedia-img-comment";
+                break;
+            case 3:
+                className = " multimedia-audio-comment";
+                break;
+            case 7:
+                className = " multimedia-youtube-comment";
+                break;
+            default:
+                className = "";
+        }
+
+        return "multimedia-element-comment-div" + className;
+    };
 }]);
 
 // Change password controller

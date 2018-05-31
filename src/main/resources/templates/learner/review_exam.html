@@ -1,4 +1,4 @@
-<div xmlns:th="http://www.thymeleaf.org">
+<div xmlns:th="http://www.thymeleaf.org" ng-controller="multimediaCtrl">
     <div class="review-exam-go-back-button-div">
         <a href="#/subject/" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;&nbsp;<span th:text="#{reviewExam.exit}"></span></a>
     </div>
@@ -48,7 +48,26 @@
 
                     <h5><strong><span th:text="#{exam.question.tutorComment}"></span></strong></h5>
                     <div class="panel panel-default">
-                        <div class="panel-body">{{question.comment}}</div>
+                        <div class="panel-body">
+                            <span ng-if="question.comment">{{question.comment}}</span>
+
+                            <!-- Multimedia elements for question comment -->
+                            <div class="multimedia-parent-div-center">
+                                <div ng-repeat="multimedia in question.commentMultimediaList" class="{{getClassForMultimediaComment(multimedia)}}">
+                                    <!-- Flash Multimedia Element -->
+                                    <object ng-if="multimedia.type == 1" class="multimedia-adjust-width multimedia-adjust-height multimedia-border" data="{{multimedia.path}}"></object>
+                                    <!-- Image Multimedia Element -->
+                                    <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, null)" class="multimedia-adjust-parent-width multimedia-border"/>
+                                    <!-- Audio Multimedia Element -->
+                                    <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-adjust-width">
+                                        <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
+                                    </audio>
+                                    <!-- YouTube Multimedia Element -->
+                                    <iframe ng-if="multimedia.type == 7" class="multimedia-adjust-width multimedia-adjust-height" ng-src="{{getYoutubeUrl(multimedia.path)}}" allowfullscreen="true"></iframe>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -61,4 +80,20 @@
     <div class="review-exam-go-back-button-div">
         <a href="#/subject/" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;&nbsp;<span th:text="#{reviewExam.exit}"></span></a>
     </div>
+
+    <!-- Modal to show an image  -->
+    <div class="modal fade" id="showImageModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div>
+                    <img class="multimedia-img-modal" src="{{imageSrc}}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
