@@ -30,20 +30,19 @@
                     <h4>{{question.statement}}</h4>
 
                     <!-- Multimedia elements for question -->
-                    <div ng-repeat="multimedia in question.questionMultimediaList" ng-class="{'multimedia-div-center': question.questionMultimediaList.length > 1}">
-                        <br ng-if="!$first"/>
-                        <!-- Flash Multimedia Element -->
-                        <object ng-if="multimedia.type == 1" class="multimedia-flash" data="{{multimedia.path}}"></object>
-                        <!-- Image Multimedia Element -->
-                        <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, null)" class="{{getClassImg(multimedia)}} multimedia-img-border" style="{{getWidthAndHeightImg(multimedia)}}"/>
-                        <!-- Audio Multimedia Element -->
-                        <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio">
-                            <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
-                        </audio>
-                        <!-- YouTube Multimedia Element -->
-                        <iframe ng-if="multimedia.type == 7" class="multimedia-youtube" ng-src="{{getYoutubeUrl(multimedia.path)}}" allowfullscreen="true"></iframe>
-                        <br ng-if="$last"/>
-                        <br ng-if="$last"/>
+                    <div class="multimedia-parent-div-center">
+                        <div ng-repeat="multimedia in question.questionMultimediaList" class="{{getClassForMultimediaQuestion(multimedia)}}" style="{{getStyleForMultimediaQuestion(multimedia)}}">
+                            <!-- Flash Multimedia Element -->
+                            <object ng-if="multimedia.type == 1" class="multimedia-adjust-width multimedia-adjust-height multimedia-border" data="{{multimedia.path}}"></object>
+                            <!-- Image Multimedia Element -->
+                            <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, null)" class="multimedia-adjust-width multimedia-border"/>
+                            <!-- Audio Multimedia Element -->
+                            <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-adjust-width">
+                                <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
+                            </audio>
+                            <!-- YouTube Multimedia Element -->
+                            <iframe ng-if="multimedia.type == 7" class="multimedia-adjust-width multimedia-adjust-height" ng-src="{{getYoutubeUrl(multimedia.path)}}" allowfullscreen="true"></iframe>
+                        </div>
                     </div>
 
                     <div class="exam-answer" ng-repeat="answer in question.answerList">
@@ -57,7 +56,7 @@
                                     <!-- Flash Multimedia Element -->
                                     <object ng-if="multimedia.type == 1" class="multimedia-flash-answer" data="{{multimedia.path}}"></object>
                                     <!-- Image Multimedia Element -->
-                                    <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, $event)" class="multimedia-img-answer multimedia-img-border"/>
+                                    <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, $event)" class="multimedia-img-answer multimedia-border"/>
                                     <!-- Audio Multimedia Element -->
                                     <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio-answer">
                                         <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
@@ -134,14 +133,14 @@
 
     <!-- Modal to show an image  -->
     <div class="modal fade" id="showImageModal" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div>
-                    <img class="img-responsive multimedia-img-modal" src="{{imageSrc}}"/>
+                    <img class="multimedia-img-modal" src="{{imageSrc}}"/>
                 </div>
             </div>
         </div>

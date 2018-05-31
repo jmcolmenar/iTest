@@ -210,77 +210,6 @@ app.controller('multimediaCtrl', ['$scope', '$sce', function($scope, $sce){
         }
     };
 
-    // Get the class for <img> tag from multimedia image element
-    $scope.getClassImg = function(multimedia){
-        if(multimedia.measureUnitWidth == 0 && multimedia.measureUnitHeight == 0){
-
-            // The measure unit is "NONE", therefore the size will be the same as "small"
-            return 'multimedia-img-small';
-
-        }else if(multimedia.measureUnitWidth == 1){
-
-            // The measure unit is "SIZE"
-            if(multimedia.width == 'big'){
-
-                // The size is "big"
-                return 'multimedia-img-big';
-
-            }else if(multimedia.width == 'medium'){
-
-                // The size is "medium"
-                return 'multimedia-img-medium';
-
-            }else if(multimedia.width == 'small'){
-
-                // The size is "small"
-                return 'multimedia-img-small';
-
-            }else{
-
-                // The size is "auto"
-                return '';
-            }
-        }else{
-
-            // The measure unit is "PIXEL" or "PERCENT", the width and height is calculated in the attributes of <img> tag
-            return '';
-        }
-    };
-
-    // Get the width and height style for <img> tag from multimedia image element
-    $scope.getWidthAndHeightImg = function(multimedia){
-        var widthAndHeight = '';
-
-        // Calculate Width style
-        if(multimedia.measureUnitWidth == 2){
-
-            // The measure unit is "PIXEL"
-            widthAndHeight += 'width:' + multimedia.width + 'px;';
-
-        }else if(multimedia.measureUnitWidth == 3){
-
-            // The measure unit is "PERCENT"
-            widthAndHeight += 'width:' + multimedia.width + ';';
-
-        }
-
-        // Calculate Height style
-        if(multimedia.measureUnitHeight == 2){
-
-            // The measure unit is "PIXEL"
-            widthAndHeight += 'height:' + multimedia.height + 'px;';
-
-        }else if(multimedia.measureUnitHeight == 3){
-
-            // The measure unit is "PERCENT"
-            widthAndHeight += 'height:' + multimedia.height + ';';
-
-        }
-
-        // Return the width and height style
-        return widthAndHeight;
-    };
-
     // Function to show an image in a modal
     $scope.showImageInModal = function (src, $event) {
         // Set the source of image and show the modal
@@ -291,6 +220,88 @@ app.controller('multimediaCtrl', ['$scope', '$sce', function($scope, $sce){
         if($event != null){
             $event.preventDefault();
         }
+    };
+
+    // Get the style for multimedia question
+    $scope.getStyleForMultimediaQuestion = function(multimedia){
+        var style = '';
+
+        // Check the multimedia element is an image
+        if(multimedia.type == 2){
+            // Calculate Width style
+            if(multimedia.measureUnitWidth == 2){
+
+                // The measure unit is "PIXEL"
+                style += 'width:' + multimedia.width + 'px;';
+
+            }else if(multimedia.measureUnitWidth == 3){
+
+                // The measure unit is "PERCENT"
+                style += 'width:' + multimedia.width + ';';
+
+            }
+
+            // Calculate Height style
+            if(multimedia.measureUnitHeight == 2){
+
+                // The measure unit is "PIXEL"
+                style += 'height:' + multimedia.height + 'px;';
+
+            }else if(multimedia.measureUnitHeight == 3){
+
+                // The measure unit is "PERCENT"
+                style += 'height:' + multimedia.height + ';';
+
+            }
+        }
+
+        // Return the style
+        return style;
+    };
+
+    $scope.getClassForMultimediaQuestion = function(multimedia){
+        var className = "";
+        switch (multimedia.type){
+            case 1:
+                className = " multimedia-flash-question";
+                break;
+            case 2:
+                if(multimedia.measureUnitWidth == 0 && multimedia.measureUnitHeight == 0){
+
+                    // The measure unit is "NONE", therefore the size will be the same as "small"
+                    className = " multimedia-img-small-question";
+
+                }else if(multimedia.measureUnitWidth == 1){
+
+                    // The measure unit is "SIZE"
+                    if(multimedia.width == 'big'){
+
+                        // The size is "big"
+                        className = " multimedia-img-big-question";
+
+                    }else if(multimedia.width == 'medium'){
+
+                        // The size is "medium"
+                        className = " multimedia-img-medium-question";
+
+                    }else if(multimedia.width == 'small') {
+
+                        // The size is "small"
+                        className = " multimedia-img-small-question";
+                    }
+                }
+                break;
+            case 3:
+                className = " multimedia-audio";
+                break;
+            case 7:
+                className = " multimedia-youtube-question";
+                break;
+            default:
+                className = "";
+        }
+
+        return "multimedia-element-comment-div" + className;
     };
 
     // Function to get the class for the multimedia comment element

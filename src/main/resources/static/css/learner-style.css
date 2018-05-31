@@ -409,71 +409,82 @@ body{
     }
 }
 
-.multimedia-flash{
-    padding:4px;
-    line-height:1.42857143;
-    background-color:#fff;
-    border:1px solid #ddd;
-    border-radius:4px;
+.multimedia-flash-question{
     width: 500px;
     height: 375px;
 }
 
-@media (min-width: 350px) and (max-width: 584px){
-    .multimedia-flash{
+@media (min-width: 460px) and (max-width: 584px){
+    .multimedia-flash-question{
         width: 100%;
-        height: 250px;
+        height: 240px;
     }
 }
 
-@media (max-width: 349px) {
-    .multimedia-flash{
+@media (min-width: 350px) and (max-width: 459px){
+    .multimedia-flash-question{
         width: 100%;
         height: 200px;
     }
 }
 
-.multimedia-youtube{
+@media (max-width: 349px) {
+    .multimedia-flash-question{
+        width: 100%;
+        height: 160px;
+    }
+}
+
+.multimedia-youtube-question{
     width:425px;
     height:344px;
 }
 
-@media (min-width: 350px) and (max-width: 506px) {
-    .multimedia-youtube{
+@media (min-width: 425px) and (max-width: 506px) {
+    .multimedia-youtube-question{
         width:100%;
-        height:300px;
+        height:260px;
+    }
+}
+
+@media (min-width: 350px) and (max-width: 424px) {
+    .multimedia-youtube-question{
+        width:100%;
+        height:220px;
     }
 }
 
 @media (max-width: 349px) {
-    .multimedia-youtube{
+    .multimedia-youtube-question{
         width:100%;
-        height:230px;
+        height:180px;
     }
 }
 
-.multimedia-img-border{
-    padding:4px;
-    line-height:1.42857143;
-    background-color:#fff;
-    border:1px solid #ddd;
-    border-radius:4px;
+.multimedia-img-big-question{
+    width: 100%
+}
+
+.multimedia-img-medium-question{
+    width: 75%
+}
+
+.multimedia-img-small-question{
+    width: 50%
+}
+
+@media (max-width: 767px) {
+    .multimedia-img-medium-question{
+        width: 88%
+    }
+
+    .multimedia-img-small-question{
+        width: 75%
+    }
 }
 
 .multimedia-answer-div{
     width: 100%;
-}
-
-.multimedia-img-big{
-    width: 100%
-}
-
-.multimedia-img-medium{
-    width: 75%
-}
-
-.multimedia-img-small{
-    width: 50%
 }
 
 .multimedia-img-answer{
@@ -482,11 +493,6 @@ body{
 }
 
 .multimedia-flash-answer{
-    padding:4px;
-    line-height:1.42857143;
-    background-color:#fff;
-    border:1px solid #ddd;
-    border-radius:4px;
     width: 500px;
     height: 375px;
 }
