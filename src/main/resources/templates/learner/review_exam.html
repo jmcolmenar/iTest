@@ -39,23 +39,41 @@
                 <div class="exam-question">
                     <h4>{{question.statement}}</h4>
 
+                    <!-- Multimedia elements for question -->
+                    <div class="multimedia-parent-div-center">
+                        <div ng-repeat="multimedia in question.multimediaList" class="{{getClassForMultimediaQuestion(multimedia)}}" style="{{getStyleForMultimediaQuestion(multimedia)}}">
+                            <!-- Flash Multimedia Element -->
+                            <object ng-if="multimedia.type == 1" class="multimedia-adjust-width multimedia-adjust-height multimedia-border" data="{{multimedia.path}}"></object>
+                            <!-- Image Multimedia Element -->
+                            <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, null)" class="multimedia-adjust-width multimedia-border"/>
+                            <!-- Audio Multimedia Element -->
+                            <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-adjust-width">
+                                <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
+                            </audio>
+                            <!-- YouTube Multimedia Element -->
+                            <iframe ng-if="multimedia.type == 7" class="multimedia-adjust-width multimedia-adjust-height" ng-src="{{getYoutubeUrl(multimedia.path)}}" allowfullscreen="true"></iframe>
+                        </div>
+                    </div>
+
                     <div class="exam-answer" ng-class="{'review-exam-answer-right': answer.right}" ng-repeat="answer in question.answerList">
                         <div class="checkbox checkbox-ltr checkbox-primary">
                             <input id="answer{{answer.asnwerId}}" ng-checked="answer.checked" type="checkbox" disabled=""/>
                             <label for="answer{{answer.asnwerId}}" ng-class="{'multimedia-adjust-width': answer.multimediaList.length > 0}">
                                 <span ng-if="answer.text">{{answer.text}}</span>
                                 <br ng-if="answer.text"/>
+
                                 <!-- Multimedia elements for answer -->
                                 <div ng-repeat="multimedia in answer.multimediaList" class="multimedia-adjust-width">
                                     <!-- Flash Multimedia Element -->
                                     <object ng-if="multimedia.type == 1" class="multimedia-flash-answer multimedia-border" data="{{multimedia.path}}"></object>
                                     <!-- Image Multimedia Element -->
-                                    <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, $event)" class="multimedia-img-answer multimedia-border"/>
+                                    <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, null)" class="multimedia-img-answer multimedia-border"/>
                                     <!-- Audio Multimedia Element -->
                                     <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio-answer">
                                         <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
                                     </audio>
                                 </div>
+
                             </label>
                         </div>
                     </div>

@@ -51,6 +51,7 @@
                             <label for="answer{{answer.asnwerId}}" ng-class="{'multimedia-adjust-width': answer.multimediaList.length > 0}">
                                 <span ng-if="answer.text">{{answer.text}}</span>
                                 <br ng-if="answer.text"/>
+
                                 <!-- Multimedia elements for answer -->
                                 <div ng-repeat="multimedia in answer.multimediaList" class="multimedia-adjust-width">
                                     <!-- Flash Multimedia Element -->
@@ -62,6 +63,7 @@
                                         <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
                                     </audio>
                                 </div>
+
                             </label>
                         </div>
                     </div>
