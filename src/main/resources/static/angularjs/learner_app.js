@@ -707,6 +707,9 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
                 // Call to the server to end the exam
                 serverCaller.httpPost(endExamRequest, '/api/learner/endExam',
                     function (response) {
+                        // Clear event to avoid exiting of new exam page
+                        windowElement.off('beforeunload', preventEventFunction);
+
                         // Set the exam score response in the shared properties
                         sharedProperties.setExamScoreInfo(response.examScoreInfo);
 
@@ -719,6 +722,11 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
         }
     };
 
+    // Event to show a popup before refresh/close the tab in the browser
+    var preventEventFunction = function (event) { event.preventDefault(); };
+    var windowElement = angular.element($window);
+    windowElement.on('beforeunload', preventEventFunction);
+
     // Event to check if the back button is clicked
     $scope.$on('$routeChangeStart', function (event, next, prev) {
 
@@ -730,12 +738,6 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
             // End the exam as the same that End Exam button
             $scope.endExam(true);
         }
-    });
-
-    // Event to show a popup before refresh/close the tab in the browser
-    var windowElement = angular.element($window);
-    windowElement.on('beforeunload', function (event) {
-        event.preventDefault();
     });
 
 }]);
