@@ -93,6 +93,7 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
         // Fill the width and height
         String width = multimediaInfo.getWidth();
         String heigh = multimediaInfo.getHeight();
+        multimediaElementModel.setId(multimediaInfo.getId());
         multimediaElementModel.setWidth(width);
         multimediaElementModel.setMeasureUnitWidth(this.calculateMeasureUnit(width));
         multimediaElementModel.setHeight(heigh);
@@ -158,6 +159,7 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
 
             // Fill the Multimedia Info object from database object
             ExtraPregunta extraPregunta = (ExtraPregunta)databaseMultimediaElement;
+            multimediaInfo.setId(extraPregunta.getIdextrap());
             multimediaInfo.setPath(extraPregunta.getRuta());
             multimediaInfo.setType(extraPregunta.getTipo());
             multimediaInfo.setWidth(extraPregunta.getAncho());
@@ -168,6 +170,7 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
 
             // Fill the Multimedia Info object from database object
             ExtraPreguntaComentario extraPreguntaComentario = (ExtraPreguntaComentario)databaseMultimediaElement;
+            multimediaInfo.setId(extraPreguntaComentario.getIdextrapcom());
             multimediaInfo.setPath(extraPreguntaComentario.getRuta());
             multimediaInfo.setType(extraPreguntaComentario.getTipo());
             multimediaInfo.setWidth(extraPreguntaComentario.getAncho());
@@ -177,6 +180,7 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
 
             // Fill the Multimedia Info object from database object
             ExtraRespuesta extraRespuesta = (ExtraRespuesta)databaseMultimediaElement;
+            multimediaInfo.setId(extraRespuesta.getIdextrar());
             multimediaInfo.setPath(extraRespuesta.getRuta());
             multimediaInfo.setType(extraRespuesta.getTipo());
             multimediaInfo.setWidth(extraRespuesta.getAncho());
@@ -192,11 +196,20 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
      * Private class holding the multimedia information fields of the common entities in database
      */
     private class MultimediaInfo {
+        private int id;
         private String path;
         private int type;
         private String width;
         private String height;
         private int geogebraType;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
 
         String getPath() {
             return path;

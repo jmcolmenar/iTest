@@ -23,6 +23,8 @@ package com.itest.model;
 
 public class MultimediaElementModel {
 
+    private int id;
+
     private String path;
 
     private int type;
@@ -38,6 +40,14 @@ public class MultimediaElementModel {
     private String extension;
 
     private int geogebraType;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getPath() {
         return path;

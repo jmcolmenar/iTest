@@ -403,6 +403,12 @@ body{
     border-radius:2px;
 }
 
+.multimedia-element-question-div{
+    display: inline-block;
+    padding: 3px;
+    vertical-align: middle;
+}
+
 @media (max-width: 360px){
     .multimedia-audio{
         width: 100%;
@@ -430,6 +436,33 @@ body{
 
 @media (max-width: 349px) {
     .multimedia-flash-question{
+        width: 100%;
+        height: 160px;
+    }
+}
+
+.multimedia-geogebra-question{
+    width: 500px;
+    height: 375px;
+    display: block;
+}
+
+@media (min-width: 460px) and (max-width: 584px){
+    .multimedia-geogebra-question{
+        width: 100%;
+        height: 240px;
+    }
+}
+
+@media (min-width: 350px) and (max-width: 459px){
+    .multimedia-geogebra-question{
+        width: 100%;
+        height: 200px;
+    }
+}
+
+@media (max-width: 349px) {
+    .multimedia-geogebra-question{
         width: 100%;
         height: 160px;
     }

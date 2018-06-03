@@ -108,6 +108,19 @@ app.directive('onFinishRender', function ($timeout) {
     }
 });
 
+// Directive to inject a Geogebra element from file path
+app.directive('geogebraElement', function ($timeout) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+            $timeout(function () {
+                var currentGeogebraElement = scope.$eval(attr.geogebraElement);
+                scope.$emit('injectGeogebraElement', currentGeogebraElement);
+            });
+        }
+    }
+});
+
 // Route provider configuration
 app.config(['$routeProvider', function ($routeProvider){
     $routeProvider
@@ -191,6 +204,12 @@ app.controller('mainCtrl', ['$scope', '$http', '$window', '$sce', 'serverCaller'
 
 // Multimedia controller
 app.controller('multimediaCtrl', ['$scope', '$sce', function($scope, $sce){
+
+    // Event to inject the geogebra element
+    $scope.$on('injectGeogebraElement', function(event, multimedia) {
+        var applet = new GGBApplet({filename: multimedia.path,"showtoolbar":true, "showFullscreenButton":true }, true);
+        applet.inject('geogebra'+multimedia.id);
+    });
 
     // Function to get the url to use in an embed element
     $scope.getYoutubeUrl = function(path){
@@ -301,7 +320,7 @@ app.controller('multimediaCtrl', ['$scope', '$sce', function($scope, $sce){
                 className = "";
         }
 
-        return "multimedia-element-comment-div" + className;
+        return "multimedia-element-question-div" + className;
     };
 
     // Function to get the class for the multimedia comment element
