@@ -245,6 +245,11 @@ app.controller('multimediaCtrl', ['$scope', '$sce', function($scope, $sce){
         }
     };
 
+    // Prevent the event to avoid checking the answer
+    $scope.preventClickFlash = function ($event) {
+        $event.preventDefault();
+    };
+
     // Get the style for multimedia question
     $scope.getStyleForMultimediaQuestion = function(multimedia){
         var style = '';

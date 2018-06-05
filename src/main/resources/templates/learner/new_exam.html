@@ -57,7 +57,7 @@
                                 <!-- Multimedia elements for answer -->
                                 <div ng-repeat="multimedia in answer.multimediaList" class="multimedia-adjust-width">
                                     <!-- Flash Multimedia Element -->
-                                    <object ng-if="multimedia.type == 1" class="multimedia-flash-answer multimedia-border" data="{{multimedia.path}}"></object>
+                                    <object ng-if="multimedia.type == 1" class="multimedia-flash-answer multimedia-border" ng-click="preventClickFlash($event)" data="{{multimedia.path}}"></object>
                                     <!-- Image Multimedia Element -->
                                     <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, $event)" class="multimedia-img-answer multimedia-border"/>
                                     <!-- Audio Multimedia Element -->
