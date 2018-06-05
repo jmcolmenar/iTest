@@ -207,8 +207,12 @@ app.controller('multimediaCtrl', ['$scope', '$sce', function($scope, $sce){
 
     // Event to inject the geogebra element
     $scope.$on('injectGeogebraElement', function(event, multimedia) {
-        var applet = new GGBApplet({filename: multimedia.path,"showtoolbar":true, "showFullscreenButton":true }, true);
-        applet.inject('geogebra'+multimedia.id);
+
+        var divId =  'geogebra'+multimedia.id;
+        var params = {filename: multimedia.path,"showtoolbar":true, "showFullscreenButton":true, "width": 500, "height": 375};
+        var applet = new GGBApplet(params, true);
+
+        applet.inject(divId);
     });
 
     // Function to get the url to use in an embed element
@@ -279,16 +283,16 @@ app.controller('multimediaCtrl', ['$scope', '$sce', function($scope, $sce){
     };
 
     $scope.getClassForMultimediaQuestion = function(multimedia){
-        var className = "";
+        var className = "multimedia-element-question-div";
         switch (multimedia.type){
             case 1:
-                className = " multimedia-flash-question";
+                className += " multimedia-flash-question";
                 break;
             case 2:
                 if(multimedia.measureUnitWidth == 0 && multimedia.measureUnitHeight == 0){
 
                     // The measure unit is "NONE", therefore the size will be the same as "small"
-                    className = " multimedia-img-small-question";
+                    className += " multimedia-img-small-question";
 
                 }else if(multimedia.measureUnitWidth == 1){
 
@@ -296,54 +300,60 @@ app.controller('multimediaCtrl', ['$scope', '$sce', function($scope, $sce){
                     if(multimedia.width == 'big'){
 
                         // The size is "big"
-                        className = " multimedia-img-big-question";
+                        className += " multimedia-img-big-question";
 
                     }else if(multimedia.width == 'medium'){
 
                         // The size is "medium"
-                        className = " multimedia-img-medium-question";
+                        className += " multimedia-img-medium-question";
 
                     }else if(multimedia.width == 'small') {
 
                         // The size is "small"
-                        className = " multimedia-img-small-question";
+                        className += " multimedia-img-small-question";
                     }
                 }
                 break;
             case 3:
-                className = " multimedia-audio";
+                className += " multimedia-audio";
+                break;
+            case 4:
+                className = "multimedia-geogebra-question-and-comment";
                 break;
             case 7:
-                className = " multimedia-youtube-question";
+                className += " multimedia-youtube-question";
                 break;
             default:
                 className = "";
         }
 
-        return "multimedia-element-question-div" + className;
+        return className;
     };
 
     // Function to get the class for the multimedia comment element
     $scope.getClassForMultimediaComment = function(multimedia){
-        var className;
+        var className = "multimedia-element-comment-div";
         switch (multimedia.type){
             case 1:
-                className = " multimedia-flash-comment";
+                className += " multimedia-flash-comment";
                 break;
             case 2:
-                className = " multimedia-img-comment";
+                className += " multimedia-img-comment";
                 break;
             case 3:
-                className = " multimedia-audio-comment";
+                className += " multimedia-audio-comment";
+                break;
+            case 4:
+                className = "multimedia-geogebra-question-and-comment";
                 break;
             case 7:
-                className = " multimedia-youtube-comment";
+                className += " multimedia-youtube-comment";
                 break;
             default:
                 className = "";
         }
 
-        return "multimedia-element-comment-div" + className;
+        return className;
     };
 }]);
 

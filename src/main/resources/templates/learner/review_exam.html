@@ -51,7 +51,7 @@
                                 <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
                             </audio>
                             <!-- Geogebra Multimedia Element -->
-                            <div ng-if="multimedia.type == 4" id="geogebra{{multimedia.id}}" class="multimedia-geogebra-question" geogebra-element="{{multimedia}}" ></div>
+                            <div ng-if="multimedia.type == 4" id="geogebra{{multimedia.id}}" class="multimedia-geogebra-question-and-comment" geogebra-element="{{multimedia}}" ></div>
                             <!-- YouTube Multimedia Element -->
                             <iframe ng-if="multimedia.type == 7" class="multimedia-adjust-width multimedia-adjust-height" ng-src="{{getYoutubeUrl(multimedia.path)}}" allowfullscreen="true"></iframe>
                         </div>
@@ -96,6 +96,8 @@
                                     <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-adjust-width">
                                         <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
                                     </audio>
+                                    <!-- Geogebra Multimedia Element -->
+                                    <div ng-if="multimedia.type == 4" id="geogebra{{multimedia.id}}" class="multimedia-geogebra-question-and-comment" geogebra-element="{{multimedia}}" ></div>
                                     <!-- YouTube Multimedia Element -->
                                     <iframe ng-if="multimedia.type == 7" class="multimedia-adjust-width multimedia-adjust-height" ng-src="{{getYoutubeUrl(multimedia.path)}}" allowfullscreen="true"></iframe>
                                 </div>

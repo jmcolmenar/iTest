@@ -441,31 +441,12 @@ body{
     }
 }
 
-.multimedia-geogebra-question{
-    width: 500px;
-    height: 375px;
+.multimedia-geogebra-question-and-comment{
     display: block;
-}
-
-@media (min-width: 460px) and (max-width: 584px){
-    .multimedia-geogebra-question{
-        width: 100%;
-        height: 240px;
-    }
-}
-
-@media (min-width: 350px) and (max-width: 459px){
-    .multimedia-geogebra-question{
-        width: 100%;
-        height: 200px;
-    }
-}
-
-@media (max-width: 349px) {
-    .multimedia-geogebra-question{
-        width: 100%;
-        height: 160px;
-    }
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:3px;
+    margin-bottom:3px;
 }
 
 .multimedia-youtube-question{
