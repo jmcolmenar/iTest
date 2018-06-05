@@ -31,6 +31,7 @@ import com.itest.service.business.LearnerMultimediaService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.itest.constant.MultimediaMeasureUnitConstant.*;
@@ -51,6 +52,9 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
         // Check if the list of database multimedia object is not empty
         if(databaseMultimediaList != null && databaseMultimediaList.size() > 0){
 
+            // Order the multimedia element list
+            this.orderMultimediaList(databaseMultimediaList);
+
             // Convert all database object to model objects
             for(Object databaseObject : databaseMultimediaList){
 
@@ -66,6 +70,25 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
 
         // Return the multimedia model list
         return multimediaElementModelList;
+    }
+
+    /**
+     * Order the multimedia list by the order field of database table
+     * @param databaseMultimediaList The multimedia list to be ordered
+     */
+    private void orderMultimediaList(List databaseMultimediaList) {
+        if(databaseMultimediaList.get(0).getClass() == ExtraRespuesta.class){
+
+            ((List<ExtraRespuesta>)databaseMultimediaList).sort(Comparator.comparing(ExtraRespuesta::getOrden));
+
+        }else if(databaseMultimediaList.get(0).getClass() == ExtraPregunta.class){
+
+            ((List<ExtraPregunta>)databaseMultimediaList).sort(Comparator.comparing(ExtraPregunta::getOrden));
+
+        }else if(databaseMultimediaList.get(0).getClass() == ExtraPreguntaComentario.class){
+
+            ((List<ExtraPreguntaComentario>)databaseMultimediaList).sort(Comparator.comparing(ExtraPreguntaComentario::getOrden));
+        }
     }
 
     /**
