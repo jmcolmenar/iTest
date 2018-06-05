@@ -157,6 +157,15 @@ app.config(['$routeProvider', function ($routeProvider){
         });
 }]);
 
+// Filter to convert the break lines to <br> tags
+app.filter('newlines', ['$sce', function ($sce) {
+    return function(text) {
+        if(text)
+            return $sce.trustAsHtml(text.replace(/\n/g, '<br/>'));
+        return $sce.trustAsHtml('');
+    }
+}]);
+
 // Main controller
 app.controller('mainCtrl', ['$scope', '$http', '$window', '$sce', 'serverCaller', function($scope, $http, $window, $sce, serverCaller){
 
