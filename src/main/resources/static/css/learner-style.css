@@ -449,6 +449,11 @@ body{
     margin-bottom:3px;
 }
 
+.multimedia-geogebra-answer{
+    margin-top:3px;
+    margin-bottom:3px;
+}
+
 .multimedia-youtube-question{
     width:425px;
     height:344px;

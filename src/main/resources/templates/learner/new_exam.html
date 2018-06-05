@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="exam-answer" ng-repeat="answer in question.answerList">
-                        <div class="checkbox checkbox-ltr checkbox-primary">
+                        <div class="checkbox checkbox-ltr checkbox-primary" style="display: flex">
                             <input id="answer{{answer.asnwerId}}" ng-model="answer.checked" ng-change="checkChangedAnswer(question, answer)" type="checkbox"/>
                             <label for="answer{{answer.asnwerId}}" ng-class="{'multimedia-adjust-width': answer.multimediaList.length > 0}">
                                 <span ng-if="answer.text">{{answer.text}}</span>
@@ -57,13 +57,15 @@
                                 <!-- Multimedia elements for answer -->
                                 <div ng-repeat="multimedia in answer.multimediaList" class="multimedia-adjust-width">
                                     <!-- Flash Multimedia Element -->
-                                    <object ng-if="multimedia.type == 1" class="multimedia-flash-answer multimedia-border" ng-click="preventClickFlash($event)" data="{{multimedia.path}}"></object>
+                                    <object ng-if="multimedia.type == 1" class="multimedia-flash-answer multimedia-border" ng-click="preventMultimediaClick($event)" data="{{multimedia.path}}"></object>
                                     <!-- Image Multimedia Element -->
                                     <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, $event)" class="multimedia-img-answer multimedia-border"/>
                                     <!-- Audio Multimedia Element -->
                                     <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio-answer">
                                         <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
                                     </audio>
+                                    <!-- Geogebra Multimedia Element -->
+                                    <div ng-if="multimedia.type == 4" id="geogebra{{multimedia.id}}" ng-click="preventMultimediaClick($event)" class="multimedia-geogebra-answer" geogebra-element="{{multimedia}}" ></div>
                                 </div>
 
                             </label>

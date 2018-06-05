@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="exam-answer" ng-class="{'review-exam-answer-right': answer.right}" ng-repeat="answer in question.answerList">
-                        <div class="checkbox checkbox-ltr checkbox-primary">
+                        <div class="checkbox checkbox-ltr checkbox-primary" style="display: flex">
                             <input id="answer{{answer.asnwerId}}" ng-checked="answer.checked" type="checkbox" disabled=""/>
                             <label for="answer{{answer.asnwerId}}" ng-class="{'multimedia-adjust-width': answer.multimediaList.length > 0}">
                                 <span ng-if="answer.text">{{answer.text}}</span>
@@ -74,6 +74,8 @@
                                     <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio-answer">
                                         <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
                                     </audio>
+                                    <!-- Geogebra Multimedia Element -->
+                                    <div ng-if="multimedia.type == 4" id="geogebra{{multimedia.id}}" class="multimedia-geogebra-answer" geogebra-element="{{multimedia}}" ></div>
                                 </div>
 
                             </label>

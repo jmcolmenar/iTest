@@ -246,7 +246,7 @@ app.controller('multimediaCtrl', ['$scope', '$sce', function($scope, $sce){
     };
 
     // Prevent the event to avoid checking the answer
-    $scope.preventClickFlash = function ($event) {
+    $scope.preventMultimediaClick = function ($event) {
         $event.preventDefault();
     };
 
