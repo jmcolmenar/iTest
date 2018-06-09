@@ -22,11 +22,10 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 package com.itest.service.business.impl;
 
 import com.itest.component.FormatterComponent;
-import com.itest.constant.MultimediaPathConstant;
-import com.itest.constant.MultimediaTypeConstant;
 import com.itest.entity.*;
 import com.itest.model.*;
 import com.itest.repository.ExamenRepository;
+import com.itest.repository.LogExamenFillRepository;
 import com.itest.repository.LogExamenRepository;
 import com.itest.repository.PreguntaRepository;
 import com.itest.service.business.LearnerExamService;
@@ -52,6 +51,10 @@ public class LearnerExamServiceImpl implements LearnerExamService {
     @Autowired
     @Qualifier("logExamenRepository")
     private LogExamenRepository logExamenRepository;
+
+    @Autowired
+    @Qualifier("logExamenFillRepository")
+    private LogExamenFillRepository logExamenFillRepository;
 
     @Autowired
     @Qualifier("formatterComponent")
@@ -142,7 +145,7 @@ public class LearnerExamServiceImpl implements LearnerExamService {
     }
 
     /**
-     * Calculates the score of a question in an donde exam by a learner
+     * Calculates the score of a question of test type in an donde exam by a learner
      * @param learnerId The learner identifier
      * @param examId The exam identifier
      * @param questionId The question identifier
@@ -150,7 +153,7 @@ public class LearnerExamServiceImpl implements LearnerExamService {
      * @param updateAnswerScoreInDatabase To check if the score for the correct and incorrect answers must be updated in database
      * @return The score of the question
      */
-    public double calculateQuestionScore(int learnerId, int examId, int questionId, int numberQuestionsOfCurrentExam, boolean updateAnswerScoreInDatabase) {
+    public double calculateTestQuestionScore(int learnerId, int examId, int questionId, int numberQuestionsOfCurrentExam, boolean updateAnswerScoreInDatabase) {
         // The question score variable
         double questionScore = 0;
 
@@ -365,6 +368,118 @@ public class LearnerExamServiceImpl implements LearnerExamService {
 
         // Return the question score
         return questionScore;
+    }
+
+    /**
+     * Calculates the score of a question of short answer type in an donde exam by a learner
+     * @param learnerId The learner identifier
+     * @param examId The exam identifier
+     * @param questionId The question identifier
+     * @param numberQuestionsOfCurrentExam The number of questions in the current exam
+     * @param updateAnswerScoreInDatabase To check if the score for the correct and incorrect answers must be updated in database
+     * @return The score of the question
+     */
+    public double calculateShortAnswerQuestionScore(int learnerId, int examId, int questionId, int numberQuestionsOfCurrentExam, boolean updateAnswerScoreInDatabase) {
+
+        // The score of question
+        double questionScore = 0.0;
+
+        // Get the question from database
+        Pregunta question = this.preguntaRepository.findOne(questionId);
+
+        // Check there is one answer for this question
+        if(question.getRespuestas() != null && question.getRespuestas().size() == 1){
+
+            // Get the answer of user for this question
+            LogExamenFill logExamenFill = this.logExamenFillRepository.findByExamIdAndUserIdAndQuestionId(examId, learnerId, questionId);
+
+            // Check there is an answer for this question in database
+            if(logExamenFill != null){
+
+                // Get the exam and exam details from database
+                Examen exam = this.examenRepository.findOne(examId);
+                double maxScorePerQuestion = (double)exam.getNotaMax() / (double)numberQuestionsOfCurrentExam;
+                boolean isPartialCorrection = exam.getCorrParcial() == 1;
+                double questionFailedPenalty = exam.getPPregFallada();
+                double questionNotAnsweredPenalty = exam.getPPregNoResp();
+                boolean isConfidenceLevel = exam.getNivelConfianza() == 1;
+                double rewardConfidenceLevel = exam.getRNivelConfianza();
+                double penaltyConfidenceLevel = exam.getPNivelConfianza();
+
+                // Get the rigth answer text and answered text by user
+                String rightAnswerText = question.getRespuestas().get(0).getTexto();
+                String userAnswerText = logExamenFill.getResp() != null ? logExamenFill.getResp() : "";
+
+                // Check if the answer is correct
+                boolean isCorrect = this.isShortAnswerCorrect(rightAnswerText, userAnswerText);
+                if(isCorrect){
+
+                    // Set the question score to max score per question
+                    questionScore = maxScorePerQuestion;
+                }
+
+                // Apply the confidence level criteria
+                if(isConfidenceLevel && logExamenFill.getNivelConfianza() == 1){
+
+                    // Check if the answer is correct
+                    if(isCorrect){
+
+                        // Apply the confidence level reward
+                        questionScore += (maxScorePerQuestion * rewardConfidenceLevel);
+
+                    }else{
+
+                        // Apply the confidence level penalty
+                        questionScore -= (maxScorePerQuestion * penaltyConfidenceLevel);
+                    }
+                }
+
+                // Check if the exam has not partial correction and the answer is not correct
+                if(!isPartialCorrection && !isCorrect){
+
+                    // Check if the quetion has answered
+                    if(userAnswerText == null){
+
+                        // Penalty by not answer the question
+                        questionScore -= (maxScorePerQuestion * questionNotAnsweredPenalty);
+
+                    }else{
+
+                        // Penalty by fail the question
+                        questionScore -= (maxScorePerQuestion * questionFailedPenalty);
+                    }
+                }
+
+                // Update the score in database
+                if(updateAnswerScoreInDatabase){
+                    logExamenFill.setPuntos(new BigDecimal(questionScore));
+                    this.logExamenFillRepository.save(logExamenFill);
+                }
+            }
+        }
+
+        // Return the question score
+        return questionScore;
+    }
+
+    /**
+     * The method to calculate if the short answer is correct
+     * @param rightAnswerText The right answer text
+     * @param userAnswerText The answer text typed by user
+     * @return A value indicating whether the short answer is correct
+     */
+    private boolean isShortAnswerCorrect(String rightAnswerText, String userAnswerText) {
+
+        // The value to check if short answer is correct
+        boolean isCorrect = false;
+
+        // Check if the answer is correct
+        if(userAnswerText != null){
+            isCorrect = userAnswerText.trim().toLowerCase().equals(rightAnswerText.trim().toLowerCase());
+        }
+
+        // Return if short answer is correct
+        return isCorrect;
     }
 
     /**

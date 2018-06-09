@@ -227,34 +227,61 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
             for(NewExamAnswerModel answer : question.getAnswerList()){
 
                 // The fields of log exam entity to update(The fields can be updated or not - Optional)
-                boolean updateLogExamInDatabase = false;
+                boolean updateAnswerInDatabase = false;
                 Boolean checked = null;
                 Boolean activeConfidenceLevel = null;
                 Date answerTime = null;
+                String shortAnswerText = null;
 
                 // Check if confidence level is active in the question
                 if(question.isActiveConfidenceLevel()){
                     // The log exam entity for this answer will be updated in database
-                    updateLogExamInDatabase = true;
+                    updateAnswerInDatabase = true;
 
                     // Set the confidence level field
                     activeConfidenceLevel = true;
                 }
 
-                // Check if the learner has answered this questions using this answer
-                if(answer.isChecked()){
-                    // The log exam entity for this answer will be updated in database
-                    updateLogExamInDatabase = true;
+                // Check if the learner has answered this questions (Depending on question type)
+                if(question.getType() == TEST){
 
-                    // Set the checked and answer time fields
-                    checked = true;
-                    answerTime = answer.getAnswerTime();
+                    // Check if the answer is checked
+                    if(answer.isChecked()){
+                        // The log exam entity for this answer will be updated in database
+                        updateAnswerInDatabase = true;
+
+                        // Set the checked and answer time fields
+                        checked = true;
+                        answerTime = answer.getAnswerTime();
+                    }
+
+                }else if(question.getType() == SHORT_ANSWER){
+
+                    // The short answers always are updated in database
+                    updateAnswerInDatabase = true;
+
+                    // Check if the user has checked the short answer
+                    if(answer.isChecked()){
+                        shortAnswerText = answer.getText();
+                    }else{
+                        shortAnswerText = null;
+                    }
                 }
 
-                // Check if the log exam have to update in database
-                if(updateLogExamInDatabase){
-                    // Update the log exam entity in database
-                    this.insertOrUpdateLogExam(learnerId, examId, question.getQuestionId(), answer.getAsnwerId(), checked, activeConfidenceLevel, answerTime);
+                // Check if the answer have to update in database
+                if(updateAnswerInDatabase){
+
+                    // Check the type of question
+                    if(question.getType() == TEST){
+
+                        // Update the log exam entity in database
+                        this.insertOrUpdateLogExam(learnerId, examId, question.getQuestionId(), answer.getAsnwerId(), checked, activeConfidenceLevel, answerTime);
+
+                    }else if(question.getType() == SHORT_ANSWER){
+
+                        // Update the log exam fill entity in database
+                        this.insertOrUpdateLogExamFill(learnerId, examId, question.getQuestionId(), shortAnswerText, activeConfidenceLevel, answerTime);
+                    }
                 }
             }
         }
@@ -275,8 +302,17 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         // Calculate the score for each question
         for(NewExamQuestionModel question : questionList){
 
-            // Calculate the question score
-            double questionScore = this.learnerExamService.calculateQuestionScore(learnerId, examId, question.getQuestionId(), questionList.size(), true);
+            double questionScore = 0.0;
+            if(question.getType() == TEST){
+
+                // Calculate the question score of test type
+                questionScore = this.learnerExamService.calculateTestQuestionScore(learnerId, examId, question.getQuestionId(), questionList.size(), true);
+
+            }else if(question.getType() == SHORT_ANSWER){
+
+                // Calculate the question score of short answer type
+                questionScore = this.learnerExamService.calculateShortAnswerQuestionScore(learnerId, examId, question.getQuestionId(), questionList.size(), true);
+            }
 
             // Add the question score to exam score
             examScore += questionScore;
@@ -610,5 +646,52 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
 
         // Insert or update the log exam in database
         this.logExamenRepository.save(logExam);
+    }
+
+    /**
+     * Insert or update the log exam fill entity in database
+     * @param learnerId The learner identifier
+     * @param examId The exam identifier
+     * @param questionId The question identifier
+     * @param answerText The answer text
+     * @param confidenceLevel If the question has checked as confidence level (Optional value to insert or update)
+     * @param answerTime The answer time (Optional value to insert or update)
+     */
+    private void insertOrUpdateLogExamFill(int learnerId, int examId, int questionId, String answerText, Boolean confidenceLevel, Date answerTime){
+        // Try to get the Log Exam
+        LogExamenFill logExamFill = this.logExamenFillRepository.findByExamIdAndUserIdAndQuestionId(examId, learnerId, questionId);
+
+        // Check if the log exam is in database
+        if(logExamFill != null){
+            // Set the fields
+            if(confidenceLevel != null){
+                logExamFill.setNivelConfianza(confidenceLevel ? 1 : 0);
+            }
+            if(answerTime != null){
+                logExamFill.setHoraResp(answerTime);
+            }
+            logExamFill.setResp(answerText);
+        }else{
+            // Crate a new log exam
+            logExamFill = new LogExamenFill();
+            logExamFill.setUsuario(this.usuarioRepository.findOne(learnerId));
+            logExamFill.setExamen(this.examenRepository.findOne(examId));
+            logExamFill.setPregunta(this.preguntaRepository.findOne(questionId));
+            logExamFill.setResp(answerText);
+            logExamFill.setPuntos(new BigDecimal(0));
+            if(confidenceLevel != null){
+                logExamFill.setNivelConfianza(confidenceLevel ? 1 : 0);
+            }else{
+                logExamFill.setNivelConfianza(0);
+            }
+            if(answerTime != null){
+                logExamFill.setHoraResp(answerTime);
+            }else{
+                logExamFill.setHoraResp(new Date(System.currentTimeMillis()));
+            }
+        }
+
+        // Insert or update the log exam fill in database
+        this.logExamenFillRepository.save(logExamFill);
     }
 }

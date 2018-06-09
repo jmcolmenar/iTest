@@ -23,10 +23,23 @@ package com.itest.repository;
 
 import com.itest.entity.LogExamenFill;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 
 @Repository("logExamenFillRepository")
 public interface LogExamenFillRepository extends JpaRepository<LogExamenFill, Serializable> {
+
+    @Query("select " +
+            "   logfill " +
+            "from " +
+            "   LogExamenFill logfill " +
+            "where" +
+            "   logfill.examen.idexam = :examid " +
+            "   and logfill.usuario.idusu = :userid " +
+            "   and logfill.pregunta.idpreg = :questionid")
+    LogExamenFill findByExamIdAndUserIdAndQuestionId(@Param("examid") int examId, @Param("userid") int userId, @Param("questionid") int questionId);
+
 }
