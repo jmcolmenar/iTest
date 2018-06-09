@@ -302,6 +302,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         // Calculate the score for each question
         for(NewExamQuestionModel question : questionList){
 
+            // Check the type of question
             double questionScore = 0.0;
             if(question.getType() == TEST){
 

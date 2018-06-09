@@ -57,28 +57,54 @@
                         </div>
                     </div>
 
-                    <div class="exam-answer" ng-class="{'review-exam-answer-right': answer.right}" ng-repeat="answer in question.answerList">
-                        <div class="checkbox checkbox-ltr checkbox-primary" style="display: flex">
-                            <input id="answer{{answer.asnwerId}}" ng-checked="answer.checked" type="checkbox" disabled=""/>
-                            <label for="answer{{answer.asnwerId}}" ng-class="{'multimedia-adjust-width': answer.multimediaList.length > 0}">
-                                <span ng-if="answer.text" ng-bind-html="answer.text | newlines"></span>
-                                <br ng-if="answer.text"/>
+                    <!-- Check the type of question: Test or Short Answer -->
+                    <div ng-switch="question.type">
+                        <!-- Answers for question of test type -->
+                        <div ng-switch-when="0">
+                            <div class="exam-answer" ng-class="{'review-exam-answer-right': answer.right}" ng-repeat="answer in question.answerList">
+                                <div class="checkbox checkbox-ltr checkbox-primary" style="display: flex">
+                                    <input id="answer{{answer.asnwerId}}" ng-checked="answer.checked" type="checkbox" disabled=""/>
+                                    <label for="answer{{answer.asnwerId}}" ng-class="{'multimedia-adjust-width': answer.multimediaList.length > 0}">
+                                        <span ng-if="answer.text" ng-bind-html="answer.text | newlines"></span>
+                                        <br ng-if="answer.text"/>
 
-                                <!-- Multimedia elements for answer -->
-                                <div ng-repeat="multimedia in answer.multimediaList" class="multimedia-adjust-width">
-                                    <!-- Flash Multimedia Element -->
-                                    <object ng-if="multimedia.type == 1" class="multimedia-flash-answer multimedia-border" data="{{multimedia.path}}"></object>
-                                    <!-- Image Multimedia Element -->
-                                    <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, null)" class="multimedia-img-answer multimedia-border"/>
-                                    <!-- Audio Multimedia Element -->
-                                    <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio-answer">
-                                        <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
-                                    </audio>
-                                    <!-- Geogebra Multimedia Element -->
-                                    <div ng-if="multimedia.type == 4" id="geogebra{{multimedia.id}}" class="multimedia-geogebra-answer" geogebra-element="{{multimedia}}" ></div>
+                                        <!-- Multimedia elements for answer -->
+                                        <div ng-repeat="multimedia in answer.multimediaList" class="multimedia-adjust-width">
+                                            <!-- Flash Multimedia Element -->
+                                            <object ng-if="multimedia.type == 1" class="multimedia-flash-answer multimedia-border" data="{{multimedia.path}}"></object>
+                                            <!-- Image Multimedia Element -->
+                                            <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, null)" class="multimedia-img-answer multimedia-border"/>
+                                            <!-- Audio Multimedia Element -->
+                                            <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio-answer">
+                                                <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
+                                            </audio>
+                                            <!-- Geogebra Multimedia Element -->
+                                            <div ng-if="multimedia.type == 4" id="geogebra{{multimedia.id}}" class="multimedia-geogebra-answer" geogebra-element="{{multimedia}}" ></div>
+                                        </div>
+
+                                    </label>
                                 </div>
-
-                            </label>
+                            </div>
+                        </div>
+                        <div ng-switch-when="1">
+                            <!-- Answers for question of short answer type -->
+                            <div class="exam-answer exam-short-answer-div" ng-class="{'review-exam-answer-right': answer.right}" ng-repeat="answer in question.answerList">
+                                <h5 class="exam-short-answer-solution"><strong><u><span th:text="#{reviewExam.shortAnswerSolution}"></span></u></strong> {{answer.text}}</h5>
+                                <div class="checkbox checkbox-ltr checkbox-primary">
+                                    <input id="shortAnswer{{answer.answerId}}" ng-model="answer.checked" type="checkbox" disabled=""/>
+                                    <label for="shortAnswer{{answer.answerId}}" class="exam-short-answer">
+                                        <span ng-if="answer.right" class="has-success exam-short-answer">
+                                            <input class="form-control" type="text" ng-model="answer.answeredText" disabled=""/>
+                                        </span>
+                                        <span ng-if="!answer.right" class="exam-short-answer">
+                                            <div class="has-error has-feedback">
+                                                <input class="form-control" type="text" ng-model="answer.answeredText" disabled=""/>
+                                                <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                            </div>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

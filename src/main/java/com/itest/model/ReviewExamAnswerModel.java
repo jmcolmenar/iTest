@@ -33,6 +33,8 @@ public class ReviewExamAnswerModel {
 
     private boolean right;
 
+    private String answeredText;
+
     private List<MultimediaElementModel> multimediaList;
 
     public int getAsnwerId() {
@@ -65,6 +67,14 @@ public class ReviewExamAnswerModel {
 
     public void setRight(boolean right) {
         this.right = right;
+    }
+
+    public String getAnsweredText() {
+        return answeredText;
+    }
+
+    public void setAnsweredText(String answeredText) {
+        this.answeredText = answeredText;
     }
 
     public List<MultimediaElementModel> getMultimediaList() {

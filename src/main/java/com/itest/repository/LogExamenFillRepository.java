@@ -28,6 +28,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Repository("logExamenFillRepository")
 public interface LogExamenFillRepository extends JpaRepository<LogExamenFill, Serializable> {
@@ -41,5 +42,16 @@ public interface LogExamenFillRepository extends JpaRepository<LogExamenFill, Se
             "   and logfill.usuario.idusu = :userid " +
             "   and logfill.pregunta.idpreg = :questionid")
     LogExamenFill findByExamIdAndUserIdAndQuestionId(@Param("examid") int examId, @Param("userid") int userId, @Param("questionid") int questionId);
+
+    @Query("select " +
+            "   logfill " +
+            "from " +
+            "   LogExamenFill logfill " +
+            "where" +
+            "   logfill.examen.idexam = :examid " +
+            "   and logfill.usuario.idusu = :userid " +
+            "order by " +
+            "   logfill.idlogexamsfill")
+    List<LogExamenFill> findByExamIdAndUserIdOrderdById(@Param("examid") int examId, @Param("userid") int userId);
 
 }

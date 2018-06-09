@@ -159,7 +159,7 @@ public class LearnerManagementServiceImpl implements LearnerManagementService {
 
         }catch(Exception exc){
             // Log the exception
-            LOG.error("Error getting the done exams of user. Exception: " + exc.getMessage());
+            LOG.error("Error getting the exam to review. Exception: " + exc.getMessage());
 
             // Has an error retrieving the exam info to review
             getExamToReviewResponse.setHasError(true);

@@ -37,6 +37,8 @@ public class ReviewExamQuestionModel {
 
     private boolean activeConfidenceLevel;
 
+    private int type;
+
     private List<ReviewExamAnswerModel> answerList;
 
     private List<MultimediaElementModel> multimediaList;
@@ -89,6 +91,14 @@ public class ReviewExamQuestionModel {
 
     public void setActiveConfidenceLevel(boolean activeConfidenceLevel) {
         this.activeConfidenceLevel = activeConfidenceLevel;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public List<ReviewExamAnswerModel> getAnswerList() {
