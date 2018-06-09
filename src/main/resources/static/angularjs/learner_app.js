@@ -712,7 +712,7 @@ app.controller('newExamCtrl', ['$scope', '$http', '$window', '$interval', 'share
     };
 
     // Function to check the answer when the user types in it or uncheck the answer when the user types it empty
-    $scope.changeFillAnswer = function (answer) {
+    $scope.shortAnswerHasChanged = function (answer) {
       if(!answer.checked){
           answer.checked = true;
       }else{

@@ -225,17 +225,17 @@ body{
     padding-right: 5px;
 }
 
-.exam-answer-fill-div{
+.exam-short-answer{
     padding-top: 3px;
     padding-bottom: 3px;
 }
 
-.exam-answer-fill{
+.exam--short-answer{
     min-width: 300px;
 }
 
 @media (max-width: 450px){
-    .exam-answer-fill{
+    .exam-short-answer{
         width: 100%;
         min-width: 50px;
     }

@@ -81,11 +81,11 @@
                         </div>
                         <div ng-switch-when="1">
                             <!-- Answers for question of short answer type -->
-                            <div class="exam-answer exam-answer-fill-div" ng-repeat="answer in question.answerList">
+                            <div class="exam-answer exam-short-answer-div" ng-repeat="answer in question.answerList">
                                 <div class="checkbox checkbox-ltr checkbox-primary">
-                                    <input id="answerFill{{question.questionId}}" ng-model="answer.checked" ng-change="checkChangedAnswer(question, answer)" type="checkbox"/>
-                                    <label for="answerFill{{question.questionId}}" class="exam-answer-fill">
-                                        <span><input class="form-control exam-answer-fill" type="text" ng-change="changeFillAnswer(answer)" ng-model="answer.text"/></span>
+                                    <input id="shortAnswer{{answer.answerId}}" ng-model="answer.checked" ng-change="checkChangedAnswer(question, answer)" type="checkbox"/>
+                                    <label for="shortAnswer{{answer.answerId}}" class="exam-short-answer">
+                                        <span><input class="form-control exam-short-answer" type="text" ng-change="shortAnswerHasChanged(answer)" ng-model="answer.text"/></span>
                                     </label>
                                 </div>
                             </div>
