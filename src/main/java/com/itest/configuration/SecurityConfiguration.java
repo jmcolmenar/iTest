@@ -61,9 +61,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
-    //@Autowired
-    //CustomCsrfTokenRepository tokenRepository;
-
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         // Configure the authentication through database. Use MD5 algorithm to encode the password
@@ -96,14 +93,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // Disable CSRF Token (Temporally)
         http.csrf().disable();
-
-        // TODO: Set the token repository by CookieCsrfTokenRepository setting the Cookie name
-        //CookieCsrfTokenRepository csrfRepository = new CookieCsrfTokenRepository();
-        //csrfRepository.setCookieName("XSRF-TOKEN");
-        //csrfRepository.setCookieHttpOnly(false);
-        //http.csrf().csrfTokenRepository(csrfRepository);
-
-        // TODO: Or set the token repository by custom
-        //http.csrf().csrfTokenRepository(tokenRepository);
     }
 }
