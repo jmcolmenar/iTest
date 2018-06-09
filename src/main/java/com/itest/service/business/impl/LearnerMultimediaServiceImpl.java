@@ -111,7 +111,6 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
         // Initialize and fill the multimedia element model
         MultimediaElementModel multimediaElementModel = new MultimediaElementModel();
         multimediaElementModel.setType(multimediaInfo.getType());
-        multimediaElementModel.setGeogebraType(multimediaInfo.getGeogebraType());
 
         // Fill the width and height
         String width = multimediaInfo.getWidth();
@@ -187,7 +186,6 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
             multimediaInfo.setType(extraPregunta.getTipo());
             multimediaInfo.setWidth(extraPregunta.getAncho());
             multimediaInfo.setHeight(extraPregunta.getAlto());
-            multimediaInfo.setGeogebraType(extraPregunta.getGeogebraType());
 
         }else if(databaseMultimediaElement.getClass() == ExtraPreguntaComentario.class){
 
@@ -224,7 +222,6 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
         private int type;
         private String width;
         private String height;
-        private int geogebraType;
 
         public int getId() {
             return id;
@@ -264,14 +261,6 @@ public class LearnerMultimediaServiceImpl implements LearnerMultimediaService {
 
         void setHeight(String height) {
             this.height = height;
-        }
-
-        int getGeogebraType() {
-            return geogebraType;
-        }
-
-        void setGeogebraType(int geogebraType) {
-            this.geogebraType = geogebraType;
         }
     }
 

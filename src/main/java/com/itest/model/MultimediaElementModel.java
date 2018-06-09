@@ -39,8 +39,6 @@ public class MultimediaElementModel {
 
     private String extension;
 
-    private int geogebraType;
-
     public int getId() {
         return id;
     }
@@ -103,13 +101,5 @@ public class MultimediaElementModel {
 
     public void setExtension(String extension) {
         this.extension = extension;
-    }
-
-    public int getGeogebraType() {
-        return geogebraType;
-    }
-
-    public void setGeogebraType(int geogebraType) {
-        this.geogebraType = geogebraType;
     }
 }

@@ -22,9 +22,6 @@ public class ExtraPregunta  {
 	@Column(length=8)
 	private String ancho;
 
-	@Column(name="geogebra_type", nullable=false)
-	private int geogebraType;
-
 	@Column(nullable=false, length=40)
 	private String nombre;
 
@@ -65,14 +62,6 @@ public class ExtraPregunta  {
 
 	public void setAncho(String ancho) {
 		this.ancho = ancho;
-	}
-
-	public int getGeogebraType() {
-		return this.geogebraType;
-	}
-
-	public void setGeogebraType(int geogebraType) {
-		this.geogebraType = geogebraType;
 	}
 
 	public String getNombre() {
