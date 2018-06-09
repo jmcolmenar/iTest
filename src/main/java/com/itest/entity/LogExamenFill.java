@@ -18,12 +18,6 @@ public class LogExamenFill  {
 	@Column(unique=true, nullable=false)
 	private int idlogexamsfill;
 
-	@Column(nullable=false)
-	private int alu;
-
-	@Column(nullable=false)
-	private int exam;
-
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="hora_resp")
 	private Date horaResp;
@@ -31,11 +25,23 @@ public class LogExamenFill  {
 	@Column(name="nivel_confianza", nullable=false)
 	private int nivelConfianza;
 
-	@Column(nullable=false)
-	private int preg;
-
 	@Column(precision=10, scale=2)
 	private BigDecimal puntos;
+
+	//bi-directional many-to-one association to Examen
+	@ManyToOne
+	@JoinColumn(name="exam", nullable=false)
+	private Examen examen;
+
+	//bi-directional many-to-one association to Pregunta
+	@ManyToOne
+	@JoinColumn(name="preg", nullable=false)
+	private Pregunta pregunta;
+
+	//bi-directional many-to-one association to Usuario
+	@ManyToOne
+	@JoinColumn(name="alu", nullable=false)
+	private Usuario usuario;
 
 	@Lob
 	private String resp;
@@ -49,22 +55,6 @@ public class LogExamenFill  {
 
 	public void setIdlogexamsfill(int idlogexamsfill) {
 		this.idlogexamsfill = idlogexamsfill;
-	}
-
-	public int getAlu() {
-		return this.alu;
-	}
-
-	public void setAlu(int alu) {
-		this.alu = alu;
-	}
-
-	public int getExam() {
-		return this.exam;
-	}
-
-	public void setExam(int exam) {
-		this.exam = exam;
 	}
 
 	public Date getHoraResp() {
@@ -83,20 +73,36 @@ public class LogExamenFill  {
 		this.nivelConfianza = nivelConfianza;
 	}
 
-	public int getPreg() {
-		return this.preg;
-	}
-
-	public void setPreg(int preg) {
-		this.preg = preg;
-	}
-
 	public BigDecimal getPuntos() {
 		return this.puntos;
 	}
 
 	public void setPuntos(BigDecimal puntos) {
 		this.puntos = puntos;
+	}
+
+	public Examen getExamen() {
+		return this.examen;
+	}
+
+	public void setExamen(Examen examenes) {
+		this.examen = examenes;
+	}
+
+	public Pregunta getPregunta() {
+		return this.pregunta;
+	}
+
+	public void setPregunta(Pregunta preguntas) {
+		this.pregunta = preguntas;
+	}
+
+	public Usuario getUsuario() {
+		return this.usuario;
+	}
+
+	public void setUsuario(Usuario usuarios) {
+		this.usuario = usuarios;
 	}
 
 	public String getResp() {

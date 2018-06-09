@@ -25,7 +25,10 @@
         <div class="container-fluid" id="exam-questions-div">
             <!-- on-finish-render="convertFormulas" => Call to the AsciiMath library at the end of ng-repeat rendering -->
             <div ng-repeat="question in newExam.questionList" on-finish-render="convertFormulas">
-                <h3><strong><span th:text="#{exam.questionTitle.question}"></span>&nbsp;{{$index + 1}}</strong><span ng-show="newExam.showNumberRightAnswers">&nbsp;-&nbsp;({{question.numberCorrectAnswers}}&nbsp;<span th:text="#{newExam.answerNumber}"></span>)</span></h3>
+                <h3>
+                    <strong><span th:text="#{exam.questionTitle.question}"></span>&nbsp;{{$index + 1}}</strong>
+                    <span ng-if="question.type == 0" ng-show="newExam.showNumberRightAnswers">&nbsp;-&nbsp;({{question.numberCorrectAnswers}}&nbsp;<span th:text="#{newExam.answerNumber}"></span>)</span>
+                </h3>
                 <div class="exam-question">
                     <h4 ng-bind-html="question.statement | newlines"></h4>
 
@@ -47,28 +50,45 @@
                         </div>
                     </div>
 
-                    <div class="exam-answer" ng-repeat="answer in question.answerList">
-                        <div class="checkbox checkbox-ltr checkbox-primary" style="display: flex">
-                            <input id="answer{{answer.asnwerId}}" ng-model="answer.checked" ng-change="checkChangedAnswer(question, answer)" type="checkbox"/>
-                            <label for="answer{{answer.asnwerId}}" ng-class="{'multimedia-adjust-width': answer.multimediaList.length > 0}">
-                                <span ng-if="answer.text" ng-bind-html="answer.text | newlines"></span>
-                                <br ng-if="answer.text"/>
+                    <!-- Check the type of question: Test or Short Answer -->
+                    <div ng-switch="question.type">
+                        <!-- Answers for question of test type -->
+                        <div ng-switch-when="0">
+                            <div class="exam-answer" ng-repeat="answer in question.answerList">
+                                <div class="checkbox checkbox-ltr checkbox-primary" style="display: flex">
+                                    <input id="answer{{answer.asnwerId}}" ng-model="answer.checked" ng-change="checkChangedAnswer(question, answer)" type="checkbox"/>
+                                    <label for="answer{{answer.asnwerId}}" ng-class="{'multimedia-adjust-width': answer.multimediaList.length > 0}">
+                                        <span ng-if="answer.text" ng-bind-html="answer.text | newlines"></span>
+                                        <br ng-if="answer.text"/>
 
-                                <!-- Multimedia elements for answer -->
-                                <div ng-repeat="multimedia in answer.multimediaList" class="multimedia-adjust-width">
-                                    <!-- Flash Multimedia Element -->
-                                    <object ng-if="multimedia.type == 1" class="multimedia-flash-answer multimedia-border" ng-click="preventMultimediaClick($event)" data="{{multimedia.path}}"></object>
-                                    <!-- Image Multimedia Element -->
-                                    <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, $event)" class="multimedia-img-answer multimedia-border"/>
-                                    <!-- Audio Multimedia Element -->
-                                    <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio-answer">
-                                        <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
-                                    </audio>
-                                    <!-- Geogebra Multimedia Element -->
-                                    <div ng-if="multimedia.type == 4" id="geogebra{{multimedia.id}}" ng-click="preventMultimediaClick($event)" class="multimedia-geogebra-answer" geogebra-element="{{multimedia}}" ></div>
+                                        <!-- Multimedia elements for answer -->
+                                        <div ng-repeat="multimedia in answer.multimediaList" class="multimedia-adjust-width">
+                                            <!-- Flash Multimedia Element -->
+                                            <object ng-if="multimedia.type == 1" class="multimedia-flash-answer multimedia-border" ng-click="preventMultimediaClick($event)" data="{{multimedia.path}}"></object>
+                                            <!-- Image Multimedia Element -->
+                                            <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, $event)" class="multimedia-img-answer multimedia-border"/>
+                                            <!-- Audio Multimedia Element -->
+                                            <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-audio-answer">
+                                                <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
+                                            </audio>
+                                            <!-- Geogebra Multimedia Element -->
+                                            <div ng-if="multimedia.type == 4" id="geogebra{{multimedia.id}}" ng-click="preventMultimediaClick($event)" class="multimedia-geogebra-answer" geogebra-element="{{multimedia}}" ></div>
+                                        </div>
+
+                                    </label>
                                 </div>
-
-                            </label>
+                            </div>
+                        </div>
+                        <div ng-switch-when="1">
+                            <!-- Answers for question of short answer type -->
+                            <div class="exam-answer exam-answer-fill-div" ng-repeat="answer in question.answerList">
+                                <div class="checkbox checkbox-ltr checkbox-primary">
+                                    <input id="answerFill{{question.questionId}}" ng-model="answer.checked" ng-change="checkChangedAnswer(question, answer)" type="checkbox"/>
+                                    <label for="answerFill{{question.questionId}}" class="exam-answer-fill">
+                                        <span><input class="form-control exam-answer-fill" type="text" ng-change="changeFillAnswer(answer)" ng-model="answer.text"/></span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

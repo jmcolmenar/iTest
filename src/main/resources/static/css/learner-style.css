@@ -222,6 +222,23 @@ body{
 .exam-answer{
     margin-left: 5px;
     padding-left: 5px;
+    padding-right: 5px;
+}
+
+.exam-answer-fill-div{
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.exam-answer-fill{
+    min-width: 300px;
+}
+
+@media (max-width: 450px){
+    .exam-answer-fill{
+        width: 100%;
+        min-width: 50px;
+    }
 }
 
 .exam-question{

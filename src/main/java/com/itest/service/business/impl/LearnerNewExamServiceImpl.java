@@ -38,6 +38,9 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.itest.constant.QuestionTypeConstant.SHORT_ANSWER;
+import static com.itest.constant.QuestionTypeConstant.TEST;
+
 @Service("learnerNewExamServiceImpl")
 public class LearnerNewExamServiceImpl implements LearnerNewExamService {
 
@@ -72,6 +75,10 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
     @Autowired
     @Qualifier("logExamenRepository")
     private LogExamenRepository logExamenRepository;
+
+    @Autowired
+    @Qualifier("logExamenFillRepository")
+    private LogExamenFillRepository logExamenFillRepository;
 
     @Autowired
     @Qualifier("formatterComponent")
@@ -381,7 +388,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
                     // Add all right question to the added answer for question list
                     rightAnswers.forEach(respuesta -> {
                         // Convert the answer to model and add to the list
-                        NewExamAnswerModel answerModel = this.convertRespuestaToNewExamQuestionAnswerModel(respuesta, examStartDate);
+                        NewExamAnswerModel answerModel = this.convertRespuestaToNewExamQuestionAnswerModel(respuesta, examStartDate, questionModel.getType());
                         questionModel.addAnswerToAnswerList(answerModel);
                     });
 
@@ -393,7 +400,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
                         Respuesta answer = remainingAsnwers.get(randomizer.nextInt(remainingAsnwers.size()));
 
                         // Convert the answer to model and add to the list
-                        NewExamAnswerModel answerModel = this.convertRespuestaToNewExamQuestionAnswerModel(answer, examStartDate);
+                        NewExamAnswerModel answerModel = this.convertRespuestaToNewExamQuestionAnswerModel(answer, examStartDate, questionModel.getType());
                         questionModel.addAnswerToAnswerList(answerModel);
 
                         // Increment the added answers counter
@@ -466,15 +473,31 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
                 this.respuestaRepository.save(answer);
 
                 // For each answer create a log exam entity in database (Without checked the answer)
-                LogExamen logExam = new LogExamen();
-                logExam.setExamen(exam);
-                logExam.setUsuario(learner);
-                logExam.setPregunta(question);
-                logExam.setRespuesta(answer);
-                logExam.setMarcada(0);
-                logExam.setPuntos(new BigDecimal(0));
-                logExam.setHoraResp(startDateExam);
-                this.logExamenRepository.save(logExam);
+                if(question.getTipo() == TEST){
+
+                    // Create a new answer for question of test type
+                    LogExamen logExam = new LogExamen();
+                    logExam.setExamen(exam);
+                    logExam.setUsuario(learner);
+                    logExam.setPregunta(question);
+                    logExam.setRespuesta(answer);
+                    logExam.setMarcada(0);
+                    logExam.setPuntos(new BigDecimal(0));
+                    logExam.setHoraResp(startDateExam);
+                    this.logExamenRepository.save(logExam);
+
+                }else if(question.getTipo() == SHORT_ANSWER){
+
+                    // Create a new answer for question of short answer type
+                    LogExamenFill logExamenFill = new LogExamenFill();
+                    logExamenFill.setExamen(exam);
+                    logExamenFill.setUsuario(learner);
+                    logExamenFill.setPregunta(question);
+                    logExamenFill.setResp(null);
+                    logExamenFill.setPuntos(new BigDecimal(0));
+                    logExamenFill.setHoraResp(startDateExam);
+                    this.logExamenFillRepository.save(logExamenFill);
+                }
             }
         }
     }
@@ -492,6 +515,7 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
         newExamQuestionModel.setStatement(question.getEnunciado());
         newExamQuestionModel.setNumberCorrectAnswers(question.getNRespCorrectas());
         newExamQuestionModel.setActiveConfidenceLevel(false);
+        newExamQuestionModel.setType(question.getTipo());
         newExamQuestionModel.setQuestionMultimediaList(this.learnerMultimediaService.getMultimediaModelListFromDatabaseObjectList(question.getExtraPreguntas()));
 
         // Return the model object
@@ -502,17 +526,32 @@ public class LearnerNewExamServiceImpl implements LearnerNewExamService {
      * Convert a answer database object to question model object
      * @param answer The answer database object
      * @param examStartDate The start date of new exam.
+     * @param questionType The type of the question: Test or Short Answer.
      * @return The answer model object
      */
-    private NewExamAnswerModel convertRespuestaToNewExamQuestionAnswerModel(Respuesta answer, Date examStartDate){
+    private NewExamAnswerModel convertRespuestaToNewExamQuestionAnswerModel(Respuesta answer, Date examStartDate, int questionType){
 
-        // Initialize and fill the model object
+        // Initialize the model object
         NewExamAnswerModel newExamAnswerModel = new NewExamAnswerModel();
-        newExamAnswerModel.setAsnwerId(answer.getIdresp());
-        newExamAnswerModel.setText(answer.getTexto());
-        newExamAnswerModel.setChecked(false);
-        newExamAnswerModel.setAnswerTime(examStartDate);
-        newExamAnswerModel.setMultimediaList(this.learnerMultimediaService.getMultimediaModelListFromDatabaseObjectList(answer.getExtraRespuestas()));
+
+        // Check the type of question
+        if(questionType == TEST){
+
+            // Fill the answer model of test question
+            newExamAnswerModel.setAsnwerId(answer.getIdresp());
+            newExamAnswerModel.setText(answer.getTexto());
+            newExamAnswerModel.setChecked(false);
+            newExamAnswerModel.setAnswerTime(examStartDate);
+            newExamAnswerModel.setMultimediaList(this.learnerMultimediaService.getMultimediaModelListFromDatabaseObjectList(answer.getExtraRespuestas()));
+
+        }else if(questionType == SHORT_ANSWER){
+
+            // Fill the answer model of short anserw question
+            newExamAnswerModel.setAsnwerId(answer.getIdresp());
+            newExamAnswerModel.setText("");
+            newExamAnswerModel.setChecked(false);
+            newExamAnswerModel.setAnswerTime(examStartDate);
+        }
 
         // Return the model object
         return newExamAnswerModel;
