@@ -160,6 +160,39 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * Change the password of user to a new one
+     * @param usuario The user database object
+     * @param newPass The new password
+     * @param repeatPass The repeated new password
+     * @return An error message when the password can not be changed. Null if the password is changed successfully
+     */
+    public String changeNewPassword(Usuario usuario, String newPass, String repeatPass){
+
+        // The error message
+        String errorMessage = null;
+
+        // Check the new password and the repeated password is the same
+        if(newPass.equals(repeatPass)){
+
+            // Initialize the encoder MD5 algorithmic and encode the new password
+            Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
+            String newPasswordMd5 = md5PasswordEncoder.encodePassword(newPass, null);
+
+            // Update the password of user
+            usuario.setPassw(newPasswordMd5);
+            this.usuarioRepository.save(usuario);
+
+        }else{
+
+            // Set the error message when the new and repeated password is not the same
+            errorMessage = this.translationService.getMessage("changePassword.errorNewAndRepeatPassword");
+        }
+
+        // Return the error message
+        return errorMessage;
+    }
+
+    /**
      * Get the user information
      * @return The objet model with the user information data
      */

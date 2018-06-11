@@ -1,0 +1,58 @@
+body{
+    margin-top: 70px;
+    background-image: url(/img/background.png);
+    background-position: left top;
+    background-repeat: repeat;
+}
+
+.navbar-brand{
+    padding: 0px;
+    padding-top: 5px;
+    padding-left: 15px;
+}
+
+.navbar-brand img{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.modal-header, .modal-footer-custom, .modal-body{
+    text-align: center;
+}
+
+.modal-content{
+    padding:5px;
+}
+
+.modal-content h2{
+    margin-top:-5px;
+}
+
+.modal-footer-custom{
+    padding-bottom: 10px;
+}
+
+#main-container{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.main-div{
+    border: 3px solid rgb(217, 32, 38);
+    border-top: 16px solid rgb(217, 32, 38);
+    box-shadow: rgba(255, 0, 0, 0.3) 3px 3px 3px 3px;
+    background-color: white;
+    margin-bottom: 15px;
+}
+
+.main-title-div{
+    padding-top: 15px;
+    color: rgb(0, 0, 0);
+    text-align:center;
+    border-bottom: 2px solid rgb(217, 32, 38);
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.main-title-div h2{
+    margin-top: 0px;
+}

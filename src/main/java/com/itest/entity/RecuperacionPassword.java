@@ -29,11 +29,13 @@ public class RecuperacionPassword  {
 	@Column(name="fecha_insert", nullable=false)
 	private Date fechaInsert;
 
-	@Column(nullable=false)
-	private int idusu;
-
 	@Column(nullable=false, length=32)
 	private String token;
+
+	//bi-directional many-to-one association to Usuario
+	@ManyToOne
+	@JoinColumn(name="idusu", nullable=false)
+	private Usuario usuario;
 
 	public RecuperacionPassword() {
 	}
@@ -70,14 +72,6 @@ public class RecuperacionPassword  {
 		this.fechaInsert = fechaInsert;
 	}
 
-	public int getIdusu() {
-		return this.idusu;
-	}
-
-	public void setIdusu(int idusu) {
-		this.idusu = idusu;
-	}
-
 	public String getToken() {
 		return this.token;
 	}
@@ -86,4 +80,11 @@ public class RecuperacionPassword  {
 		this.token = token;
 	}
 
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 }

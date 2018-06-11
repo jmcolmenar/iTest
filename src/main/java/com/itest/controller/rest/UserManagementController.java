@@ -21,7 +21,9 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.controller.rest;
 
+import com.itest.model.request.ChangeNewPasswordRequest;
 import com.itest.model.request.ChangePasswordRequest;
+import com.itest.model.request.RetrievePasswordRequest;
 import com.itest.model.request.UpdateUserProfileRequest;
 import com.itest.model.response.*;
 import com.itest.service.controller.UserManagementService;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/user/")
@@ -87,6 +90,34 @@ public class UserManagementController {
         UpdateUserProfileResponse response = this.userManagementService.updateUserProfile(request, httpRequest, httpResponse);
 
         // Return the user profile response
+        return response;
+    }
+
+    @PostMapping("/retrievePassword")
+    public RetrievePasswordResponse retrievePassword(@RequestBody RetrievePasswordRequest request){
+
+        // Call to the service to retrieve the user password
+        RetrievePasswordResponse response = this.userManagementService.retrievePassword(request);
+
+        // Return the response to retrieve the user password
+        return response;
+    }
+
+    @PostMapping("/changeNewPassword")
+    public ChangeNewPasswordResponse changeNewPassword(@RequestBody ChangeNewPasswordRequest request, HttpServletRequest httpRequest){
+
+        // Try to get the token to change the password from http request
+        HttpSession session = httpRequest.getSession();
+        if(session != null && session.getAttribute("token") != null){
+
+            // Set the token to the request object
+            request.setToken(session.getAttribute("token").toString());
+        }
+
+        // Call to the service to change the password of user to new one
+        ChangeNewPasswordResponse response = this.userManagementService.changeNewPassword(request);
+
+        // Return the response to change the password
         return response;
     }
 }

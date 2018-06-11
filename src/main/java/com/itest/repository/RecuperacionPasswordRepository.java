@@ -21,31 +21,15 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.repository;
 
-import com.itest.entity.Usuario;
+import com.itest.entity.RecuperacionPassword;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
-import java.util.List;
 
-@Repository("usuarioRepository")
-public interface UsuarioRepository extends JpaRepository<Usuario, Serializable> {
+@Repository("recuperacionPasswordRepository")
+public interface RecuperacionPasswordRepository extends JpaRepository<RecuperacionPassword, Serializable> {
 
-    Usuario findByIdusu(int idusu);
+    RecuperacionPassword findByToken(String token);
 
-    Usuario findByUsuario(String username);
-
-    @Query("select u.idusu from Usuario u where u.usuario = :username")
-    int getUserIdByUsername(@Param("username") String username);
-
-    @Query(" select " +
-            "   u " +
-            "from " +
-            "   Usuario u " +
-            "where " +
-            "   :groupId in (select i.grupo.idgrupo from u.imparten i) " +
-            "   and (select count(p) from Permiso p where p.usuario = u.usuario and (p.permiso = 'TUTOR' or p.permiso = 'TUTORAV')) > 0")
-    List<Usuario> findTutorsByGroupId(@Param("groupId") int groupId);
 }

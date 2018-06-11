@@ -21,10 +21,14 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.controller.impl;
 
+import com.itest.entity.Usuario;
 import com.itest.model.UserInfoModel;
+import com.itest.model.request.ChangeNewPasswordRequest;
 import com.itest.model.request.ChangePasswordRequest;
+import com.itest.model.request.RetrievePasswordRequest;
 import com.itest.model.request.UpdateUserProfileRequest;
 import com.itest.model.response.*;
+import com.itest.service.business.RetrievePasswordService;
 import com.itest.service.business.TranslationService;
 import com.itest.service.controller.UserManagementService;
 import com.itest.service.business.UserService;
@@ -51,6 +55,10 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Autowired
     @Qualifier("translationServiceImpl")
     TranslationService translationService;
+
+    @Autowired
+    @Qualifier("retrievePasswordServiceImpl")
+    RetrievePasswordService retrievePasswordService;
 
     public CheckSessionResponse checkSession(){
 
@@ -204,5 +212,91 @@ public class UserManagementServiceImpl implements UserManagementService {
 
         // Return the user profile response
         return updateUserProfileResponse;
+    }
+
+    public RetrievePasswordResponse retrievePassword(RetrievePasswordRequest request){
+
+        // Initialize the response
+        RetrievePasswordResponse retrievePasswordResponse = new RetrievePasswordResponse();
+
+        try{
+
+            // Get the request variables
+            String username = request.getUsername();
+            String email = request.getEmail();
+
+            // Generate new token to retrieve the user password
+            String errorMessage = this.retrievePasswordService.generateTokenToRetrievePassword(username, email);
+
+            // Check if has an error generating the token
+            if(errorMessage != null){
+
+                // Fill the response object with the error
+                retrievePasswordResponse.setHasError(true);
+                retrievePasswordResponse.setErrorMessage(errorMessage);
+            }
+
+        }catch(Exception exc){
+            // Log the exception
+            LOG.error("Error retrieving the user password. Exception: " + exc.getMessage());
+
+            // Has an error retrieving the user password
+            retrievePasswordResponse.setHasError(true);
+        }
+
+        // Return the response
+        return retrievePasswordResponse;
+    }
+
+    public ChangeNewPasswordResponse changeNewPassword(ChangeNewPasswordRequest request){
+
+        // Initialize the response
+        ChangeNewPasswordResponse changeNewPasswordResponse = new ChangeNewPasswordResponse();
+
+        try{
+            // Get the request variables
+            String token = request.getToken();
+            String newPassword = request.getNewPassword();
+            String repeatPassword = request.getRepeatPassword();
+
+            // Check the token is valid
+            String errorMessage = this.retrievePasswordService.isValidToken(token);
+            if(errorMessage == null){
+
+                // Get the user from token
+                Usuario user = this.retrievePasswordService.getUserFromTokenToRetrievePassword(token);
+
+                // Change the user of password
+                errorMessage = this.userService.changeNewPassword(user, newPassword, repeatPassword);
+
+                // Check if has an error changing the password
+                if(errorMessage != null){
+
+                    // Has an error changing the password
+                    changeNewPasswordResponse.setHasError(true);
+                    changeNewPasswordResponse.setErrorMessage(errorMessage);
+                }else{
+
+                    // Update the token in database as used
+                    this.retrievePasswordService.UpdateUsedToken(token);
+                }
+
+            }else{
+
+                // The password cannot ba changed because the token is invalid
+                changeNewPasswordResponse.setHasError(true);
+                changeNewPasswordResponse.setErrorMessage(errorMessage);
+            }
+
+        }catch(Exception exc){
+            // Log the exception
+            LOG.error("Error changing new user password. Exception: " + exc.getMessage());
+
+            // Has an error changing the new user password
+            changeNewPasswordResponse.setHasError(true);
+        }
+
+        // Return the response
+        return changeNewPasswordResponse;
     }
 }

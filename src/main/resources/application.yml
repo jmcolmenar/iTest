@@ -30,3 +30,19 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
 
 
+  # Mail properties
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: user@gmail.com
+    password: password
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enabled: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000

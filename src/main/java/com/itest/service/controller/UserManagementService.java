@@ -21,10 +21,11 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.controller;
 
+import com.itest.model.request.ChangeNewPasswordRequest;
 import com.itest.model.request.ChangePasswordRequest;
+import com.itest.model.request.RetrievePasswordRequest;
 import com.itest.model.request.UpdateUserProfileRequest;
 import com.itest.model.response.*;
-import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,4 +41,8 @@ public interface UserManagementService {
     GetUserProfileResponse getUserProfile();
 
     UpdateUserProfileResponse updateUserProfile(UpdateUserProfileRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse);
+
+    RetrievePasswordResponse retrievePassword(RetrievePasswordRequest request);
+
+    ChangeNewPasswordResponse changeNewPassword(ChangeNewPasswordRequest request);
 }

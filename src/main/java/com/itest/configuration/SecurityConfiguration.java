@@ -75,6 +75,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // Authorizes the requests to resources depending of user's roles
         http.authorizeRequests().mvcMatchers("/api/user/checkSession").permitAll();
+        http.authorizeRequests().mvcMatchers("/api/user/retrievePassword").permitAll();
+        http.authorizeRequests().mvcMatchers("/api/user/changeNewPassword").permitAll();
         http.authorizeRequests().antMatchers("/api/user/**", "/user/**").access("hasAnyAuthority('"+ UserRoleConstant.ROLE_LEARNER +"','"+ UserRoleConstant.ROLE_KID +"','"+ UserRoleConstant.ROLE_TUTOR  +"','"+ UserRoleConstant.ROLE_ADVANCED_TUTOR +"','"+ UserRoleConstant.ROLE_ADMIN +"')");
         http.authorizeRequests().antMatchers("/api/learner/**", "/learner/**").access("hasAnyAuthority('"+ UserRoleConstant.ROLE_LEARNER +"','"+ UserRoleConstant.ROLE_KID +"')");
         http.authorizeRequests().antMatchers("/api/tutor/**", "/tutor/**").access("hasAnyAuthority('"+ UserRoleConstant.ROLE_TUTOR +"','"+ UserRoleConstant.ROLE_ADVANCED_TUTOR+"')");

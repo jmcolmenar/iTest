@@ -408,7 +408,9 @@ app.controller('changePassCtrl', ['$scope', '$http', 'serverCaller', function($s
         $scope.showProcessError = false;
 
         // Check the all fields are not null or empty
-        if(!$scope.changePasswordData.oldPassword || !$scope.changePasswordData.newPassword || !$scope.changePasswordData.repeatPassword){
+        if(!$scope.changePasswordData.oldPassword || !$scope.changePasswordData.oldPassword.trim()
+            || !$scope.changePasswordData.newPassword  || !$scope.changePasswordData.newPassword.trim()
+            || !$scope.changePasswordData.repeatPassword || !$scope.changePasswordData.repeatPassword.trim()){
             // Show the modal with the error when any field is empty
             $("#errorEmptyFieldModal").modal("show");
         }else{

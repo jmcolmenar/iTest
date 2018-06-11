@@ -21,6 +21,7 @@ along with iTest.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itest.service.business;
 
+import com.itest.entity.Usuario;
 import com.itest.model.UserInfoModel;
 import org.springframework.security.core.Authentication;
 
@@ -57,6 +58,15 @@ public interface UserService {
      * @return An error message when the passwor can not be changed. Null if the password is changed successfully
      */
     String changeUserPassword(String oldPass, String newPass, String repeatPass);
+
+    /**
+     * Change the password of user to a new one
+     * @param usuario The user database object
+     * @param newPass The new password
+     * @param repeatPass The repeated new password
+     * @return An error message when the password can not be changed. Null if the password is changed successfully
+     */
+    String changeNewPassword(Usuario usuario, String newPass, String repeatPass);
 
     /**
      * Get the user information
