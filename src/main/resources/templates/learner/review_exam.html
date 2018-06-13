@@ -45,7 +45,7 @@
                             <!-- Flash Multimedia Element -->
                             <object ng-if="multimedia.type == 1" class="multimedia-adjust-width multimedia-adjust-height multimedia-border" data="{{multimedia.path}}"></object>
                             <!-- Image Multimedia Element -->
-                            <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, null)" class="multimedia-adjust-width multimedia-border"/>
+                            <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, null)" class="multimedia-adjust-width multimedia-adjust-height multimedia-border"/>
                             <!-- Audio Multimedia Element -->
                             <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-adjust-width">
                                 <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
@@ -119,7 +119,7 @@
                                     <!-- Flash Multimedia Element -->
                                     <object ng-if="multimedia.type == 1" class="multimedia-adjust-width multimedia-adjust-height multimedia-border" data="{{multimedia.path}}"></object>
                                     <!-- Image Multimedia Element -->
-                                    <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, null)" class="multimedia-adjust-width multimedia-border"/>
+                                    <img ng-if="multimedia.type == 2" src="{{multimedia.path}}" ng-click="showImageInModal(multimedia.path, null)" class="multimedia-adjust-width multimedia-adjust-height multimedia-border"/>
                                     <!-- Audio Multimedia Element -->
                                     <audio ng-if="multimedia.type == 3" controls="true" class="multimedia-adjust-width">
                                         <source src="{{multimedia.path}}" type="audio/{{getAudioType(multimedia)}}"/>
