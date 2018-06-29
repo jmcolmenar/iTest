@@ -1,5 +1,8 @@
 # iTest (Perfil Alumno)
 
+#### Copyright
+[Enlace a Copyright](https://github.com/jmcolmenar/iTest/blob/master/COPYRIGHT.md "Copyright")
+
 #### Descripcción
 Diseño, refactorización e implementación de la aplicación web iTest para el perfil del alumno
 
