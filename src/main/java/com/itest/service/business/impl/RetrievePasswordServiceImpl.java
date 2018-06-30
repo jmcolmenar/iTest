@@ -58,19 +58,18 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
     /**
      * Generate a new token for the user to retrieve the password
      * @param username The username
-     * @param email The email of user
      * @return String with an error message if the token has not been generated. Otherwise, null
      */
-    public String generateTokenToRetrievePassword(String username, String email){
+    public String generateTokenToRetrievePassword(String username){
 
         // Variables with the possible errors
         boolean userDataIncorrect = false;
-        boolean userEmailIncorrect = false;
+        boolean userWithoutEmail = false;
         boolean errorInsertedTokenInDatabase = false;
         boolean errorSendingEmailWithToken = false;
 
-        // Check the username and email are not null
-        if(username != null && email != null){
+        // Check the username is not null
+        if(username != null){
 
             // Get the user from database
             Usuario user = this.usuarioRepository.findByUsuario(username);
@@ -78,8 +77,8 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
             // Check the user exist in database
             if(user != null){
 
-                // Check the user email is the same that the received
-                if(user.getEmail() != null && user.getEmail().equalsIgnoreCase(email)){
+                // Check the user email is not empty
+                if(user.getEmail() != null && !user.getEmail().trim().isEmpty()){
 
                     // Generate a new token
                     String newToken = UUID.randomUUID().toString();
@@ -91,7 +90,7 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
                     if(isTokenInserted){
 
                         // Send an email with the token to retrieve the password
-                        boolean isTokendSent = this.sendEmailWithTokenToRetrievePassword(newToken, email);
+                        boolean isTokendSent = this.sendEmailWithTokenToRetrievePassword(newToken, user.getEmail());
 
                         // Check if has an error sending the email with the token
                         if(!isTokendSent){
@@ -108,8 +107,8 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
                         errorInsertedTokenInDatabase = true;
                     }
                 }else{
-                    // The email to retrieve the password is not the same that the user email
-                    userEmailIncorrect = true;
+                    // The user has not an email
+                    userWithoutEmail = true;
                 }
             }
             else{
@@ -128,9 +127,9 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
             // The user data is not correct to retrieve the password
             return translationService.getMessage("retrievePassword.errorIncorrectUser");
 
-        }else if(userEmailIncorrect){
+        }else if(userWithoutEmail){
 
-            // The email to retrieve the password is not the same that the user email
+            // The user has not an email to retrieve the password
             return translationService.getMessage("retrievePassword.errorIncorrectEmail");
 
         }else if(errorInsertedTokenInDatabase || errorSendingEmailWithToken){

@@ -223,10 +223,9 @@ public class UserManagementServiceImpl implements UserManagementService {
 
             // Get the request variables
             String username = request.getUsername();
-            String email = request.getEmail();
 
             // Generate new token to retrieve the user password
-            String errorMessage = this.retrievePasswordService.generateTokenToRetrievePassword(username, email);
+            String errorMessage = this.retrievePasswordService.generateTokenToRetrievePassword(username);
 
             // Check if has an error generating the token
             if(errorMessage != null){

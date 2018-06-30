@@ -28,10 +28,9 @@ public interface RetrievePasswordService {
     /**
      * Generate a new token for the user to retrieve the password
      * @param username The username
-     * @param email The email of user
      * @return String with an error message if the token has not been generated. Otherwise, null
      */
-    String generateTokenToRetrievePassword(String username, String email);
+    String generateTokenToRetrievePassword(String username);
 
     /**
      * Check if the token is valid to retrieve the user password

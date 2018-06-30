@@ -13,8 +13,7 @@ app.controller('mainCtrl',['$scope', '$http', '$window', function($scope, $http,
     $scope.retrievePassword = function () {
 
         // Check all fields are not null or empty
-        if(!$scope.retrievePasswordData.username || !$scope.retrievePasswordData.username.trim()
-            || !$scope.retrievePasswordData.email || !$scope.retrievePasswordData.email.trim()) {
+        if(!$scope.retrievePasswordData.username || !$scope.retrievePasswordData.username.trim()) {
 
             // Show the modal with the error when any field is empty
             $scope.errorType = "emptyFields";
@@ -23,7 +22,7 @@ app.controller('mainCtrl',['$scope', '$http', '$window', function($scope, $http,
         }else{
 
             // Prepare the request object
-            var retrievePasswordRequest = { username: $scope.retrievePasswordData.username, email: $scope.retrievePasswordData.email };
+            var retrievePasswordRequest = { username: $scope.retrievePasswordData.username };
 
             // Call to the server to retrieve the password of user
             $http.post('/api/user/retrievePassword', retrievePasswordRequest, {
