@@ -4,16 +4,34 @@
 
 /* === HEADER === */
 #logo{
-    text-align:center;
     padding-top: 20px;
     padding-bottom: 20px;
 }
 
-/* For small devices (phones) the Itest logo is reduced */
-@media(max-width: 767px){
-    #logo-img{
-        width: 113px;
-        height: 42px;
+#logo-left{
+    text-align: right;
+    padding-right: 20px;
+}
+
+#logo-right{
+    text-align: left;
+    padding-left: 20px;
+}
+
+#logo-left img, #logo-right img{
+    height: 65px;
+}
+
+/* For small devices (phones) the Itest and URJC logos are reduced */
+@media(max-width: 420px){
+    #logo-left img, #logo-right img{
+        height: 55px;
+    }
+}
+
+@media(max-width: 340px){
+    #logo-left img, #logo-right img{
+        height: 45px;
     }
 }
 
@@ -82,8 +100,8 @@
         border-top: 2px solid rgb(217, 32, 38);
     }
 
-    #uni-logo{
-        border-top: 2px solid rgb(217, 32, 38);
+    #info{
+        border-bottom: 2px solid rgb(217, 32, 38);
     }
 }
 
@@ -94,7 +112,7 @@
     }
 
     #info-column-2{
-        padding-bottom: 20px;
+        padding-bottom: 10px;
     }
 }
 
@@ -115,3 +133,8 @@
     color: lightskyblue;
 }
 
+@media(max-width: 767px) {
+    #footer {
+        margin-top: 10px;
+    }
+}
