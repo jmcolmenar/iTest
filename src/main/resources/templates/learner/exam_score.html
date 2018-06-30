@@ -11,11 +11,9 @@
         <br/>
         <div class="container-fluid" id="exam-score-info-div">
             <h3><span th:text="#{examScore.maxQualification}"></span>&nbsp;<strong>{{examScoreInfo.maxScore}}</strong></h3>
-            <h3>
-                <span th:text="#{examScore.qualification}"></span>
-                <button ng-hide="isScoreShown" style="display: inline-block" class="btn btn-default" ng-click="isScoreShown = true;"><strong><span th:text="#{examScore.showQualification}"></span></strong></button>
-                &nbsp;<strong ng-show="isScoreShown">{{examScoreInfo.score}}</strong>
-            </h3>
+            <button ng-hide="isScoreShown" class="btn btn-default" ng-click="isScoreShown = true;"><strong><span th:text="#{examScore.showQualification}"></span></strong></button>
+            <br ng-hide="isScoreShown"/>
+            <h3 ng-show="isScoreShown"><span th:text="#{examScore.qualification}"></span>&nbsp;<strong>{{examScoreInfo.score}}</strong></h3>
             <br/>
             <h4 ng-hide="examScoreInfo.availableReview" class="exam-score-above" th:text="#{examScore.notAvailableReview}"></h4>
             <div ng-show="examScoreInfo.availableReview" class="exam-score-above">
