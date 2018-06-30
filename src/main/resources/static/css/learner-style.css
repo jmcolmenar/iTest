@@ -7,47 +7,6 @@ body{
     background-repeat: repeat;
 }
 
-.navbar-brand{
-    padding: 0px;
-    padding-top: 5px;
-    padding-left: 15px;
-}
-
-.navbar-brand-urjc{
-    position: absolute;
-    left: 50%;
-    margin-left: -50px !important;  /* 50% of your logo width */
-    display: block;
-}
-
-@media (min-width: 481px) {
-    .navbar-brand img{
-        height: 45px;
-    }
-
-    .navbar-brand-urjc img{
-        height: 45px;
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar-brand img{
-        padding-top: 5px;
-        width: 100px;
-    }
-
-    .navbar-brand-urjc img{
-        height: 45px;
-    }
-}
-
-@media (max-width: 380px) {
-    .navbar-brand-urjc img{
-        padding-left: 30px;
-    }
-}
-
-
 /* === COMMON PAGES === */
 
 .modal-header, .modal-footer-custom, .modal-body{
