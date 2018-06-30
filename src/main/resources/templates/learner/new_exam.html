@@ -1,8 +1,15 @@
 <div xmlns:th="http://www.thymeleaf.org" ng-controller="multimediaCtrl">
 
-    <!-- Div to lock the navbar and hide the user menu -->
+    <!-- Div to lock the navbar and hide the user menu (it contains the logos of the navbar) -->
     <div class="new-exam-lock-navbar-div">
-        <div class="new-exam-lock-navbar-middle-right-div"></div>
+        <div class="container">
+            <a class="navbar-logo-itest">
+                <img src="/img/logoitest-inverse.png" alt="Go to home page"/>
+            </a>
+            <a class="navbar-logo-urjc">
+                <img src="/img/URJC-Logo-Inverse.png" alt="Go to URJC page"/>
+            </a>
+        </div>
     </div>
 
     <!-- Div to show the clock with the countdown timer -->

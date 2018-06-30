@@ -13,10 +13,40 @@ body{
     padding-left: 15px;
 }
 
-.navbar-brand img{
-    max-width: 100%;
-    max-height: 100%;
+.navbar-brand-urjc{
+    position: absolute;
+    left: 50%;
+    margin-left: -50px !important;  /* 50% of your logo width */
+    display: block;
 }
+
+@media (min-width: 481px) {
+    .navbar-brand img{
+        height: 45px;
+    }
+
+    .navbar-brand-urjc img{
+        height: 45px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-brand img{
+        padding-top: 5px;
+        width: 100px;
+    }
+
+    .navbar-brand-urjc img{
+        height: 45px;
+    }
+}
+
+@media (max-width: 380px) {
+    .navbar-brand-urjc img{
+        padding-left: 30px;
+    }
+}
+
 
 /* === COMMON PAGES === */
 
@@ -312,15 +342,53 @@ body{
     top:0;
     height: 50px;
     z-index:1035;
+    background: #222;
 }
 
-.new-exam-lock-navbar-middle-right-div{
-    display:table;
-    text-align:right;
-    float: right;
-    width: 50%;
-    height: 100%;
-    background: #222;
+.navbar-logo-itest{
+    padding-top: 5px;
+}
+
+.navbar-logo-urjc{
+    position: absolute;
+    left: 50%;
+    margin-left: -50px !important;
+}
+
+@media (min-width: 481px) {
+    .navbar-logo-itest img{
+        height: 45px;
+    }
+
+    .navbar-logo-urjc img{
+        height: 45px;
+    }
+}
+
+@media (max-width: 480px) and (min-width: 401px) {
+    .navbar-logo-itest img{
+        padding-top: 10px;
+        width: 100px;
+    }
+
+    .navbar-logo-urjc img{
+        height: 45px;
+    }
+}
+
+@media (max-width: 400px) {
+    .navbar-logo-itest img{
+        padding-top: 13px;
+        width: 80px;
+    }
+    .navbar-logo-urjc img{
+        margin-top: 5px;
+        height: 40px;
+    }
+    .navbar-logo-urjc{
+        left: 45%;
+        margin-left: -45px !important;
+    }
 }
 
 .new-exam-top-clock-div{
